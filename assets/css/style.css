@@ -1,0 +1,245 @@
+/* Reset & base */
+*{
+    font-family: "Zain", sans-serif;
+}
+
+:root{
+    --primary-color: #03144f;
+    --secondary-color: #f7f7fa;
+    --text-color: #455ecf;
+    --background-color: #10288a;
+    --background-sidebar: #f0f4f8;
+    --accent-color: #c19a6b;
+    --font-family: 'Zain', sans-serif;
+}
+body{
+
+    background: linear-gradient(116deg,rgba(3, 20, 79, 1) 53%, rgba(16, 40, 138, 1) 100%);
+}
+.dark{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: no-drop;
+    z-index: 10;
+}
+/* layout */
+.layout {
+    min-height: 100vh;
+    color: var(--secondary-color);
+    position: relative;
+}
+
+/* sidebar */
+.sidebar {
+    border-right: 1px solid rgb(188, 188, 219);
+    width: 90px;
+    background-color: transparent;
+    
+    position: relative;
+}
+.sidebar .tagline{
+    font-size: 1.3rem;
+    font-weight: 600;
+    width: 150px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-90deg);
+}
+.sidebar .social {
+    width: fit-content;
+}
+.sidebar .social a{
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: transparent;
+    transition: all 0.3s ease;
+}
+.sidebar .social a:hover{
+    background-color: var(--text-color);
+    color: var(--background-color);
+}
+
+/* navbar */
+.navbar .nav-links a{
+    position: relative;
+    transition: transform 0.3s ease;
+}
+.navbar .nav-links a::after{
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--text-color);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+}
+.navbar .nav-links a.action:after{
+    transform: scaleX(0.4);;
+}
+.navbar .nav-links a.action{
+    color: var(--text-color);
+}
+.navbar .nav-links a:hover{
+    color: var(--text-color);
+}
+.navbar .nav-links a:hover::after{
+    transform: scaleX(1);
+    transform-origin: left;
+}
+/* Slider */
+.hero{
+    position: relative;
+    overflow: hidden;
+}
+.hero .slide{
+    position: absolute;
+    inset: 0;
+    right: 50px;
+    display: flex;
+    align-items: center;
+    transition: opacity 400ms ease, transform 500ms ease;
+    opacity: 0;
+    transform: translateX(40px);
+}
+
+.main{
+    position: relative;
+    z-index: 0;
+    min-height: 100vh;
+}
+.main > *{ /* keep content above bg layers */
+    position: relative;
+    z-index: 1;
+}
+/* Background layers controlled via CSS vars */
+.main::before,
+.main::after{
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-image: var(--bg-current);
+    background-size: 110%;
+    background-position-y: 40%;
+    background-position-x: 100%;
+    background-repeat: no-repeat;
+    opacity: 1;
+    transform: translateX(0);
+    transition: transform 600ms ease, opacity 600ms ease;
+    will-change: transform, opacity;
+}
+.main::after{
+    background-image: var(--bg-next);
+    opacity: 0;
+}
+/* Disable transitions when resetting states from JS */
+.main.no-transition::before,
+.main.no-transition::after{
+    transition: none !important;
+}
+/* Animate to next: foreground content slides slightly left, bg moves right (opposite) */
+.main.bg-anim-next::before{
+    transform: translateX(8%);
+    opacity: 0;
+}
+.main.bg-anim-next::after{
+    transform: translateX(0);
+    opacity: 1;
+}
+/* Animate to prev: content hints right, bg moves left (opposite) */
+.main.bg-anim-prev::before{
+    transform: translateX(-8%);
+    opacity: 0;
+}
+.main.bg-anim-prev::after{
+    transform: translateX(0);
+    opacity: 1;
+}
+.hero .slide.active{
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+.hero .slide.hidden{ /* keep for initial state */
+    opacity: 0;
+    visibility: hidden;
+}
+.slider-controls{
+    position: absolute;
+    bottom: 80px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 150px;
+}
+.slider-controls-top{
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* عداد يمين - أزرار يسار في RTL */
+}
+.slider-buttons{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.slider-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: var(--secondary-color);
+    transition: background 0.3s ease, transform 0.2s ease;
+    font-size: 1rem;
+}
+.slider-btn:hover{
+    color: var(--text-color);
+}
+.slider-dots{
+    display: none;
+}
+.slider-progress{
+    width: 100%;
+    height: 6px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 999px;
+    overflow: hidden;
+}
+.slider-progress-bar{
+    height: 100%;
+    width: 0%;
+    background: var(--accent-color);
+    transition: width 400ms ease;
+}
+.slider-counter{
+    color: #fff;
+    font-size: 14px;
+    padding: 0 6px;
+}
+.slide .cta{
+    transition:  0.3s ease;
+    position: relative;
+    overflow: hidden;
+    background-color: var(--accent-color);
+}
+.slide .cta:hover{
+    background-color: var(--primary-color);
+
+}
