@@ -107,24 +107,56 @@ document.addEventListener("DOMContentLoaded", function () {
     if (e.key === "ArrowRight") prev();
   });
 
-  // Swipe support (basic)
+  // Enhanced swipe support for mobile
   let startX = 0;
+  let startY = 0;
+  let isSwiping = false;
+  
   hero.addEventListener(
     "touchstart",
     (e) => {
       startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+      isSwiping = true;
     },
     { passive: true }
   );
+  
   hero.addEventListener(
-    "touchend",
+    "touchmove",
     (e) => {
-      const dx = e.changedTouches[0].clientX - startX;
-      if (Math.abs(dx) > 40) {
-        dx < 0 ? next() : prev();
+      if (!isSwiping) return;
+      
+      const currentX = e.touches[0].clientX;
+      const currentY = e.touches[0].clientY;
+      const diffX = Math.abs(currentX - startX);
+      const diffY = Math.abs(currentY - startY);
+      
+      // If vertical scroll is more significant, don't interfere
+      if (diffY > diffX) {
+        isSwiping = false;
       }
     },
     { passive: true }
+  );
+  
+  hero.addEventListener(
+    "touchend",
+    (e) => {
+      if (!isSwiping) return;
+      
+      const dx = e.changedTouches[0].clientX - startX;
+      const dy = e.changedTouches[0].clientY - startY;
+      
+      // Only trigger if horizontal swipe is more significant than vertical
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+        e.preventDefault();
+        dx < 0 ? next() : prev();
+      }
+      
+      isSwiping = false;
+    },
+    { passive: false }
   );
 
   // init bg
