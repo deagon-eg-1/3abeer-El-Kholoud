@@ -7,6 +7,7 @@
 
   <!-- SEO Meta Tags -->
   <title>متجر عطور فاخرة | عطور نادرة وراقية أونلاين</title>
+  <link rel="shortcut icon" href="assets/img/logo.png" type="image/x-icon">
   <meta name="description"
     content="اكتشف تشكيلتنا من العطور الفاخرة النادرة. عطور شرقية وغربية راقية تعكس حضورك وسحرك وتترك بصمتك أينما ذهبت.">
   <meta name="keywords" content="عطور فاخرة, عطور نادرة, عطر شرقي, عطر غربي, متجر عطور, برفان راقي, تسوق عطور أونلاين">
@@ -15,14 +16,14 @@
   <meta property="og:title" content="متجر عطور فاخرة | عطور نادرة وراقية أونلاين">
   <meta property="og:description" content="عطور نادرة وفاخرة تجمع بين السحر والأناقة. اختر عطرك الآن.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://yourwebsite.com/">
-  <meta property="og:image" content="https://yourwebsite.com/hero-image.jpg">
+  <meta property="og:url" content="https://deagon-eg-1.github.io/3abeer-El-Kholoud/">
+  <meta property="og:image" content="assets/img/logo.png">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="متجر عطور فاخرة | عطور نادرة وراقية أونلاين">
   <meta name="twitter:description" content="اكتشف مجموعة من أجود العطور الشرقية والغربية.">
-  <meta name="twitter:image" content="https://yourwebsite.com/hero-image.jpg">
+  <meta name="twitter:image" content="assets/img/logo.png">
 
   <!-- Schema.org JSON-LD (لتقوية SEO) -->
   <script type="application/ld+json">
@@ -30,8 +31,8 @@
     "@context": "https://schema.org",
     "@type": "Store",
     "name": "متجر عطور فاخرة",
-    "url": "https://yourwebsite.com/",
-    "image": "https://yourwebsite.com/hero-image.jpg",
+    "url": "https://deagon-eg-1.github.io/3abeer-El-Kholoud/",
+    "image": "assets/img/logo.png",
     "description": "اكتشف العطور النادرة والراقية التي تعكس حضورك وأناقتك.",
     "address": {
       "@type": "PostalAddress",
@@ -48,6 +49,7 @@
   <!-- الخطوط -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Zain:ital,wght@0,200;0,300;0,400;0,700;0,800;0,900;1,300;1,400&display=swap"
     rel="stylesheet">
@@ -56,9 +58,15 @@
     rel="stylesheet">
 
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" media="print"
+    onload="this.media='all'"
     integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <noscript>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+      integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
+  </noscript>
 
   <!-- tailwind css -->
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
@@ -95,7 +103,7 @@
     <!-- Main content -->
     <main class="main w-full">
       <nav class="navbar w-full p-5 flex flex-1 justify-start" aria-label="التنقل الرئيسي">
-        <div class="nav-links flex gap-x-8 text-lg">
+        <div class="nav-links hidden md:flex gap-x-8 text-lg">
           <a href="#">خطوتك الأخيرة</a>
           <a href="#explore">استكشف</a>
           <a href="#advisor">خبير العطر</a>
@@ -103,26 +111,32 @@
         </div>
       </nav>
 
-      <section class="hero flex flex-1 h-full items-center pr-[50px] w-full text-6xl" aria-label="الشرائح الرئيسية">
+      <section class="hero flex flex-1 h-full items-start md:items-center pr-[50px] w-full pt-24 sm:pt-28 md:pt-0"
+        aria-label="الشرائح الرئيسية">
         <div class="slide active" data-index="0">
           <div class="slide-content">
-            <h1 class="h1 font-bold">الأناقة أن تفوح بسحرك.</h1>
-            <p class="p text-3xl mb-5">اختصر الزمن… وارتدِ عطراً يتحدث عنك.</p>
-            <a class="cta text-2xl px-5 py-2 bg-[#c19a6b] rounded-md" href="#advisor">خبير العطور</a>
+            <h1 class="h1 font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl">الأناقة أن تفوح بسحرك.</h1>
+            <p class="p text-base sm:text-lg md:text-2xl lg:text-3xl mb-5">اختصر الزمن… وارتدِ عطراً يتحدث عنك.</p>
+            <a class="cta text-base sm:text-lg md:text-xl lg:text-2xl px-5 py-2 bg-[#c19a6b] rounded-md"
+              href="#advisor">خبير العطور</a>
           </div>
         </div>
         <div class="slide hidden" data-index="1">
           <div class="slide-content">
-            <h1 class="h1 font-bold">العطر لغة… ونحن نكتب شعرها.</h1>
-            <p class="p text-3xl mb-5">العطر قصيدة بلا كلمات… تُسمع بالقلب، ويتحدث عنك حين تصمت.</p>
-            <a class="cta text-2xl px-5 py-2 bg-[#c19a6b] rounded-md" href="#advisor">خبير العطور</a>
+            <h1 class="h1 font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl">العطر لغة… ونحن نكتب شعرها.</h1>
+            <p class="p text-base sm:text-lg md:text-2xl lg:text-3xl mb-5">العطر قصيدة بلا كلمات… تُسمع بالقلب، ويتحدث
+              عنك حين تصمت.</p>
+            <a class="cta text-base sm:text-lg md:text-xl lg:text-2xl px-5 py-2 bg-[#c19a6b] rounded-md"
+              href="#advisor">خبير العطور</a>
           </div>
         </div>
         <div class="slide hidden" data-index="2">
           <div class="slide-content">
-            <h1 class="h1 font-bold">كل قطرة حكاية… وكل رائحة توقيع.</h1>
-            <p class="p text-3xl mb-5">هو رسالتك الصامتة… التي يفهمها الجميع دون أن تنطق.</p>
-            <a class="cta text-2xl px-5 py-2 bg-[#c19a6b] rounded-md" href="#advisor">خبير العطور</a>
+            <h1 class="h1 font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl">كل قطرة حكاية… وكل رائحة توقيع.</h1>
+            <p class="p text-base sm:text-lg md:text-2xl lg:text-3xl mb-5">هو رسالتك الصامتة… التي يفهمها الجميع دون أن
+              تنطق.</p>
+            <a class="cta text-base sm:text-lg md:text-xl lg:text-2xl px-5 py-2 bg-[#c19a6b] rounded-md"
+              href="#advisor">خبير العطور</a>
           </div>
         </div>
 
@@ -152,12 +166,33 @@
 
 
     </main>
-    <button class="dark"><i class="fa-solid fa-moon"></i></button>
-  </div>
 
-  <!-- tailwind -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="assets/js/slider.js"></script>
+    <!-- Floating toggle to open off-canvas menu -->
+    <button class="menu-toggle md:hidden" aria-label="فتح القائمة" aria-controls="mobile-menu" aria-expanded="false">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <!-- Off-canvas menu from right to left -->
+    <aside id="mobile-menu" class="offcanvas" aria-hidden="true" aria-label="القائمة الجانبية" role="dialog"
+      aria-modal="true">
+      <button class="offcanvas-close" aria-label="إغلاق القائمة">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <nav class="offcanvas-nav">
+        <a href="#advisor" class="action">الرئيسيه</a>
+        <a href="#advisor">خبير العطر</a>
+        <a href="#explore">استكشف</a>
+        <a href="#">خطوتك الأخيرة</a>
+      </nav>
+    </aside>
+    <div class="offcanvas-backdrop" hidden aria-hidden="true"></div>
+
+    <!-- tailwind -->
+  </div>
+  <script src="assets/js/main.js" defer></script>
+  <script>
+
+  </script>
 </body>
 
 </html>

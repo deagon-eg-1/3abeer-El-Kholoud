@@ -1,4 +1,34 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // Mark elements for page-load animation (staggered)
+  try {
+    var root = document.documentElement;
+    var animTargets = [];
+    animTargets.push.apply(
+      animTargets,
+      document.querySelectorAll(".sidebar *")
+    );
+    animTargets.push.apply(
+      animTargets,
+      document.querySelectorAll(".navbar .nav-links a")
+    );
+    animTargets.push.apply(
+      animTargets,
+      document.querySelectorAll(".hero .slide.active .slide-content > *")
+    );
+    animTargets.push.apply(
+      animTargets,
+      document.querySelectorAll(".slider-controls, .menu-toggle")
+    );
+    animTargets.forEach(function (el, idx) {
+      el.setAttribute("data-animate", "");
+      el.style.setProperty("--i", String(idx));
+    });
+    // trigger reveal on next frame
+    requestAnimationFrame(function () {
+      root.classList.add("is-loaded");
+    });
+  } catch (e) {}
+
   const hero = document.querySelector(".hero");
   if (!hero) return;
 
@@ -42,14 +72,14 @@ document.addEventListener("DOMContentLoaded", function () {
   // IMPORTANT: CSS var URLs resolve relative to the CSS file (assets/css/)
   // while inline style URLs resolve relative to the HTML document (index.html)
   const backgroundImagesCss = [
-    "url('../img/d.jpg')",
-    "url('../img/570ea497171329.5ebec47b77f7e.jpg')",
-    "url('../img/872ea097171329.5ebec47b7b926.jpg')",
+    "url('../img/hero-bg-1.jpg')",
+    "url('../img/hero-bg-2.jpg')",
+    "url('../img/hero-bg-3.jpg')",
   ];
   const backgroundImagesInline = [
-    "url('assets/img/d.jpg')",
-    "url('assets/img/570ea497171329.5ebec47b77f7e.jpg')",
-    "url('assets/img/872ea097171329.5ebec47b7b926.jpg')",
+    "url('assets/img/hero-bg-1.jpg')",
+    "url('assets/img/hero-bg-2.jpg')",
+    "url('assets/img/hero-bg-3.jpg')",
   ];
 
   function animateBackground(toIndex) {
@@ -142,3 +172,58 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   updateUI();
 });
+
+// offcanvas menu
+(function () {
+  var toggle = document.querySelector(".menu-toggle");
+  var offcanvas = document.querySelector(".offcanvas");
+  var closeBtn = document.querySelector(".offcanvas-close");
+  var backdrop = document.querySelector(".offcanvas-backdrop");
+  var main = document.querySelector("main");
+
+  function openMenu() {
+    offcanvas.classList.add("open");
+    document.body.classList.add("no-scroll");
+    backdrop.hidden = false;
+    requestAnimationFrame(function () {
+      backdrop.classList.add("show");
+    });
+    offcanvas.setAttribute("aria-hidden", "false");
+    if (toggle) toggle.setAttribute("aria-expanded", "true");
+    if (main) main.setAttribute("inert", "");
+    if (closeBtn)
+      try {
+        closeBtn.focus();
+      } catch (e) {}
+  }
+  function closeMenu() {
+    offcanvas.classList.remove("open");
+    document.body.classList.remove("no-scroll");
+    backdrop.classList.remove("show");
+    setTimeout(function () {
+      backdrop.hidden = true;
+    }, 200);
+    offcanvas.setAttribute("aria-hidden", "true");
+    if (toggle) toggle.setAttribute("aria-expanded", "false");
+    if (main) main.removeAttribute("inert");
+    if (toggle)
+      try {
+        toggle.focus();
+      } catch (e) {}
+  }
+
+  if (toggle) {
+    toggle.addEventListener("click", openMenu);
+  }
+  if (closeBtn) {
+    closeBtn.addEventListener("click", closeMenu);
+  }
+  if (backdrop) {
+    backdrop.addEventListener("click", closeMenu);
+  }
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      closeMenu();
+    }
+  });
+})();
