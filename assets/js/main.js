@@ -304,65 +304,52 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (!progressFill || products.length === 0) return;
 
-    // استخدم gap الفعلي من CSS بدل قيمة ثابتة، وحدد اتجاه التدفق
+    // استخدم gap الفعلي من CSS بدل قيمة ثابتة
     const styles = window.getComputedStyle(slider);
     const gapValue = parseFloat(styles.gap || styles.columnGap || 0) || 0;
-    const isReversed = (styles.flexDirection || '').includes('reverse');
-    const cardWidth = products.length > 0 ? products[0].offsetWidth + gapValue : 0;
+    const cardWidth =
+      products.length > 0 ? products[0].offsetWidth + gapValue : 0;
 
-    function getOverflowWidth() {
+    function getMaxTranslate() {
       // استخدم أقرب حاوية للسلايدر لضمان القياس الصحيح لو كان هناك أكثر من طبقة التفاف
-      const container = slider.closest('.products-slider-container') || slider.parentElement;
-      // clientWidth يتضمن الـ padding بالفعل، لذا لا داعي لطرحه
-      const visibleWidth = container.clientWidth;
-      const correction = 1; // تعويض بسيط لتجنب قص آخر عنصر
+      const container =
+        slider.closest(".products-slider-container") || slider.parentElement;
+      const cs = window.getComputedStyle(container);
+      const padLeft = parseFloat(cs.paddingLeft) || 0;
+      const padRight = parseFloat(cs.paddingRight) || 0;
+      const visibleWidth = container.clientWidth - padLeft - padRight; // عرض المنطقة القابلة لعرض المحتوى بدون الـ padding
+      // تعويض بسيط 1px لتجنب قص آخر عنصر بسبب عمليات التقريب
+      const correction = 1;
       const overflow = slider.scrollWidth - visibleWidth + correction;
-      const safeOverflow = overflow > 0.5 ? overflow : 0; // تجاهل فروق أقل من نصف بكسل
-      // سجلات للتتبع
-      console.debug('[Slider]', slider.id, {
-        containerWidth: container.clientWidth,
-        visibleWidth,
-        sliderScrollWidth: slider.scrollWidth,
-        correction,
-        overflow,
-        safeOverflow,
-        isReversed
-      });
-      return Math.max(0, safeOverflow);
-    }
-
-    function getBounds() {
-      const overflow = getOverflowWidth();
-      // في الاتجاه العادي: المدى [سالب, 0]، في العكسي: [0, موجب]
-      return isReversed
-        ? { min: 0, max: overflow }
-        : { min: -overflow, max: 0 };
+      return -Math.max(0, overflow);
     }
 
     let currentX = 0;
 
     function updateSliderPosition() {
-      // منع ترك مساحات فاضية بحسب حدود السلايدر
-      const bounds = getBounds();
-      if (currentX < bounds.min) currentX = bounds.min;
-      if (currentX > bounds.max) currentX = bounds.max;
+      // منع ترك مساحات فاضية
+      if (currentX > 0) currentX = 0;
+      if (currentX < getMaxTranslate()) currentX = getMaxTranslate();
 
-      // طبّق التحويل بحسب اتجاه التدفق: في الاتجاه المعكوس نستخدم الإشارة السالبة
-      const tx = isReversed ? -currentX : currentX;
-      slider.style.transform = `translateX(${tx}px)`;
+      slider.style.transform = `translateX(${currentX}px)`;
 
-      // تحديث progress bar مع تجنب القسمة على صفر وبغض النظر عن الاتجاه
-      const bounds2 = getBounds();
-      const range = bounds2.max - bounds2.min;
-      const progressPercentage = range === 0 ? 100 : ((currentX - bounds2.min) / range) * 100;
-      progressFill.style.width = `${Math.min(100, Math.max(0, progressPercentage))}%`;
-      console.debug('[Slider Progress]', slider.id, { currentX, bounds: bounds2, range, progressPercentage });
+      // تحديث progress bar مع تجنب القسمة على صفر
+      const max = Math.abs(getMaxTranslate());
+      const progressPercentage =
+        max === 0 ? 100 : (Math.abs(currentX) / max) * 100;
+      progressFill.style.width = `${Math.min(
+        100,
+        Math.max(0, progressPercentage)
+      )}%`;
 
       // Update slide counter dynamically
       if (currentSlideText && cardWidth > 0) {
         const currentSlide = Math.floor(Math.abs(currentX) / cardWidth) + 1;
         const totalSlides = products.length;
-        currentSlideText.textContent = Math.min(totalSlides, Math.max(1, currentSlide));
+        currentSlideText.textContent = Math.min(
+          totalSlides,
+          Math.max(1, currentSlide)
+        );
       }
       if (totalSlidesText) {
         totalSlidesText.textContent = products.length;
@@ -380,8 +367,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     slider.addEventListener("mousedown", (e) => {
       isMouseDown = true;
-      const rawCurrent = isReversed ? -currentX : currentX;
-      mouseStartX = e.clientX - rawCurrent;
+      mouseStartX = e.clientX - currentX;
       slider.style.cursor = "grabbing";
       e.preventDefault();
     });
@@ -398,8 +384,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     slider.addEventListener("mousemove", (e) => {
       if (!isMouseDown) return;
-      const rawCurrent = e.clientX - mouseStartX;
-      currentX = isReversed ? -rawCurrent : rawCurrent;
+      currentX = e.clientX - mouseStartX;
       updateSliderPosition();
     });
 
@@ -409,13 +394,11 @@ document.addEventListener("DOMContentLoaded", function () {
     let touchStartX = 0;
 
     slider.addEventListener("touchstart", (e) => {
-      const rawCurrent = isReversed ? -currentX : currentX;
-      touchStartX = e.touches[0].clientX - rawCurrent;
+      touchStartX = e.touches[0].clientX - currentX;
     });
 
     slider.addEventListener("touchmove", (e) => {
-      const rawCurrent = e.touches[0].clientX - touchStartX;
-      currentX = isReversed ? -rawCurrent : rawCurrent;
+      currentX = e.touches[0].clientX - touchStartX;
       updateSliderPosition();
     });
 
@@ -425,10 +408,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // إعادة حساب الموضع عند تحميل الصور/تغيير المقاسات
-    window.addEventListener('load', updateSliderPosition);
-    window.addEventListener('resize', updateSliderPosition);
-
-
+    window.addEventListener("load", updateSliderPosition);
+    window.addEventListener("resize", updateSliderPosition);
 
     // باقي الأنيميشنز والـ hover effects زي ما هي
     const productCards = slider.querySelectorAll(".product-card");
