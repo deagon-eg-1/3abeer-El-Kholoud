@@ -12,6 +12,22 @@
     --accent-color: #c19a6b;
     --font-family: 'Zain', sans-serif;
 }
+
+::-webkit-scrollbar{
+    width: 10px;
+}
+::-webkit-scrollbar-track{
+    background-color: var(--background-sidebar);
+}
+::-webkit-scrollbar-thumb{
+    background-color: var(--accent-color);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #1a2b6b;
+}
+
+/* start body style */
 body{
 
     background: linear-gradient(116deg,rgba(3, 20, 79, 1) 53%, rgba(16, 40, 138, 1) 100%);
@@ -95,9 +111,11 @@ body{
 }
 .navbar .nav-links a.action{
     color: var(--text-color);
+    font-weight: bold;
 }
 .navbar .nav-links a:hover{
     color: var(--text-color);
+    font-weight: bold;
 }
 .navbar .nav-links a:hover::after{
     transform: scaleX(1);
@@ -125,6 +143,7 @@ body{
     position: relative;
     z-index: 0;
     min-height: 100vh;
+    background: linear-gradient(135deg, #dfdfdf75 0%, #6868681a 100%) var(--bg-current) no-repeat center/cover !important;
 }
 .main > *{ /* keep content above bg layers */
     position: relative;
@@ -137,11 +156,11 @@ body{
     position: absolute;
     inset: 0;
     z-index: 0;
-    background-image: var(--bg-current);
-    background-size: cover;
-    background-position-y: 40%;
-    background-position-x: center;
-    background-repeat: no-repeat;
+    background: linear-gradient(135deg, #dfdfdf75 0%, #6868681a 100%) var(--bg-current) no-repeat center/1000% !important;
+    /* background-size: cover; */
+    /* background-position-y: 40%; */
+    /* background-position-x: center; */
+    /* background-repeat: no-repeat; */
     opacity: 1;
     transform: translateX(0);
     transition: transform 600ms ease, opacity 600ms ease;
@@ -280,7 +299,7 @@ body{
     width: 42px;
     height: 42px;
     border-radius: 50%;
-    background: rgba(0, 0, 0, 0.075);
+    background: rgba(0, 0, 0, 0.295);
     backdrop-filter: blur(10px);
     color: #fff;
     display: flex;
@@ -300,7 +319,7 @@ body{
     width: min(85vw, 340px);
     background: linear-gradient(160deg, rgba(3,20,79,0.95) 0%, rgba(16,40,138,0.88) 100%);
     color: #fff;
-    transform: translateX(100%);
+    transform: translateX(110%);
     transition: transform 0.5s ease-in-out;
     z-index: 30;
     backdrop-filter: blur(6px);

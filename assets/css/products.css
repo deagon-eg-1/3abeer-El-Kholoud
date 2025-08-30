@@ -1,0 +1,365 @@
+/* Reset & base */
+:root{
+    --primary-color: #03144f;
+    --secondary-color: #f7f7fa;
+    --text-color: #94a2e0;
+    --background-color: #10288a;
+    --background-sidebar: #f0f4f8;
+    --accent-color: #c19a6b;
+    --font-family: 'Zain', sans-serif;
+}
+/* sidebar style */
+.sidebar{
+    border-right: 1px solid rgb(188, 188, 219);
+    background-color: var(--background-sidebar);
+    color: var(--primary-color);
+}
+/* main style */
+.main{
+    overflow-y: auto;
+    background-color: var(--secondary-color) !important;
+    color: var(--primary-color);
+}
+/* navbar style*/
+.navbar{
+    border-bottom: 1px solid rgb(188, 188, 219);
+    background-color: var(--background-sidebar);
+    height: 70px;
+}
+.offcanvas{
+    background: none;
+    background-color: #bababbb4;
+}
+
+/* Products Slider Styles */
+.products-slider-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  padding: 0 24px; /* Horizontal padding on the container */
+  max-width: 100%;
+  /* Ensure no empty spaces */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.products-slider {
+  display: flex;
+  gap: 24px;
+  transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+  will-change: transform;
+  cursor: grab;
+  user-select: none;
+  /* Ensure proper layout */
+  align-items: center;
+  justify-content: flex-start;
+  width: max-content;
+  /* Optimize animation performance */
+  will-change: transform;
+  padding: 24px 0; /* Vertical padding for breathing room */
+}
+
+.products-slider:active {
+    cursor: grabbing;
+}
+
+.product-card {
+    flex-shrink: 0;
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    /* Ensure cards don't leave empty spaces */
+    min-width: 280px;
+    max-width: 280px;
+    width: 280px;
+    /* Prevent cards from leaving gaps */
+    margin: 0;
+    flex: 0 0 280px;
+}
+
+.product-card {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+  }
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+/* تصنيف رجالي  */
+.products-section .category-section:nth-of-type(2) .product-card:nth-child(1) .img {
+    background: url('../img/P/product-img-1.webp') no-repeat center center;
+    background-size: contain;
+}
+.products-section .category-section:nth-of-type(2) .product-card:nth-child(2) .img {
+    background: url('../img/P/product-img-2.webp') no-repeat center center;
+    background-size: contain;
+}
+.products-section .category-section:nth-of-type(2) .product-card:nth-child(3) .img {
+    background: url('../img/P/product-img-3.webp') no-repeat center center;
+    background-size: contain;
+}
+.products-section .category-section:nth-of-type(2) .product-card:nth-child(4) .img {
+    background: url('../img/P/product-img-4.webp') no-repeat center center;
+    background-size: contain;
+}
+.products-section .category-section:nth-of-type(2) .product-card:nth-child(5) .img {
+    background: url('../img/P/product-img-5.jpeg') no-repeat center center;
+    background-size: contain;
+}
+
+/* تصنيف نسائي  */
+.products-section .category-section:nth-of-type(3) .product-card:nth-child(1) .img {
+    background: url('../img/P/product-img-6.webp') no-repeat center center;
+    background-size: contain;
+}
+.products-section .category-section:nth-of-type(3) .product-card:nth-child(2) .img {
+    background: url('../img/P/product-img-8.webp') no-repeat center center;
+    background-size: contain;
+}
+.products-section .category-section:nth-of-type(3) .product-card:nth-child(3) .img {
+    background: url('../img/P/product-img-9.jpg') no-repeat center center;
+    background-size: contain;
+}
+.products-section .category-section:nth-of-type(3) .product-card:nth-child(4) .img {
+    background: url('../img/P/product-img-10.png') no-repeat center center;
+    background-size: contain;
+}
+
+.product-card .img {
+    padding: 1rem;
+    transition: all 0.3s ease;
+    height: 220px;
+}
+
+.product-card:hover .img {
+    transform: scale(1.05);
+}
+
+.product-card img {
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover img {
+    transform: scale(1.05);
+}
+
+/* Page load animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Smooth transitions for all elements */
+.product-card,
+.section-header h2,
+.category-section h3 {
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Progress Bar Styles */
+.slider-progress-container {
+    margin-top: 2rem;
+    opacity: 1;
+    visibility: visible;
+    transition: all 0.3s ease;
+    width: 50%;
+}
+
+.progress-bar {
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.progress-bar:hover {
+    transform: scaleY(1.2);
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.progress-fill {
+    width: 25%; /* Start with 1/4 for first slide */
+    position: relative;
+    background: linear-gradient(90deg, var(--primary-color), #1a2b6b);
+    box-shadow: 0 2px 4px rgba(3, 20, 79, 0.3);
+}
+
+.progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.progress-text {
+    font-family: var(--font-family);
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.progress-text .current-slide {
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.progress-text .total-slides {
+    font-weight: 600;
+    color: #666;
+}
+
+/* Progress bar indicators */
+.progress-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.3) ;
+    pointer-events: none;
+}
+
+/* Responsive progress bar */
+@media (max-width: 768px) {
+    .progress-bar {
+        height: 3px;
+    }
+    
+    .progress-fill {
+        height: 3px;
+    }
+    
+    .progress-text {
+        font-size: 0.875rem;
+    }
+}
+
+/* Category Section Styles */
+.category-section {
+    margin-bottom: 4rem;
+    border-top: 1px solid rgb(188, 188, 219);
+    padding-top: 1rem;
+}
+
+.category-section h3 {
+    color: var(--primary-color);
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-size: 1.6rem;
+    position: relative;
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .products-slider {
+        gap: 1rem;
+        /* padding is now on the container */
+    }
+    
+    .product-card {
+        min-width: 250px;
+        max-width: 250px;
+        width: 250px;
+        flex: 0 0 250px;
+    }
+    
+    .slider-controls {
+        margin-top: 1.5rem;
+    }
+    
+    .slider-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .product-card {
+        min-width: 220px;
+        max-width: 220px;
+        width: 220px;
+        flex: 0 0 220px;
+    }
+    
+    .products-slider {
+        gap: 0.75rem;
+        /* padding is now on the container */
+    }
+    
+    .category-section h3 {
+        font-size: 1.5rem;
+    }
+}
+
+/* Smooth scrolling for slider */
+.products-slider-container {
+    scroll-behavior: smooth;
+}
+
+
+
+/* Spacing handled by gap on .products-slider; remove extra margins to avoid double spacing */
+/* Removed margin-right rules to rely solely on gap */
+
+.products-slider.dragging {
+    transition: none;
+    cursor: grabbing;
+}
+
+/* Prevent text selection during drag */
+.products-slider-container {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+

@@ -69,7 +69,7 @@
   </noscript>
 
   <!-- tailwind css -->
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <!-- main style sheet -->
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -105,7 +105,7 @@
       <nav class="navbar w-full p-5 flex flex-1 justify-start" aria-label="التنقل الرئيسي">
         <div class="nav-links hidden md:flex gap-x-8 text-lg">
           <a href="#">خطوتك الأخيرة</a>
-          <a href="#explore">استكشف</a>
+          <a href="./products.html">استكشف</a>
           <a href="#advisor">خبير العطر</a>
           <a href="#advisor" class="action">الرئيسيه</a>
         </div>
@@ -113,19 +113,19 @@
 
       <section class="hero flex flex-1 h-full items-start md:items-center pr-[50px] w-full pt-24 sm:pt-28 md:pt-0"
         aria-label="الشرائح الرئيسية">
-        <div class="slide active" data-index="0">
-          <div class="slide-content">
-            <h1 class="h1 font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl">الأناقة أن تفوح بسحرك.</h1>
-            <p class="p text-base sm:text-lg md:text-2xl lg:text-3xl mb-5">اختصر الزمن… وارتدِ عطراً يتحدث عنك.</p>
-            <a class="cta text-base sm:text-lg md:text-xl lg:text-2xl px-5 py-2 bg-[#c19a6b] rounded-md"
-              href="#advisor">خبير العطور</a>
-          </div>
-        </div>
         <div class="slide hidden" data-index="1">
           <div class="slide-content">
             <h1 class="h1 font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl">العطر لغة… ونحن نكتب شعرها.</h1>
             <p class="p text-base sm:text-lg md:text-2xl lg:text-3xl mb-5">العطر قصيدة بلا كلمات… تُسمع بالقلب، ويتحدث
               عنك حين تصمت.</p>
+            <a class="cta text-base sm:text-lg md:text-xl lg:text-2xl px-5 py-2 bg-[#c19a6b] rounded-md"
+              href="#advisor">خبير العطور</a>
+          </div>
+        </div>
+        <div class="slide active" data-index="0">
+          <div class="slide-content">
+            <h1 class="h1 font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl">الأناقة أن تفوح بسحرك.</h1>
+            <p class="p text-base sm:text-lg md:text-2xl lg:text-3xl mb-5">اختصر الزمن… وارتدِ عطراً يتحدث عنك.</p>
             <a class="cta text-base sm:text-lg md:text-xl lg:text-2xl px-5 py-2 bg-[#c19a6b] rounded-md"
               href="#advisor">خبير العطور</a>
           </div>
@@ -181,7 +181,7 @@
       <nav class="offcanvas-nav">
         <a href="#advisor" class="action">الرئيسيه</a>
         <a href="#advisor">خبير العطر</a>
-        <a href="#explore">استكشف</a>
+        <a href="./products.html">استكشف</a>
         <a href="#">خطوتك الأخيرة</a>
       </nav>
     </aside>
@@ -189,10 +189,9 @@
 
     <!-- tailwind -->
   </div>
-  <script src="assets/js/main.js" defer></script>
-  <script>
 
-  </script>
+
+  <script src="./assets/js/main.js" defer></script>
 </body>
 
 </html>
