@@ -136,6 +136,32 @@ body {
     transform-origin: left;
 }
 
+/* Cart Icon Animation */
+.nav-cart-icon.bounce {
+    animation: bounce 0.3s ease-in-out;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+.cart-counter {
+    opacity: 0;
+    transform: scale(0.5);
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.cart-counter.show-counter {
+    opacity: 1;
+    transform: scale(1);
+}
+
 /* Slider */
 .hero {
     position: relative;
@@ -184,7 +210,7 @@ body {
     padding: 0 6px;
 }
 
- .cta {
+.cta {
     transition: 0.3s ease;
     position: relative;
     overflow: hidden;
@@ -192,8 +218,8 @@ body {
     border: 1px solid var(--background-sidebar);
 }
 
- .cta:hover {
-    background-color: var(--text-color)
+.cta:hover {
+    background-color: var(--text-color);
 
 }
 
@@ -209,16 +235,44 @@ body {
     right: 16px;
     width: 42px;
     height: 42px;
-    border-radius: 50%;
+    padding: 5px;
+    border-radius: 10px;
     background: rgba(0, 0, 0, 0.295);
     backdrop-filter: blur(10px);
     color: #fff;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
     z-index: 20;
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.123);
     backdrop-filter: blur(6px);
+    box-shadow: 0 2px 5px #f7f7fa1f;
+}
+
+.menu-toggle i {
+    width: 60%;
+    height: 3px;
+    border-radius: 10px;
+    background-color: var(--secondary-color);
+    position: relative;
+}
+
+.menu-toggle i::after,
+.menu-toggle i::before {
+    content: '';
+    height: 3px;
+    border-radius: 10px;
+    background-color: var(--secondary-color);
+    position: absolute;
+    right: 0;
+}
+.menu-toggle i::before {
+    width: 50%;
+    bottom: -8px;
+}
+.menu-toggle i::after {
+    width: 150%;
+    top: -8px;
 }
 
 /* Off-canvas menu */
@@ -344,7 +398,7 @@ body {
 @media (max-width: 1024px) {
     .sidebar {
         width: 70px;
-        padding: 30px 10px ;
+        padding: 30px 10px;
     }
 }
 
@@ -357,13 +411,13 @@ body {
 @media (max-width: 768px) {
     .sidebar {
         width: 70px;
-        padding: 20px 3px;
+        padding: 20px 3px !important;
     }
 }
 
 @media (max-width: 480px) {
     .main {
-        background: linear-gradient(182deg,#03134fee 40%, rgba(0, 0, 0, 0) 60%), url('../img/hero-bg-2.jpg');
+        background: linear-gradient(182deg, #03134fee 40%, rgba(0, 0, 0, 0) 60%), url('../img/hero-bg-2.jpg');
         background-size: 250%;
         background-position-y: bottom;
         background-position-x: center;

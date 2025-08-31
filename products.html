@@ -68,19 +68,24 @@
 
         <!-- Main content -->
         <main class="main w-full">
-            <nav class="navbar w-full p-5 flex flex-1 justify-start" aria-label="التنقل الرئيسي">
+            <nav class="navbar w-full p-5 flex flex-1  justify-end md:justify-between items-center sticky" aria-label="التنقل الرئيسي">
                 <div class="nav-links hidden md:flex gap-x-8 text-lg">
-                    <a href="#">خطوتك الأخيرة</a>
-                    <a href="./products.html" class="action">استكشف</a>
-                    <a href="#advisor">خبير العطر</a>
                     <a href="./index.html">الرئيسيه</a>
+                    <a href="./advisor.html">خبير العطر</a>
+                    <a href="./products.html" class="action">استكشف</a>
+                    <a href="#">خطوتك الأخيرة</a>
+                </div>
+                <div class="cart-icon-container relative">
+                    <i class="fa-solid fa-cart-shopping text-2xl cursor-pointer nav-cart-icon"></i>
+                    <span
+                        class="cart-counter absolute -top-2 -right-3 bg-[#c19a6b] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
                 </div>
             </nav>
 
             <!-- section products -->
             <section class="products-section ">
                 <div class="section-header text-center mb-5">
-                    <h2 class="text-3xl font-bold mb-2 mt-6">استكشف تشكيلتنا الواسعة من العطور الفريدة والمميزة التي
+                    <h2 class="text-xl md:text-2xl lg:text-3xl font-bold mb-2 mt-6">استكشف تشكيلتنا الواسعة من العطور الفريدة والمميزة التي
                         تناسب
                         جميع الأذواق.
                     </h2>
@@ -108,16 +113,16 @@
                             <!-- منتج 4 -->
                             <div
                                 class="product-card shadow-xl rounded-lg overflow-hidden relative flex flex-col items-center min-w-[280px]">
-                                <div class="img w-full bg-gray-200 flex justify-center">
+                                <div class="product-image img w-full bg-gray-200 flex justify-center">
 
                                 </div>
                                 <div class="py-2 px-10 mt-2 flex justify-between items-center w-full">
                                     <div>
-                                        <h4 class="text-xl font-semibold">عطر رجالي رياضي</h4>
-                                        <span class="text-lg">$130.00</span>
+                                        <h4 class="lg:text-xl font-semibold">عطر رجالي رياضي</h4>
+                                        <span class="lg:text-lg">$130.00</span>
                                     </div>
                                     <i
-                                        class="fa-solid fa-cart-shopping bg-[#03144f] w-[40px] h-[30px] flex items-center justify-center rounded-lg text-[#f7f7fa] cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
+                                        class="cart-btn fa-solid fa-cart-shopping bg-[#03144f] w-[40px] h-[30px] flex items-center justify-center rounded-lg text-[#f7f7fa] cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
                                 </div>
                                 <i
                                     class="fa-solid fa-heart bg-[#03144f] w-[30px] h-[30px] flex items-center justify-center rounded-full text-[#f7f7fa] absolute left-3 bottom-24 cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
@@ -125,16 +130,16 @@
                             <!-- منتج 1 -->
                             <div
                                 class="product-card shadow-xl rounded-lg overflow-hidden relative flex flex-col items-center min-w-[280px]">
-                                <div class="img w-full bg-gray-200 flex justify-center">
+                                <div class="product-image img w-full bg-gray-200 flex justify-center">
 
                                 </div>
                                 <div class="py-2 px-10 mt-2 flex justify-between items-center w-full">
                                     <div>
-                                        <h4 class="text-xl font-semibold">عطر رجالي كلاسيك</h4>
-                                        <span class="text-lg">$150.00</span>
+                                        <h4 class="lg:text-xl font-semibold">عطر رجالي كلاسيك</h4>
+                                        <span class="lg:text-lg">$150.00</span>
                                     </div>
                                     <i
-                                        class="fa-solid fa-cart-shopping bg-[#03144f] w-[40px] h-[30px] flex items-center justify-center rounded-lg text-[#f7f7fa] cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
+                                        class="cart-btn fa-solid fa-cart-shopping bg-[#03144f] w-[40px] h-[30px] flex items-center justify-center rounded-lg text-[#f7f7fa] cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
                                 </div>
                                 <i
                                     class="fa-solid fa-heart bg-[#03144f] w-[30px] h-[30px] flex items-center justify-center rounded-full text-[#f7f7fa] absolute left-3 bottom-24 cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
@@ -143,16 +148,16 @@
                             <!-- منتج 2 -->
                             <div
                                 class="product-card shadow-xl rounded-lg overflow-hidden relative flex flex-col items-center min-w-[280px]">
-                                <div class="img w-full bg-gray-200 flex justify-center">
+                                <div class="product-image img w-full bg-gray-200 flex justify-center">
 
                                 </div>
                                 <div class="py-2 px-10 mt-2 flex justify-between items-center w-full">
                                     <div>
-                                        <h4 class="text-xl font-semibold">عطر رجالي عصري</h4>
-                                        <span class="text-lg">$180.00</span>
+                                        <h4 class="lg:text-xl font-semibold">عطر رجالي عصري</h4>
+                                        <span class="lg:text-lg">$180.00</span>
                                     </div>
                                     <i
-                                        class="fa-solid fa-cart-shopping bg-[#03144f] w-[40px] h-[30px] flex items-center justify-center rounded-lg text-[#f7f7fa] cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
+                                        class="cart-btn fa-solid fa-cart-shopping bg-[#03144f] w-[40px] h-[30px] flex items-center justify-center rounded-lg text-[#f7f7fa] cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
                                 </div>
                                 <i
                                     class="fa-solid fa-heart bg-[#03144f] w-[30px] h-[30px] flex items-center justify-center rounded-full text-[#f7f7fa] absolute left-3 bottom-24 cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
@@ -161,16 +166,16 @@
                             <!-- منتج 3 -->
                             <div
                                 class="product-card shadow-xl rounded-lg overflow-hidden relative flex flex-col items-center min-w-[280px]">
-                                <div class="img w-full bg-gray-200 flex justify-center">
+                                <div class="product-image img w-full bg-gray-200 flex justify-center">
 
                                 </div>
                                 <div class="py-2 px-10 mt-2 flex justify-between items-center w-full">
                                     <div>
-                                        <h4 class="text-xl font-semibold">عطر رجالي فاخر</h4>
-                                        <span class="text-lg">$220.00</span>
+                                        <h4 class="lg:text-xl font-semibold">عطر رجالي فاخر</h4>
+                                        <span class="lg:text-lg">$220.00</span>
                                     </div>
                                     <i
-                                        class="fa-solid fa-cart-shopping bg-[#03144f] w-[40px] h-[30px] flex items-center justify-center rounded-lg text-[#f7f7fa] cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
+                                        class="cart-btn fa-solid fa-cart-shopping bg-[#03144f] w-[40px] h-[30px] flex items-center justify-center rounded-lg text-[#f7f7fa] cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
                                 </div>
                                 <i
                                     class="fa-solid fa-heart bg-[#03144f] w-[30px] h-[30px] flex items-center justify-center rounded-full text-[#f7f7fa] absolute left-3 bottom-24 cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
@@ -179,16 +184,16 @@
                             <!-- منتج 4 -->
                             <div
                                 class="product-card shadow-xl rounded-lg overflow-hidden relative flex flex-col items-center min-w-[280px]">
-                                <div class="img w-full bg-gray-200 flex justify-center">
+                                <div class="product-image img w-full bg-gray-200 flex justify-center">
 
                                 </div>
                                 <div class="py-2 px-10 mt-2 flex justify-between items-center w-full">
                                     <div>
-                                        <h4 class="text-xl font-semibold">عطر رجالي رياضي</h4>
-                                        <span class="text-lg">$130.00</span>
+                                        <h4 class="lg:text-xl font-semibold">عطر رجالي رياضي</h4>
+                                        <span class="lg:text-lg">$130.00</span>
                                     </div>
                                     <i
-                                        class="fa-solid fa-cart-shopping bg-[#03144f] w-[40px] h-[30px] flex items-center justify-center rounded-lg text-[#f7f7fa] cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
+                                        class="cart-btn fa-solid fa-cart-shopping bg-[#03144f] w-[40px] h-[30px] flex items-center justify-center rounded-lg text-[#f7f7fa] cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
                                 </div>
                                 <i
                                     class="fa-solid fa-heart bg-[#03144f] w-[30px] h-[30px] flex items-center justify-center rounded-full text-[#f7f7fa] absolute left-3 bottom-24 cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
@@ -216,16 +221,16 @@
                             <!-- منتج 1 -->
                             <div
                                 class="product-card shadow-xl rounded-lg overflow-hidden relative flex flex-col items-center min-w-[280px]">
-                                <div class="img w-full bg-gray-200 flex justify-center">
+                                <div class="product-image img w-full bg-gray-200 flex justify-center">
 
                                 </div>
                                 <div class="py-2 px-10 mt-2 flex justify-between items-center w-full">
                                     <div>
-                                        <h4 class="text-xl font-semibold">عطر نسائي أنيق</h4>
-                                        <span class="text-lg">$160.00</span>
+                                        <h4 class="lg:text-xl font-semibold">عطر نسائي أنيق</h4>
+                                        <span class="lg:text-lg">$160.00</span>
                                     </div>
                                     <i
-                                        class="fa-solid fa-cart-shopping bg-[#03144f] w-[40px] h-[30px] flex items-center justify-center rounded-lg text-[#f7f7fa] cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
+                                        class="cart-btn fa-solid fa-cart-shopping bg-[#03144f] w-[40px] h-[30px] flex items-center justify-center rounded-lg text-[#f7f7fa] cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
                                 </div>
                                 <i
                                     class="fa-solid fa-heart bg-[#03144f] w-[30px] h-[30px] flex items-center justify-center rounded-full text-[#f7f7fa] absolute left-3 bottom-24 cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
@@ -234,16 +239,16 @@
                             <!-- منتج 2 -->
                             <div
                                 class="product-card shadow-xl rounded-lg overflow-hidden relative flex flex-col items-center min-w-[280px]">
-                                <div class="img w-full bg-gray-200 flex justify-center">
+                                <div class="product-image img w-full bg-gray-200 flex justify-center">
 
                                 </div>
                                 <div class="py-2 px-10 mt-2 flex justify-between items-center w-full">
                                     <div>
-                                        <h4 class="text-xl font-semibold">عطر نسائي رومانسي</h4>
-                                        <span class="text-lg">$190.00</span>
+                                        <h4 class="lg:text-xl font-semibold">عطر نسائي رومانسي</h4>
+                                        <span class="lg:text-lg">$190.00</span>
                                     </div>
                                     <i
-                                        class="fa-solid fa-cart-shopping bg-[#03144f] w-[40px] h-[30px] flex items-center justify-center rounded-lg text-[#f7f7fa] cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
+                                        class="cart-btn fa-solid fa-cart-shopping bg-[#03144f] w-[40px] h-[30px] flex items-center justify-center rounded-lg text-[#f7f7fa] cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
                                 </div>
                                 <i
                                     class="fa-solid fa-heart bg-[#03144f] w-[30px] h-[30px] flex items-center justify-center rounded-full text-[#f7f7fa] absolute left-3 bottom-24 cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
@@ -252,16 +257,16 @@
                             <!-- منتج 3 -->
                             <div
                                 class="product-card shadow-xl rounded-lg overflow-hidden relative flex flex-col items-center min-w-[280px]">
-                                <div class="img w-full bg-gray-200 flex justify-center">
+                                <div class="product-image img w-full bg-gray-200 flex justify-center">
 
                                 </div>
                                 <div class="py-2 px-10 mt-2 flex justify-between items-center w-full">
                                     <div>
-                                        <h4 class="text-xl font-semibold">عطر نسائي فاخر</h4>
-                                        <span class="text-lg">$240.00</span>
+                                        <h4 class="lg:text-xl font-semibold">عطر نسائي فاخر</h4>
+                                        <span class="lg:text-lg">$240.00</span>
                                     </div>
                                     <i
-                                        class="fa-solid fa-cart-shopping bg-[#03144f] w-[40px] h-[30px] flex items-center justify-center rounded-lg text-[#f7f7fa] cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
+                                        class="cart-btn fa-solid fa-cart-shopping bg-[#03144f] w-[40px] h-[30px] flex items-center justify-center rounded-lg text-[#f7f7fa] cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
                                 </div>
                                 <i
                                     class="fa-solid fa-heart bg-[#03144f] w-[30px] h-[30px] flex items-center justify-center rounded-full text-[#f7f7fa] absolute left-3 bottom-24 cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
@@ -270,16 +275,16 @@
                             <!-- منتج 4 -->
                             <div
                                 class="product-card shadow-xl rounded-lg overflow-hidden relative flex flex-col items-center min-w-[280px]">
-                                <div class="img w-full bg-gray-200 flex justify-center">
+                                <div class="product-image img w-full bg-gray-200 flex justify-center">
 
                                 </div>
                                 <div class="py-2 px-10 mt-2 flex justify-between items-center w-full">
                                     <div>
-                                        <h4 class="text-xl font-semibold">عطر نسائي طبيعي</h4>
-                                        <span class="text-lg">$140.00</span>
+                                        <h4 class="lg:text-xl font-semibold">عطر نسائي طبيعي</h4>
+                                        <span class="lg:text-lg">$140.00</span>
                                     </div>
                                     <i
-                                        class="fa-solid fa-cart-shopping bg-[#03144f] w-[40px] h-[30px] flex items-center justify-center rounded-lg text-[#f7f7fa] cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
+                                        class="cart-btn fa-solid fa-cart-shopping bg-[#03144f] w-[40px] h-[30px] flex items-center justify-center rounded-lg text-[#f7f7fa] cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
                                 </div>
                                 <i
                                     class="fa-solid fa-heart bg-[#03144f] w-[30px] h-[30px] flex items-center justify-center rounded-full text-[#f7f7fa] absolute left-3 bottom-24 cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
@@ -307,7 +312,7 @@
                             <!-- منتج 1 -->
                             <div
                                 class="product-card shadow-xl rounded-lg overflow-hidden relative flex flex-col items-center min-w-[280px]">
-                                <div class="img w-full bg-gray-200 flex justify-center">
+                                <div class="product-image img w-full bg-gray-200 flex justify-center">
 
                                 </div>
                                 <div class="py-2 px-10 mt-2 flex justify-between items-center w-full">
@@ -316,7 +321,7 @@
                                         <span class="text-lg">$45.00</span>
                                     </div>
                                     <i
-                                        class="fa-solid fa-cart-shopping bg-[#03144f] w-[40px] h-[30px] flex items-center justify-center rounded-lg text-[#f7f7fa] cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
+                                        class="cart-btn fa-solid fa-cart-shopping bg-[#03144f] w-[40px] h-[30px] flex items-center justify-center rounded-lg text-[#f7f7fa] cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
                                 </div>
                                 <i
                                     class="fa-solid fa-heart bg-[#03144f] w-[30px] h-[30px] flex items-center justify-center rounded-full text-[#f7f7fa] absolute left-3 bottom-24 cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
@@ -325,7 +330,7 @@
                             <!-- منتج 2 -->
                             <div
                                 class="product-card shadow-xl rounded-lg overflow-hidden relative flex flex-col items-center min-w-[280px]">
-                                <div class="img w-full bg-gray-200 flex justify-center">
+                                <div class="product-image img w-full bg-gray-200 flex justify-center">
 
                                 </div>
                                 <div class="py-2 px-10 mt-2 flex justify-between items-center w-full">
@@ -334,7 +339,7 @@
                                         <span class="text-lg">$55.00</span>
                                     </div>
                                     <i
-                                        class="fa-solid fa-cart-shopping bg-[#03144f] w-[40px] h-[30px] flex items-center justify-center rounded-lg text-[#f7f7fa] cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
+                                        class="cart-btn fa-solid fa-cart-shopping bg-[#03144f] w-[40px] h-[30px] flex items-center justify-center rounded-lg text-[#f7f7fa] cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
                                 </div>
                                 <i
                                     class="fa-solid fa-heart bg-[#03144f] w-[30px] h-[30px] flex items-center justify-center rounded-full text-[#f7f7fa] absolute left-3 bottom-24 cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
@@ -343,7 +348,7 @@
                             <!-- منتج 3 -->
                             <div
                                 class="product-card shadow-xl rounded-lg overflow-hidden relative flex flex-col items-center min-w-[280px]">
-                                <div class="img w-full bg-gray-200 flex justify-center">
+                                <div class="product-image img w-full bg-gray-200 flex justify-center">
 
                                 </div>
                                 <div class="py-2 px-10 mt-2 flex justify-between items-center w-full">
@@ -352,7 +357,7 @@
                                         <span class="text-lg">$65.00</span>
                                     </div>
                                     <i
-                                        class="fa-solid fa-cart-shopping bg-[#03144f] w-[40px] h-[30px] flex items-center justify-center rounded-lg text-[#f7f7fa] cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
+                                        class="cart-btn fa-solid fa-cart-shopping bg-[#03144f] w-[40px] h-[30px] flex items-center justify-center rounded-lg text-[#f7f7fa] cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
                                 </div>
                                 <i
                                     class="fa-solid fa-heart bg-[#03144f] w-[30px] h-[30px] flex items-center justify-center rounded-full text-[#f7f7fa] absolute left-3 bottom-24 cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
@@ -361,7 +366,7 @@
                             <!-- منتج 4 -->
                             <div
                                 class="product-card shadow-xl rounded-lg overflow-hidden relative flex flex-col items-center min-w-[280px]">
-                                <div class="img w-full bg-gray-200 flex justify-center">
+                                <div class="product-image img w-full bg-gray-200 flex justify-center">
 
                                 </div>
                                 <div class="py-2 px-10 mt-2 flex justify-between items-center w-full">
@@ -370,7 +375,7 @@
                                         <span class="text-lg">$75.00</span>
                                     </div>
                                     <i
-                                        class="fa-solid fa-cart-shopping bg-[#03144f] w-[40px] h-[30px] flex items-center justify-center rounded-lg text-[#f7f7fa] cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
+                                        class="cart-btn fa-solid fa-cart-shopping bg-[#03144f] w-[40px] h-[30px] flex items-center justify-center rounded-lg text-[#f7f7fa] cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
                                 </div>
                                 <i
                                     class="fa-solid fa-heart bg-[#03144f] w-[30px] h-[30px] flex items-center justify-center rounded-full text-[#f7f7fa] absolute left-3 bottom-24 cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
@@ -396,7 +401,7 @@
         <!-- Floating toggle to open off-canvas menu -->
         <button class="menu-toggle md:hidden" aria-label="فتح القائمة" aria-controls="mobile-menu"
             aria-expanded="false">
-            <i class="fa-solid fa-bars"></i>
+            <i></i>
         </button>
 
         <!-- Off-canvas menu from right to left -->
@@ -407,7 +412,7 @@
             </button>
             <nav class="offcanvas-nav">
                 <a href="./index.html">الرئيسيه</a>
-                <a href="#advisor">خبير العطر</a>
+                <a href="./advisor.html">خبير العطر</a>
                 <a href="./products.html" class="action">استكشف</a>
                 <a href="#">خطوتك الأخيرة</a>
             </nav>

@@ -269,3 +269,207 @@ document.addEventListener("DOMContentLoaded", function () {
         categoryFilter.addEventListener('change', filterAndSearch);
     }
 })();
+
+// Add to cart animation
+function addToCartAnimation() {
+    const addToCartButtons = document.querySelectorAll('.product-card .cart-btn');
+    const cartIcon = document.querySelector('.nav-cart-icon');
+    const cartCounter = document.querySelector('.cart-counter');
+    
+
+
+    if (!addToCartButtons.length || !cartIcon || !cartCounter) {
+        return;
+    }
+
+
+    let count = 0;
+
+    addToCartButtons.forEach(button => {
+      
+      button.addEventListener('click', (e) => {
+          console.log(button);
+            e.preventDefault();
+
+            const card = button.closest('.product-card');
+            const productImageDiv = card.querySelector('.product-image');
+
+            if (!productImageDiv) return;
+
+            // Get background image URL from computed style
+            const style = window.getComputedStyle(productImageDiv);
+            const bgImage = style.backgroundImage;
+
+            // Exit if no background image
+            if (!bgImage || bgImage === 'none') return;
+
+            // Extract URL from 'url("...")'
+            const imageUrl = bgImage.slice(5, -2);
+
+            const productImageRect = productImageDiv.getBoundingClientRect();
+            const cartIconRect = cartIcon.getBoundingClientRect();
+
+            // Create a new img element for the animation
+            const flyingImage = document.createElement('img');
+            flyingImage.src = imageUrl;
+            flyingImage.style.position = 'fixed';
+            flyingImage.style.left = `${productImageRect.left}px`;
+            flyingImage.style.top = `${productImageRect.top}px`;
+            flyingImage.style.width = `${productImageRect.width}px`;
+            flyingImage.style.height = `${productImageRect.height}px`;
+            flyingImage.style.zIndex = '1000';
+            flyingImage.style.transition = 'all 1s ease-in-out';
+            flyingImage.style.borderRadius = '20px';
+            flyingImage.style.objectFit = 'cover';
+
+
+            document.body.appendChild(flyingImage);
+
+            requestAnimationFrame(() => {
+                flyingImage.style.left = `${cartIconRect.left + cartIconRect.width / 2}px`;
+                flyingImage.style.top = `${cartIconRect.top + cartIconRect.height / 2}px`;
+                flyingImage.style.width = '0px';
+                flyingImage.style.height = '0px';
+                flyingImage.style.transform = 'rotate(360deg)';
+            });
+
+            setTimeout(() => {
+                flyingImage.remove();
+                count++;
+                cartCounter.textContent = count;
+                cartCounter.classList.add('show-counter');
+
+                // Add a little bounce effect to the cart icon
+                cartIcon.classList.add('bounce');
+                setTimeout(() => {
+                    cartIcon.classList.remove('bounce');
+                }, 300);
+
+            }, 1000);
+        });
+    });
+};
+addToCartAnimation();
+
+// Perfume Advisor quiz logic
+(function () {
+  const app = document.getElementById('advisor-app');
+  if (!app) return; // Run only on advisor.html
+
+  const quiz = document.getElementById('quiz');
+  const bg = document.getElementById('advisor-bg');
+  if (!quiz || !bg) return;
+
+  const state = { feeling: null, scent: null, time: null };
+
+  function showStep(n) {
+    const steps = quiz.querySelectorAll('.quiz-step');
+    steps.forEach(s => s.classList.add('hidden'));
+    const next = quiz.querySelector(`.quiz-step[data-step="${n}"]`);
+    if (next) next.classList.remove('hidden');
+  }
+
+  function setActive(target, groupSelector) {
+    const group = target.closest('.quiz-step').querySelectorAll(groupSelector);
+    group.forEach(el => el.classList.remove('active'));
+    target.classList.add('active');
+  }
+
+  // step navigation
+  quiz.addEventListener('click', function (e) {
+    const t = e.target;
+    if (!(t instanceof HTMLElement)) return;
+
+    // feelings
+    if (t.matches('[data-feeling]')) {
+      state.feeling = t.getAttribute('data-feeling');
+      setActive(t, '[data-feeling]');
+    }
+
+    // scents + background theme
+    if (t.matches('[data-scent]')) {
+      state.scent = t.getAttribute('data-scent');
+      setActive(t, '[data-scent]');
+      const theme = t.getAttribute('data-bg');
+      // remove previous theme classes
+      bg.classList.remove('flowers', 'fruits', 'woods', 'oriental');
+      if (theme) bg.classList.add(theme);
+    }
+
+    // time
+    if (t.matches('[data-time]')) {
+      state.time = t.getAttribute('data-time');
+      setActive(t, '[data-time]');
+    }
+
+    // move next/prev
+    if (t.matches('[data-next]')) {
+      const next = t.getAttribute('data-next');
+      if (next) showStep(next);
+    }
+    if (t.matches('[data-prev]')) {
+      const prev = t.getAttribute('data-prev');
+      if (prev) showStep(prev);
+    }
+
+    // finish and render suggestions
+    if (t.hasAttribute('data-finish')) {
+      renderSuggestions();
+      showStep(4);
+      // slight scroll to suggestions
+      setTimeout(() => {
+        const cont = document.getElementById('suggestions');
+        if (cont) cont.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 50);
+    }
+  });
+
+  function renderSuggestions() {
+    const container = document.getElementById('suggestions');
+    if (!container) return;
+    container.innerHTML = '';
+
+    // Simple sample data mapped from scent/time; images reuse existing hero backgrounds to avoid missing assets
+    const themeImage = (state.scent === 'زهور') ? "assets/img/hero-bg-2.jpg"
+                      : (state.scent === 'فواكه') ? "assets/img/hero-bg-1.jpg"
+                      : (state.scent === 'أخشاب') ? "assets/img/hero-bg-2.jpg"
+                      : "assets/img/hero-bg-1.jpg";
+
+    const baseName = `${state.scent || 'عطر'} ${state.feeling || ''}`.trim();
+    const timeTag = state.time ? ` — ${state.time}` : '';
+
+    const items = [
+      { name: `${baseName} 01${timeTag}`, price: '$160', img: themeImage },
+      { name: `${baseName} 02${timeTag}`, price: '$180', img: themeImage },
+      { name: `${baseName} 03${timeTag}`, price: '$200', img: themeImage },
+    ];
+
+    items.forEach((p, i) => {
+      const card = document.createElement('div');
+      card.className = 'suggestion-card';
+      card.style.animationDelay = `${i * 120}ms`;
+
+      const thumb = document.createElement('div');
+      thumb.className = 'suggestion-thumb';
+      thumb.style.backgroundImage = `url('${p.img}')`;
+
+      const body = document.createElement('div');
+      body.className = 'suggestion-body';
+      body.innerHTML = `
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <h3 class="text-lg font-semibold text-[#03144f]">${p.name}</h3>
+            <p class="text-sm text-gray-500">مستوحى من ${state.scent || 'ذوقك'}</p>
+          </div>
+          <span class="text-[#03144f] font-bold">${p.price}</span>
+        </div>`;
+
+      card.appendChild(thumb);
+      card.appendChild(body);
+      container.appendChild(card);
+    });
+  }
+
+  // start at step 1
+  showStep(1);
+})();

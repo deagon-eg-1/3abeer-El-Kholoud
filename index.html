@@ -102,12 +102,17 @@
 
     <!-- Main content -->
     <main class="main w-full">
-      <nav class="navbar w-full p-5 flex flex-1 justify-start" aria-label="التنقل الرئيسي">
+      <nav class="navbar w-full p-5 flex flex-1 justify-end md:justify-between items-center" aria-label="التنقل الرئيسي">
         <div class="nav-links hidden md:flex gap-x-8 text-lg">
-          <a href="#">خطوتك الأخيرة</a>
-          <a href="./products.html">استكشف</a>
-          <a href="#advisor">خبير العطر</a>
           <a href="#advisor" class="action">الرئيسيه</a>
+          <a href="./advisor.html">خبير العطر</a>
+          <a href="./products.html">استكشف</a>
+          <a href="#">خطوتك الأخيرة</a>
+        </div>
+        <div class="cart-icon-container relative">
+          <i class="fa-solid fa-cart-shopping text-2xl cursor-pointer nav-cart-icon"></i>
+          <span
+            class="cart-counter absolute -top-2 -right-3 bg-[#c19a6b] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
         </div>
       </nav>
 
@@ -126,7 +131,7 @@
 
     <!-- Floating toggle to open off-canvas menu -->
     <button class="menu-toggle md:hidden" aria-label="فتح القائمة" aria-controls="mobile-menu" aria-expanded="false">
-      <i class="fa-solid fa-bars"></i>
+      <i></i>
     </button>
 
     <!-- Off-canvas menu from right to left -->
@@ -137,7 +142,7 @@
       </button>
       <nav class="offcanvas-nav">
         <a href="#advisor" class="action">الرئيسيه</a>
-        <a href="#advisor">خبير العطر</a>
+        <a href="./advisor.html">خبير العطر</a>
         <a href="./products.html">استكشف</a>
         <a href="#">خطوتك الأخيرة</a>
       </nav>

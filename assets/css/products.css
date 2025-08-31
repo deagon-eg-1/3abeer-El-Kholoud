@@ -1,7 +1,7 @@
 /* Reset & base */
 :root{
     --primary-color: #03144f;
-    --secondary-color: #f7f7fa;
+    --secondary-color: #f0f7f8;
     --text-color: #94a2e0;
     --background-color: #10288a;
     --background-sidebar: #f0f4f8;
@@ -26,6 +26,14 @@
     border-bottom: 1px solid rgb(188, 188, 219);
     background-color: var(--background-sidebar);
     height: 70px;
+    position: sticky;
+    top: 0;
+    background-color:#f0f4f82c;
+    backdrop-filter: blur(10px);
+    z-index: 2222;
+}
+.menu-toggle{
+    box-shadow: 0 2px 10px #05050549;
 }
 .offcanvas{
     background: none;
@@ -130,6 +138,25 @@
     background: url('../img/P/product-img-10.png') no-repeat center center;
     background-size: contain;
 }
+
+/* مزيل عرق */
+.products-section .category-section:nth-of-type(5) .product-card:nth-child(1) .img {
+    background: url('../img/P/product-img-11.webp') no-repeat center center;
+    background-size: contain;
+}
+.products-section .category-section:nth-of-type(5) .product-card:nth-child(2) .img {
+    background: url('../img/P/product-img-12.webp') no-repeat center center;
+    background-size: contain;
+}
+.products-section .category-section:nth-of-type(5) .product-card:nth-child(3) .img {
+    background: url('../img/P/product-img-13.webp') no-repeat center center;
+    background-size: contain;
+}
+.products-section .category-section:nth-of-type(5) .product-card:nth-child(4) .img {
+    background: url('../img/P/product-img-14.webp') no-repeat center center;
+    background-size: contain;
+}
+
 
 .product-card .img {
     padding: 1rem;

@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>عبير الخلود - خبير العطور</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zain:ital,wght@0,200;0,300;0,400;0,700;0,800;0,900;1,300;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa+Ink:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" media="print" onload="this.media='all'" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/advisor.css">
+</head>
+<body class="font-['Zain',sans-serif]">
+  <div class="layout flex h-screen overflow-hidden w-full flex-row-reverse">
+    <aside class="sidebar h-screen p-6 flex flex-col justify-between items-center" aria-label="الشريط الجانبي">
+      <div class="brand">
+        <img src="assets/img/logo-dark.png" alt="logo" class="w-full mb-4" loading="lazy">
+      </div>
+      <div class="tagline">
+        <h2>فن العطور النادرة</h2>
+      </div>
+      <div class="social flex flex-col gap-y-5" aria-label="روابط التواصل الاجتماعي">
+        <a href="#" title="Instagram" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" title="Twitter" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        <a href="#" title="Facebook" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+      </div>
+    </aside>
+
+    <main class="main w-full" id="advisor-app">
+      <nav class="navbar w-full p-5 flex flex-1 justify-end md:justify-between items-center sticky" aria-label="التنقل الرئيسي">
+        <div class="nav-links hidden md:flex gap-x-8 text-lg">
+          <a href="./index.html">الرئيسيه</a>
+          <a href="./advisor.html" class="action">خبير العطر</a>
+          <a href="./products.html">استكشف</a>
+          <a href="#">خطوتك الأخيرة</a>
+        </div>
+        <div class="cart-icon-container relative">
+          <i class="fa-solid fa-cart-shopping text-2xl cursor-pointer nav-cart-icon"></i>
+          <span class="cart-counter absolute -top-2 -right-3 bg-[#c19a6b] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
+        </div>
+      </nav>
+
+      <section class="advisor-hero relative">
+        <div class="advisor-bg" id="advisor-bg"></div>
+        <div class="advisor-overlay"></div>
+        <div class="advisor-content container mx-auto px-5 py-10 md:py-16">
+          <h1 class="text-2xl md:text-4xl font-bold text-center mb-6">مستشار العطور الذكي</h1>
+          <p class="text-center text-gray-700 mb-8">تجربة مبدئية للعميل تبدأ بأسئلة تفاعلية</p>
+
+          <div class="quiz-card mx-auto max-w-3xl p-6 md:p-8 rounded-2xl shadow-xl bg-white/80 backdrop-blur" id="quiz">
+            <!-- Step 1: Feeling -->
+            <div class="quiz-step" data-step="1">
+              <h2 class="text-xl md:text-2xl font-semibold mb-4 text-[#03144f]">إيه الإحساس اللي بتدور عليه النهاردة؟</h2>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <button class="quiz-btn" data-feeling="منعش">منعش</button>
+                <button class="quiz-btn" data-feeling="رومانسي">رومانسي</button>
+                <button class="quiz-btn" data-feeling="فاخر">فاخر</button>
+                <button class="quiz-btn" data-feeling="مغامر">مغامر</button>
+              </div>
+              <div class="mt-6 flex justify-end">
+                <button class="next-btn" data-next="2">التالي</button>
+              </div>
+            </div>
+
+            <!-- Step 2: Scent family with background change -->
+            <div class="quiz-step hidden" data-step="2">
+              <h2 class="text-xl md:text-2xl font-semibold mb-4 text-[#03144f]">اختار نوع الروائح المفضلة</h2>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <button class="quiz-pill" data-scent="زهور" data-bg="flowers">زهور</button>
+                <button class="quiz-pill" data-scent="فواكه" data-bg="fruits">فواكه</button>
+                <button class="quiz-pill" data-scent="أخشاب" data-bg="woods">أخشاب</button>
+                <button class="quiz-pill" data-scent="شرقي" data-bg="oriental">شرقي</button>
+              </div>
+              <div class="mt-6 flex justify-between">
+                <button class="prev-btn" data-prev="1">السابق</button>
+                <button class="next-btn" data-next="3">التالي</button>
+              </div>
+            </div>
+
+            <!-- Step 3: Time of use -->
+            <div class="quiz-step hidden" data-step="3">
+              <h2 class="text-xl md:text-2xl font-semibold mb-4 text-[#03144f]">امتى هتستخدم العطر؟</h2>
+              <div class="grid grid-cols-3 gap-3">
+                <button class="quiz-pill" data-time="نهار">نهار</button>
+                <button class="quiz-pill" data-time="ليل">ليل</button>
+                <button class="quiz-pill" data-time="مناسبة خاصة">مناسبة خاصة</button>
+              </div>
+              <div class="mt-6 flex justify-between">
+                <button class="prev-btn" data-prev="2">السابق</button>
+                <button class="finish-btn" data-finish>اعرض الاقتراحات</button>
+              </div>
+            </div>
+
+            <!-- Step 4: Suggestions -->
+            <div class="quiz-step hidden" data-step="4">
+              <h2 class="text-xl md:text-2xl font-semibold mb-6 text-[#03144f]">ترشيحاتنا ليك</h2>
+              <div class="suggestions grid grid-cols-1 md:grid-cols-3 gap-5" id="suggestions"></div>
+              <div class="mt-6 flex justify-start">
+                <button class="prev-btn" data-prev="3">رجوع</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <button class="menu-toggle md:hidden" aria-label="فتح القائمة" aria-controls="mobile-menu" aria-expanded="false"><i></i></button>
+
+    <aside id="mobile-menu" class="offcanvas" aria-hidden="true" aria-label="القائمة الجانبية" role="dialog" aria-modal="true">
+      <button class="offcanvas-close" aria-label="إغلاق القائمة"><i class="fa-solid fa-xmark"></i></button>
+      <nav class="offcanvas-nav">
+        <a href="./index.html">الرئيسيه</a>
+        <a href="./advisor.html" class="action">خبير العطر</a>
+        <a href="./products.html">استكشف</a>
+        <a href="#">خطوتك الأخيرة</a>
+      </nav>
+    </aside>
+    <div class="offcanvas-backdrop" hidden aria-hidden="true"></div>
+  </div>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="./assets/js/main.js" defer></script>
+</body>
+</html>
