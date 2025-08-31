@@ -13,11 +13,11 @@ document.addEventListener("DOMContentLoaded", function () {
     );
     animTargets.push.apply(
       animTargets,
-      document.querySelectorAll(".hero .slide.active .slide-content > *")
+      document.querySelectorAll(".hero .hero-content > *")
     );
     animTargets.push.apply(
       animTargets,
-      document.querySelectorAll(".slider-controls, .menu-toggle")
+      document.querySelectorAll(".menu-toggle")
     );
     animTargets.forEach(function (el, idx) {
       el.setAttribute("data-animate", "");
@@ -29,206 +29,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   } catch (e) {}
 
-  const hero = document.querySelector(".hero");
-  if (!hero) return;
-
-  const slides = Array.from(hero.querySelectorAll(".slide"));
-  const mainEl = document.querySelector(".main");
-  const prevBtn = hero.querySelector(".slider-btn.prev");
-  const nextBtn = hero.querySelector(".slider-btn.next");
-  const currentEl = hero.querySelector(".slider-counter .current");
-  const totalEl = hero.querySelector(".slider-counter .total");
-  const progress = hero.querySelector(".slider-progress");
-  const progressBar = hero.querySelector(".slider-progress-bar");
-
-  let currentIndex = Math.max(
-    0,
-    slides.findIndex((s) => s.classList.contains("active"))
-  );
-  const total = slides.length;
-  if (totalEl) totalEl.textContent = String(total);
-
-  // Progress replaces dots (keep empty array for API compatibility)
-  const dots = [];
-
-  function updateUI() {
-    slides.forEach((slide, idx) => {
-      if (idx === currentIndex) {
-        slide.classList.add("active");
-        slide.classList.remove("hidden");
-      } else {
-        slide.classList.remove("active");
-        slide.classList.add("hidden");
-      }
-    });
-    // في الشريحة الأولى يكون ممتلئ أيضاً (حمل كامل)
-    const percent = total > 1 ? ((currentIndex + 1) / total) * 100 : 100;
-    if (progress)
-      progress.setAttribute("aria-valuenow", String(Math.round(percent)));
-    if (progressBar) progressBar.style.width = `${percent}%`;
-    if (currentEl) currentEl.textContent = String(currentIndex + 1);
-  }
-
-  // Autoplay controls
-  const AUTOPLAY_INTERVAL_MS = 5000;
-  let autoplayId = null;
-  let isHoveredOrFocused = false;
-  function startAutoplay() {
-    if (autoplayId || total <= 1) return;
-    autoplayId = setInterval(() => {
-      if (!isHoveredOrFocused) {
-        next();
-      }
-    }, AUTOPLAY_INTERVAL_MS);
-  }
-  function stopAutoplay() {
-    if (autoplayId) {
-      clearInterval(autoplayId);
-      autoplayId = null;
-    }
-  }
-  function resetAutoplay() {
-    stopAutoplay();
-    startAutoplay();
-  }
-
-  // IMPORTANT: CSS var URLs resolve relative to the CSS file (assets/css/)
-  // while inline style URLs resolve relative to the HTML document (index.html)
-  const backgroundImagesCss = [
-    "url('../img/hero-bg-1.jpg')",
-    "url('../img/hero-bg-2.jpg')",
-    "url('../img/hero-bg-3.jpg')",
-  ];
-  const backgroundImagesInline = [
-    "url('assets/img/hero-bg-1.jpg')",
-    "url('assets/img/hero-bg-2.jpg')",
-    "url('assets/img/hero-bg-3.jpg')",
-  ];
-
-  function animateBackground(toIndex) {
-    if (!mainEl) return;
-    const fromIndex = currentIndex;
-    const currentBgCss =
-      backgroundImagesCss[fromIndex % backgroundImagesCss.length];
-    const nextBgCss = backgroundImagesCss[toIndex % backgroundImagesCss.length];
-    const nextBgInline =
-      backgroundImagesInline[toIndex % backgroundImagesInline.length];
-    mainEl.style.setProperty("--bg-current", currentBgCss);
-    mainEl.style.setProperty("--bg-next", nextBgCss);
-    // trigger animation class
-    mainEl.classList.remove("bg-anim-next", "bg-anim-prev");
-    // force reflow to restart animation reliably
-    void mainEl.offsetWidth;
-    mainEl.classList.add("bg-anim-next");
-    // after animation ends, swap vars so current reflects next
-    setTimeout(() => {
-      // disable transitions to avoid double flash on reset
-      mainEl.classList.add("no-transition");
-      mainEl.style.setProperty("--bg-current", nextBgCss);
-      mainEl.style.setProperty("--bg-next", nextBgCss);
-      // also set inline background as a hard fallback (document-relative path)
-      mainEl.style.backgroundImage = nextBgInline;
-      mainEl.classList.remove("bg-anim-next", "bg-anim-prev");
-      // force reflow, then re-enable transitions
-      void mainEl.offsetWidth;
-      mainEl.classList.remove("no-transition");
-    }, 620); // slightly longer than CSS transition
-  }
-
-  function goTo(index) {
-    if (index === currentIndex) return;
-    const normalized = (index + total) % total;
-    animateBackground(normalized);
-    currentIndex = normalized;
-    updateUI();
-  }
-
-  function next() {
-    goTo(currentIndex + 1);
-  }
-  function prev() {
-    goTo(currentIndex - 1);
-  }
-
-  nextBtn &&
-    nextBtn.addEventListener("click", function () {
-      next();
-      resetAutoplay();
-    });
-  prevBtn &&
-    prevBtn.addEventListener("click", function () {
-      prev();
-      resetAutoplay();
-    });
-
-  // Keyboard support
-  hero.setAttribute("tabindex", "0");
-  hero.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowLeft") next();
-    if (e.key === "ArrowRight") prev();
-    resetAutoplay();
-  });
-
-  // Swipe support (basic)
-  let startX = 0;
-  hero.addEventListener(
-    "touchstart",
-    (e) => {
-      startX = e.touches[0].clientX;
-      stopAutoplay();
-    },
-    { passive: true }
-  );
-  hero.addEventListener(
-    "touchend",
-    (e) => {
-      const dx = e.changedTouches[0].clientX - startX;
-      if (Math.abs(dx) > 40) {
-        dx < 0 ? next() : prev();
-      }
-      resetAutoplay();
-    },
-    { passive: true }
-  );
-
-  // Pause autoplay on hover/focus within hero
-  hero.addEventListener("mouseenter", function () {
-    isHoveredOrFocused = true;
-  });
-  hero.addEventListener("mouseleave", function () {
-    isHoveredOrFocused = false;
-  });
-  hero.addEventListener("focusin", function () {
-    isHoveredOrFocused = true;
-  });
-  hero.addEventListener("focusout", function () {
-    isHoveredOrFocused = false;
-  });
-
-  // Handle tab visibility changes
-  document.addEventListener("visibilitychange", function () {
-    if (document.hidden) {
-      stopAutoplay();
-    } else {
-      startAutoplay();
-    }
-  });
-
-  // init bg
-  if (mainEl) {
-    const initBgCss = backgroundImagesCss[0];
-    const initBgInline = backgroundImagesInline[0];
-    mainEl.style.setProperty("--bg-current", initBgCss);
-    mainEl.style.setProperty("--bg-next", initBgCss);
-    // ensure visible even before first animation (document-relative)
-    mainEl.style.backgroundImage = initBgInline;
-    mainEl.style.backgroundSize = "110%";
-    mainEl.style.backgroundRepeat = "no-repeat";
-    mainEl.style.backgroundPositionY = "40%";
-    mainEl.style.backgroundPositionX = "100%";
-  }
-  updateUI();
-  startAutoplay();
 });
 
 // offcanvas menu
@@ -304,45 +104,35 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (!progressFill || products.length === 0) return;
 
-    // استخدم gap الفعلي من CSS بدل قيمة ثابتة
     const styles = window.getComputedStyle(slider);
     const gapValue = parseFloat(styles.gap || styles.columnGap || 0) || 0;
     const cardWidth =
       products.length > 0 ? products[0].offsetWidth + gapValue : 0;
 
-    function getMaxTranslate() {
-      // استخدم أقرب حاوية للسلايدر لضمان القياس الصحيح لو كان هناك أكثر من طبقة التفاف
-      const container =
-        slider.closest(".products-slider-container") || slider.parentElement;
-      const cs = window.getComputedStyle(container);
-      const padLeft = parseFloat(cs.paddingLeft) || 0;
-      const padRight = parseFloat(cs.paddingRight) || 0;
-      const visibleWidth = container.clientWidth - padLeft - padRight; // عرض المنطقة القابلة لعرض المحتوى بدون الـ padding
-      // تعويض بسيط 1px لتجنب قص آخر عنصر بسبب عمليات التقريب
-      const correction = 1;
-      const overflow = slider.scrollWidth - visibleWidth + correction;
-      return -Math.max(0, overflow);
+    function getMaxScroll() {
+        const container =
+            slider.closest(".products-slider-container") || slider.parentElement;
+        const visibleWidth = container.clientWidth;
+        const scrollWidth = slider.scrollWidth;
+        // Add the gap to the maxScroll calculation for better accuracy
+        const maxScroll = scrollWidth - visibleWidth + gapValue;
+        return Math.max(0, maxScroll);
     }
 
     let currentX = 0;
 
     function updateSliderPosition() {
-      // منع ترك مساحات فاضية
+      const maxScroll = getMaxScroll();
+      // RTL: Clamp currentX between -maxScroll and 0
       if (currentX > 0) currentX = 0;
-      if (currentX < getMaxTranslate()) currentX = getMaxTranslate();
+      if (currentX < -maxScroll) currentX = -maxScroll;
 
       slider.style.transform = `translateX(${currentX}px)`;
 
-      // تحديث progress bar مع تجنب القسمة على صفر
-      const max = Math.abs(getMaxTranslate());
-      const progressPercentage =
-        max === 0 ? 100 : (Math.abs(currentX) / max) * 100;
-      progressFill.style.width = `${Math.min(
-        100,
-        Math.max(0, progressPercentage)
-      )}%`;
+      const max = getMaxScroll();
+      const progressPercentage = max === 0 ? 0 : (Math.abs(currentX) / max) * 100;
+      progressFill.style.width = `${progressPercentage}%`;
 
-      // Update slide counter dynamically
       if (currentSlideText && cardWidth > 0) {
         const currentSlide = Math.floor(Math.abs(currentX) / cardWidth) + 1;
         const totalSlides = products.length;
@@ -358,16 +148,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     updateSliderPosition();
 
-    // Add grabbing cursor style
     slider.style.cursor = "grab";
 
-    // Mouse drag support
     let isMouseDown = false;
-    let mouseStartX = 0;
+    let startX = 0;
+    let scrollLeftStart = 0;
 
     slider.addEventListener("mousedown", (e) => {
       isMouseDown = true;
-      mouseStartX = e.clientX - currentX;
+      startX = e.pageX - slider.offsetLeft;
+      scrollLeftStart = -currentX; // Invert for calculation
       slider.style.cursor = "grabbing";
       e.preventDefault();
     });
@@ -376,42 +166,42 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!isMouseDown) return;
       isMouseDown = false;
       slider.style.cursor = "grab";
-      // Snap to bounds after drag ends
-      updateSliderPosition();
+      updateSliderPosition(); // Snap to bounds
     };
 
     slider.addEventListener("mouseup", handleMouseUpAndLeave);
+    slider.addEventListener("mouseleave", handleMouseUpAndLeave);
 
     slider.addEventListener("mousemove", (e) => {
       if (!isMouseDown) return;
-      currentX = e.clientX - mouseStartX;
+      e.preventDefault();
+      const x = e.pageX - slider.offsetLeft;
+      const walk = (x - startX) * 1.5; // Multiplier for faster scroll
+      currentX = -(scrollLeftStart - walk);
       updateSliderPosition();
     });
 
-    slider.addEventListener("mouseleave", handleMouseUpAndLeave);
-
-    // Touch/swipe support
     let touchStartX = 0;
-
+    
     slider.addEventListener("touchstart", (e) => {
-      touchStartX = e.touches[0].clientX - currentX;
-    });
+        startX = e.touches[0].pageX - slider.offsetLeft;
+        scrollLeftStart = -currentX;
+    }, { passive: true });
 
     slider.addEventListener("touchmove", (e) => {
-      currentX = e.touches[0].clientX - touchStartX;
-      updateSliderPosition();
-    });
+        const x = e.touches[0].pageX - slider.offsetLeft;
+        const walk = (x - startX) * 1.5;
+        currentX = -(scrollLeftStart - walk);
+        updateSliderPosition();
+    }, { passive: true });
 
     slider.addEventListener("touchend", () => {
-      // Snap to bounds after touch ends
-      updateSliderPosition();
+        updateSliderPosition();
     });
 
-    // إعادة حساب الموضع عند تحميل الصور/تغيير المقاسات
     window.addEventListener("load", updateSliderPosition);
     window.addEventListener("resize", updateSliderPosition);
 
-    // باقي الأنيميشنز والـ hover effects زي ما هي
     const productCards = slider.querySelectorAll(".product-card");
     productCards.forEach((card, index) => {
       card.style.opacity = "0";
@@ -424,4 +214,58 @@ document.addEventListener("DOMContentLoaded", function () {
       }, 200 + index * 150);
     });
   });
+})();
+
+// Filter and Search functionality
+(function () {
+    const searchInput = document.getElementById('search-input');
+    const categoryFilter = document.getElementById('category-filter');
+    const productCards = document.querySelectorAll('.product-card');
+    const categorySections = document.querySelectorAll('.category-section');
+
+    function filterAndSearch() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const selectedCategory = categoryFilter.value;
+
+        // First, handle category visibility
+        categorySections.forEach(section => {
+            const slider = section.querySelector('.products-slider');
+            if (!slider) return;
+            const categoryId = slider.id.replace('-slider', '');
+            if (selectedCategory === 'all' || selectedCategory === categoryId) {
+                section.style.display = '';
+            } else {
+                section.style.display = 'none';
+            }
+        });
+
+        // Then, filter products within visible categories
+        productCards.forEach(card => {
+            const productName = card.querySelector('h4').textContent.toLowerCase();
+            const productCategorySlider = card.closest('.products-slider');
+            if (!productCategorySlider) return;
+
+            const productCategoryId = productCategorySlider.id.replace('-slider', '');
+
+            const matchesCategory = selectedCategory === 'all' || selectedCategory === productCategoryId;
+            const matchesSearch = productName.includes(searchTerm);
+
+            // The card should be visible only if its category is selected (or 'all') AND it matches the search term
+            if ((selectedCategory === 'all' || selectedCategory === productCategoryId) && matchesSearch) {
+                card.style.display = 'flex'; // Use flex as it's a flex container
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        // After filtering, we need to recalculate the slider positions
+        window.dispatchEvent(new Event('resize'));
+    }
+
+    if (searchInput) {
+        searchInput.addEventListener('input', filterAndSearch);
+    }
+    if (categoryFilter) {
+        categoryFilter.addEventListener('change', filterAndSearch);
+    }
 })();

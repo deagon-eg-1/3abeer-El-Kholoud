@@ -18,6 +18,7 @@
 .main{
     overflow-y: auto;
     background-color: var(--secondary-color) !important;
+    background: none;
     color: var(--primary-color);
 }
 /* navbar style*/
@@ -91,41 +92,41 @@
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 /* تصنيف رجالي  */
-.products-section .category-section:nth-of-type(2) .product-card:nth-child(1) .img {
-    background: url('../img/P/product-img-1.webp') no-repeat center center;
+.products-section .category-section:nth-of-type(3) .product-card:nth-child(1) .img {
+    background:  url('../img/P/product-img-1.webp') no-repeat center center;
     background-size: contain;
 }
-.products-section .category-section:nth-of-type(2) .product-card:nth-child(2) .img {
+.products-section .category-section:nth-of-type(3) .product-card:nth-child(2) .img {
     background: url('../img/P/product-img-2.webp') no-repeat center center;
     background-size: contain;
 }
-.products-section .category-section:nth-of-type(2) .product-card:nth-child(3) .img {
+.products-section .category-section:nth-of-type(3) .product-card:nth-child(3) .img {
     background: url('../img/P/product-img-3.webp') no-repeat center center;
     background-size: contain;
 }
-.products-section .category-section:nth-of-type(2) .product-card:nth-child(4) .img {
+.products-section .category-section:nth-of-type(3) .product-card:nth-child(4) .img {
     background: url('../img/P/product-img-4.webp') no-repeat center center;
     background-size: contain;
 }
-.products-section .category-section:nth-of-type(2) .product-card:nth-child(5) .img {
+.products-section .category-section:nth-of-type(3) .product-card:nth-child(5) .img {
     background: url('../img/P/product-img-5.jpeg') no-repeat center center;
     background-size: contain;
 }
 
 /* تصنيف نسائي  */
-.products-section .category-section:nth-of-type(3) .product-card:nth-child(1) .img {
+.products-section .category-section:nth-of-type(4) .product-card:nth-child(1) .img {
     background: url('../img/P/product-img-6.webp') no-repeat center center;
     background-size: contain;
 }
-.products-section .category-section:nth-of-type(3) .product-card:nth-child(2) .img {
+.products-section .category-section:nth-of-type(4) .product-card:nth-child(2) .img {
     background: url('../img/P/product-img-8.webp') no-repeat center center;
     background-size: contain;
 }
-.products-section .category-section:nth-of-type(3) .product-card:nth-child(3) .img {
+.products-section .category-section:nth-of-type(4) .product-card:nth-child(3) .img {
     background: url('../img/P/product-img-9.jpg') no-repeat center center;
     background-size: contain;
 }
-.products-section .category-section:nth-of-type(3) .product-card:nth-child(4) .img {
+.products-section .category-section:nth-of-type(4) .product-card:nth-child(4) .img {
     background: url('../img/P/product-img-10.png') no-repeat center center;
     background-size: contain;
 }

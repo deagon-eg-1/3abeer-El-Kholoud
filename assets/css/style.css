@@ -1,9 +1,9 @@
 /* Reset & base */
-*{
+* {
     font-family: "Zain", sans-serif;
 }
 
-:root{
+:root {
     --primary-color: #03144f;
     --secondary-color: #f7f7fa;
     --text-color: #455ecf;
@@ -13,13 +13,15 @@
     --font-family: 'Zain', sans-serif;
 }
 
-::-webkit-scrollbar{
+::-webkit-scrollbar {
     width: 10px;
 }
-::-webkit-scrollbar-track{
+
+::-webkit-scrollbar-track {
     background-color: var(--background-sidebar);
 }
-::-webkit-scrollbar-thumb{
+
+::-webkit-scrollbar-thumb {
     background-color: var(--accent-color);
 }
 
@@ -28,11 +30,12 @@
 }
 
 /* start body style */
-body{
+body {
 
-    background: linear-gradient(116deg,rgba(3, 20, 79, 1) 53%, rgba(16, 40, 138, 1) 100%);
+    background: linear-gradient(116deg, rgba(3, 20, 79, 1) 53%, rgba(16, 40, 138, 1) 100%);
 }
-.dark{
+
+.dark {
     position: fixed;
     bottom: 20px;
     right: 20px;
@@ -47,6 +50,7 @@ body{
     cursor: no-drop;
     z-index: 10;
 }
+
 /* layout */
 .layout {
     min-height: 100vh;
@@ -59,10 +63,11 @@ body{
     border-right: 1px solid rgb(188, 188, 219);
     width: 90px;
     background-color: transparent;
-    
+
     position: relative;
 }
-.sidebar .tagline{
+
+.sidebar .tagline {
     font-size: 1.3rem;
     font-weight: 600;
     width: 150px;
@@ -71,10 +76,12 @@ body{
     left: 50%;
     transform: translate(-50%, -50%) rotate(-90deg) !important;
 }
+
 .sidebar .social {
     width: fit-content;
 }
-.sidebar .social a{
+
+.sidebar .social a {
     width: 30px;
     height: 30px;
     display: flex;
@@ -84,17 +91,19 @@ body{
     background-color: transparent;
     transition: all 0.3s ease;
 }
-.sidebar .social a:hover{
+
+.sidebar .social a:hover {
     background-color: var(--text-color);
     color: var(--background-color);
 }
 
 /* navbar */
-.navbar .nav-links a{
+.navbar .nav-links a {
     position: relative;
     transition: transform 0.3s ease;
 }
-.navbar .nav-links a::after{
+
+.navbar .nav-links a::after {
     content: '';
     position: absolute;
     bottom: -5px;
@@ -106,153 +115,49 @@ body{
     transform-origin: right;
     transition: transform 0.3s ease;
 }
-.navbar .nav-links a.action:after{
-    transform: scaleX(0.4);;
+
+.navbar .nav-links a.action:after {
+    transform: scaleX(0.4);
+    ;
 }
-.navbar .nav-links a.action{
+
+.navbar .nav-links a.action {
     color: var(--text-color);
     font-weight: bold;
 }
-.navbar .nav-links a:hover{
+
+.navbar .nav-links a:hover {
     color: var(--text-color);
     font-weight: bold;
 }
-.navbar .nav-links a:hover::after{
+
+.navbar .nav-links a:hover::after {
     transform: scaleX(1);
     transform-origin: left;
 }
+
 /* Slider */
-.hero{
+.hero {
     position: relative;
     overflow: hidden;
 }
-.hero .slide{
-    position: absolute;
-    inset: 0;
-    right: 50px;
-    display: flex;
-    align-items: center;
-    transition: opacity 400ms ease, transform 500ms ease;
-    opacity: 0;
-    transform: translateX(40px);
-    content-visibility: auto;
-    contain-intrinsic-size: 600px 400px;
-}
 
-.main{
+.main {
     position: relative;
     z-index: 0;
     min-height: 100vh;
-    background: linear-gradient(135deg, #dfdfdf75 0%, #6868681a 100%) var(--bg-current) no-repeat center/cover ;
+    background: url('../img/hero-bg-2.jpg') no-repeat center/cover
 }
-.main > *{ /* keep content above bg layers */
+
+.main>* {
+    /* keep content above bg layers */
     position: relative;
     z-index: 1;
 }
-/* Background layers controlled via CSS vars */
-.main::before,
-.main::after{
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    background: linear-gradient(135deg, #dfdfdf75 0%, #6868681a 100%) var(--bg-current) no-repeat center/1000% !important;
-    /* background-size: cover; */
-    /* background-position-y: 40%; */
-    /* background-position-x: center; */
-    /* background-repeat: no-repeat; */
-    opacity: 1;
-    transform: translateX(0);
-    transition: transform 600ms ease, opacity 600ms ease;
-    will-change: transform, opacity;
-}
-.main::after{
-    background-image: var(--bg-next);
-    opacity: 0;
-}
-/* Disable transitions when resetting states from JS */
-.main.no-transition::before,
-.main.no-transition::after{
-    transition: none !important;
-}
-/* Animate to next: foreground content slides slightly left, bg moves right (opposite) */
-.main.bg-anim-next::before{
-    transform: translateX(8%);
-    opacity: 0;
-}
-.main.bg-anim-next::after{
-    transform: translateX(0);
-    opacity: 1;
-}
-/* Animate to prev: content hints right, bg moves left (opposite) */
-.main.bg-anim-prev::before{
-    transform: translateX(-8%);
-    opacity: 0;
-}
-.main.bg-anim-prev::after{
-    transform: translateX(0);
-    opacity: 1;
-}
-.hero .slide.active{
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(0);
-}
-.hero .slide.hidden{ /* keep for initial state */
-    opacity: 0;
-    visibility: hidden;
-}
-.slider-controls{
-    position: absolute;
-    bottom: 80px;
-    left: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 150px;
-}
-.slider-controls-top{
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* عداد يمين - أزرار يسار في RTL */
-}
-.slider-buttons{
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-.slider-btn{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    color: var(--secondary-color);
-    transition: background 0.3s ease, transform 0.2s ease;
-    font-size: 1rem;
-}
-.slider-btn:hover{
-    color: var(--text-color);
-}
-.slider-dots{
-    display: none;
-}
-.slider-progress{
-    width: 100%;
-    height: 6px;
-    background: rgba(255,255,255,0.2);
-    border-radius: 999px;
-    overflow: hidden;
-}
-.slider-progress-bar{
-    height: 100%;
-    width: 0%;
-    background: var(--accent-color);
-    transition: width 400ms ease;
-}
 
 /* Respect users who prefer reduced motion */
-@media (prefers-reduced-motion: reduce){
-    *{
+@media (prefers-reduced-motion: reduce) {
+    * {
         animation: none !important;
         transition: none !important;
         scroll-behavior: auto !important;
@@ -260,39 +165,45 @@ body{
 }
 
 /* Page-load reveal animation */
-[data-animate]{
+[data-animate] {
     opacity: 0;
     transform: translateY(16px);
     transition: opacity 0.6s ease, transform 0.6s ease;
     transition-delay: calc(var(--i, 0) * 60ms);
     will-change: opacity, transform;
 }
-.is-loaded [data-animate]{
+
+.is-loaded [data-animate] {
     opacity: 1;
     transform: none;
 }
-.slider-counter{
+
+.slider-counter {
     color: #fff;
     font-size: 14px;
     padding: 0 6px;
 }
-.slide .cta{
-    transition:  0.3s ease;
+
+ .cta {
+    transition: 0.3s ease;
     position: relative;
     overflow: hidden;
-    background-color: var(--accent-color);
+    background-color: transparent;
+    border: 1px solid var(--background-sidebar);
 }
-.slide .cta:hover{
-    background-color: var(--primary-color);
+
+ .cta:hover {
+    background-color: var(--text-color)
 
 }
+
 /* Utility: prevent scroll when drawer open */
-.no-scroll{
+.no-scroll {
     overflow: hidden;
 }
 
 /* Floating menu toggle */
-.menu-toggle{
+.menu-toggle {
     position: fixed;
     top: 16px;
     right: 16px;
@@ -306,30 +217,32 @@ body{
     align-items: center;
     justify-content: center;
     z-index: 20;
-    border: 1px solid rgba(255,255,255,0.25);
+    border: 1px solid rgba(255, 255, 255, 0.25);
     backdrop-filter: blur(6px);
 }
 
 /* Off-canvas menu */
-.offcanvas{
+.offcanvas {
     position: fixed;
     top: 0;
     right: 0;
     height: 100vh;
     width: min(85vw, 340px);
-    background: linear-gradient(160deg, rgba(3,20,79,0.95) 0%, rgba(16,40,138,0.88) 100%);
+    background: linear-gradient(160deg, rgba(3, 20, 79, 0.95) 0%, rgba(16, 40, 138, 0.88) 100%);
     color: #fff;
     transform: translateX(110%);
     transition: transform 0.5s ease-in-out;
     z-index: 30;
     backdrop-filter: blur(6px);
-    box-shadow: -8px 0 30px rgba(0,0,0,0.45);
-    border-left: 1px solid rgba(255,255,255,0.08);
+    box-shadow: -8px 0 30px rgba(0, 0, 0, 0.45);
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
 }
-.offcanvas.open{
+
+.offcanvas.open {
     transform: translateX(0);
 }
-.offcanvas .offcanvas-close{
+
+.offcanvas .offcanvas-close {
     position: absolute;
     top: 12px;
     left: 12px;
@@ -338,23 +251,26 @@ body{
     display: grid;
     place-items: center;
     border-radius: 50%;
-    background: rgba(255,255,255,0.12);
+    background: rgba(255, 255, 255, 0.12);
     color: #fff;
-    border: 1px solid rgba(255,255,255,0.18);
+    border: 1px solid rgba(255, 255, 255, 0.18);
     transition: background 0.5s ease, transform 0.15s ease;
 }
-.offcanvas .offcanvas-close:hover{
-    background: rgba(255,255,255,0.22);
+
+.offcanvas .offcanvas-close:hover {
+    background: rgba(255, 255, 255, 0.22);
     transform: rotate(-8deg);
 }
-.offcanvas-nav{
+
+.offcanvas-nav {
     display: flex;
     flex-direction: column;
     gap: 10px;
     padding: 72px 16px 20px;
     font-size: 1rem;
 }
-.offcanvas-nav a{
+
+.offcanvas-nav a {
     color: #fff;
     position: relative;
     display: flex;
@@ -362,26 +278,29 @@ body{
     gap: 10px;
     padding: 12px 20px;
     border-radius: 12px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     transition: color 0.2s ease, background 0.2s ease, transform 0.15s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
 }
+
 .offcanvas-nav a.action,
-.offcanvas-nav a:hover{
+.offcanvas-nav a:hover {
     color: #fff;
-    background: rgba(255,255,255,0.12);
-    border-color: rgba(255,255,255,0.18);
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.18);
     transform: translateX(-4px);
-    box-shadow: 0 8px 22px rgba(0,0,0,0.18);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
     /* padding-left: 20px; */
 }
-.offcanvas-nav a.action{
-    background: linear-gradient(90deg, rgba(193,154,107,0.25) 0%, rgba(193,154,107,0.15) 100%);
-    border-color: rgba(193,154,107,0.45);
+
+.offcanvas-nav a.action {
+    background: linear-gradient(90deg, rgba(193, 154, 107, 0.25) 0%, rgba(193, 154, 107, 0.15) 100%);
+    border-color: rgba(193, 154, 107, 0.45);
     font-weight: 700;
 }
-.offcanvas-nav a::before{
+
+.offcanvas-nav a::before {
     content: '';
     position: absolute;
     right: 8px;
@@ -393,47 +312,65 @@ body{
     background: transparent;
     transition: background 0.2s ease, box-shadow 0.2s ease;
 }
-.offcanvas-nav a:hover::before{ background: rgba(255,255,255,0.7); }
-.offcanvas-nav a.action::before{
+
+.offcanvas-nav a:hover::before {
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.offcanvas-nav a.action::before {
     background: var(--accent-color);
-    box-shadow: 0 0 0 3px rgba(193,154,107,0.25);
+    box-shadow: 0 0 0 3px rgba(193, 154, 107, 0.25);
 }
-.offcanvas-nav a:focus-visible{
+
+.offcanvas-nav a:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(69,94,207,0.35);
+    box-shadow: 0 0 0 3px rgba(69, 94, 207, 0.35);
 }
-.offcanvas-backdrop{
+
+.offcanvas-backdrop {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.35);
+    background: rgba(0, 0, 0, 0.35);
     z-index: 25;
     opacity: 0;
     transition: opacity 0.5s ease;
 }
-.offcanvas-backdrop.show{
+
+.offcanvas-backdrop.show {
     opacity: 1;
 }
 
 /* Responsive adjustments */
-@media (max-width: 1024px){
-    .sidebar{ 
-        width: 70px; 
-        padding: 30px 10px !important;
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 70px;
+        padding: 30px 10px ;
     }
 }
-@media (min-width: 768px){
-    .menu-toggle{display: none;}
-}
-@media (max-width: 768px){
-    .sidebar{ width: 56px; }
-    .slider-controls{ left: 12px; bottom: 60px; width: 140px; }
-    .hero .slide{
-        align-items: flex-end;
-        padding-bottom: 100px;
+
+@media (min-width: 768px) {
+    .menu-toggle {
+        display: none;
     }
 }
-@media (max-width: 480px){
-    .hero{ padding-inline: 16px; }
-    .hero .slide{ right: 16px; }
-    .slider-controls{ left: 10px; bottom: 48px; width: 130px; }
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 70px;
+        padding: 20px 3px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main {
+        background: linear-gradient(182deg,#03134fee 40%, rgba(0, 0, 0, 0) 60%), url('../img/hero-bg-2.jpg');
+        background-size: 250%;
+        background-position-y: bottom;
+        background-position-x: center;
+        background-repeat: no-repeat;
+    }
+
+    .hero {
+        padding-inline: 16px;
+    }
 }
