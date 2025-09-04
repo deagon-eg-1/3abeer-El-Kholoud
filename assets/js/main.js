@@ -270,26 +270,182 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 })();
 
+// Cart module (storage + UI)
+(function () {
+  const CART_KEY = 'cartItems';
+  const container = document.querySelector('.cart-icon-container');
+  const counterEl = document.querySelector('.cart-counter');
+
+  function loadCart() {
+    try {
+      return JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+    } catch {
+      return [];
+    }
+  }
+
+  function saveCart(items) {
+    localStorage.setItem(CART_KEY, JSON.stringify(items));
+    updateCounter();
+    renderDropdown();
+  }
+
+  function updateCounter() {
+    if (!counterEl) return;
+    const items = loadCart();
+    const count = items.reduce((sum, it) => sum + (it.qty || 1), 0);
+    counterEl.textContent = count;
+    if (count > 0) counterEl.classList.add('show-counter');
+    else counterEl.classList.remove('show-counter');
+  }
+
+  function addItem(product) {
+    const items = loadCart();
+    const idx = items.findIndex((it) => it.id === product.id);
+    if (idx > -1) {
+      items[idx].qty = (items[idx].qty || 1) + 1;
+    } else {
+      items.push({ ...product, qty: 1 });
+    }
+    saveCart(items);
+  }
+
+  function removeItem(id) {
+    let items = loadCart();
+    const idx = items.findIndex((it) => it.id === id);
+    if (idx > -1) {
+      const currentQty = items[idx].qty || 1;
+      if (currentQty > 1) {
+        items[idx].qty = currentQty - 1;
+      } else {
+        items.splice(idx, 1);
+      }
+      saveCart(items);
+    }
+  }
+
+  function clearCart() {
+    saveCart([]);
+  }
+
+  function currency(val) {
+    return `$${Number(val).toFixed(2)}`;
+  }
+
+  function ensureDropdown() {
+    if (!container) {
+      console.error('Cart container not found');
+      return null;
+    }
+    let dd = container.querySelector('.cart-dropdown');
+    if (!dd) {
+      dd = document.createElement('div');
+      dd.className = 'cart-dropdown absolute left-0 mt-3 w-80 max-h-96 overflow-auto bg-white text-[#03144f] rounded-xl shadow-2xl border border-gray-200 hidden z-50';
+      dd.innerHTML = '<div class="p-4 text-sm text-gray-500">السلة فارغة</div>';
+      container.appendChild(dd);
+    }
+    return dd;
+  }
+
+  function renderDropdown() {
+    const dd = ensureDropdown();
+    if (!dd) {
+      console.error('Could not find or create dropdown container');
+      return;
+    }
+    const items = loadCart();
+    if (!items.length) {
+      dd.innerHTML = '<div class="p-4 text-sm text-gray-500">السلة فارغة</div>';
+      return;
+    }
+
+    const total = items.reduce((s, it) => s + it.price * (it.qty || 1), 0);
+    dd.innerHTML = `
+      <div class="p-3 divide-y divide-gray-200 z-40">
+        <div class="space-y-2 max-h-60 overflow-auto z-40">
+          ${items
+            .map(
+              (it) => `
+              <div class="flex items-center gap-3">
+                <img src="${it.img}" alt="${it.name}" class="w-12 h-12 rounded object-cover border" />
+                <div class="flex-1">
+                  <div class="text-sm font-semibold">${it.name}</div>
+                  <div class="text-xs text-gray-500">${currency(it.price)} × ${it.qty || 1}</div>
+                </div>
+                <button class="text-red-600 text-xs remove-item" data-id="${it.id}">حذف</button>
+              </div>`
+            )
+            .join('')}
+        </div>
+        <div class="pt-3 flex items-center justify-between text-sm font-bold">
+          <span>الإجمالي</span>
+          <span>${currency(total)}</span>
+        </div>
+        <div class="pt-3 grid grid-cols-2 gap-2">
+          <a href="./products.html" class="px-3 py-2 rounded-lg text-center text-white" style="background:#03144f">اذهب للمنتجات</a>
+          <a href="#" class="px-3 py-2 rounded-lg text-center text-white" style="background:#c19a6b">تابع الدفع</a>
+        </div>
+        <div class="pt-2">
+          <button class="w-full text-xs text-gray-500 hover:text-red-600 clear-cart">تفريغ السلة</button>
+        </div>
+      </div>
+    `;
+
+    // Event delegation for remove buttons
+    dd.addEventListener('click', (e) => {
+      if (e.target.classList.contains('remove-item')) {
+        const id = e.target.dataset.id;
+        removeItem(id);
+      }
+    });
+
+    // Clear cart button event
+    const clearBtn = dd.querySelector('.clear-cart');
+    if (clearBtn) clearBtn.addEventListener('click', clearCart);
+  }
+
+  function toggleDropdown(open) {
+    const dd = ensureDropdown();
+    if (!dd) return;
+    if (open === undefined) dd.classList.toggle('hidden');
+    else dd.classList.toggle('hidden', !open);
+  }
+
+  function setupToggle() {
+    const icon = document.querySelector('.nav-cart-icon');
+    const dd = ensureDropdown();
+    if (!icon || !dd) return;
+    icon.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleDropdown();
+    });
+  }
+
+  // Expose minimal API on window for reuse in other handlers
+  window.__cart = { addItem, loadCart, updateCounter };
+  updateCounter();
+  renderDropdown();
+  setupToggle();
+})();
+
 // Add to cart animation
 function addToCartAnimation() {
     const addToCartButtons = document.querySelectorAll('.product-card .cart-btn');
     const cartIcon = document.querySelector('.nav-cart-icon');
     const cartCounter = document.querySelector('.cart-counter');
     
-
-
     if (!addToCartButtons.length || !cartIcon || !cartCounter) {
         return;
     }
 
-
-    let count = 0;
+    // Initialize counter from storage
+    if (window.__cart && window.__cart.updateCounter) window.__cart.updateCounter();
 
     addToCartButtons.forEach(button => {
       
       button.addEventListener('click', (e) => {
           console.log(button);
-            e.preventDefault();
+          e.preventDefault();
 
             const card = button.closest('.product-card');
             const productImageDiv = card.querySelector('.product-image');
@@ -335,141 +491,323 @@ function addToCartAnimation() {
 
             setTimeout(() => {
                 flyingImage.remove();
-                count++;
-                cartCounter.textContent = count;
-                cartCounter.classList.add('show-counter');
+                // Extract product data from card
+                const name = (card.querySelector('h4')?.textContent || '').trim();
+                const priceText = (card.querySelector('span')?.textContent || '0').replace(/[^0-9.]/g, '');
+                const price = Number(priceText || 0);
+                // Build an ID from name as products page is demo (no explicit IDs)
+                const id = name ? name.hashCode?.() || name.length + price : Date.now();
+                const product = { id, name, price, img: imageUrl };
+                if (window.__cart) window.__cart.addItem ? window.__cart.addItem(product) : null;
+                if (window.__cart && window.__cart.updateCounter) window.__cart.updateCounter();
 
-                // Add a little bounce effect to the cart icon
+                // Bounce effect
                 cartIcon.classList.add('bounce');
-                setTimeout(() => {
-                    cartIcon.classList.remove('bounce');
-                }, 300);
-
+                setTimeout(() => { cartIcon.classList.remove('bounce'); }, 300);
             }, 1000);
-        });
+      });
     });
 };
 addToCartAnimation();
 
-// Perfume Advisor quiz logic
+// Perfume Advisor logic
 (function () {
-  const app = document.getElementById('advisor-app');
-  if (!app) return; // Run only on advisor.html
+  // Ensure we are on the advisor page
+  const advisorSection = document.getElementById('perfume-advisor');
+  if (!advisorSection) return;
 
-  const quiz = document.getElementById('quiz');
-  const bg = document.getElementById('advisor-bg');
-  if (!quiz || !bg) return;
+  const steps = Array.from(advisorSection.querySelectorAll('.advisor-step'));
+  const resultsGrid = document.getElementById('advisor-results');
+  const restartBtn = document.getElementById('advisor-restart');
+  const mainEl = document.querySelector('main.advisor-main') || advisorSection;
+  const emptyEl = document.getElementById('advisor-empty');
 
-  const state = { feeling: null, scent: null, time: null };
+  const state = {
+    feeling: null,
+    scent: null,
+    time: null,
+  };
 
-  function showStep(n) {
-    const steps = quiz.querySelectorAll('.quiz-step');
-    steps.forEach(s => s.classList.add('hidden'));
-    const next = quiz.querySelector(`.quiz-step[data-step="${n}"]`);
-    if (next) next.classList.remove('hidden');
+  function goToStep(n) {
+    steps.forEach((s) => s.classList.remove('active'));
+    const target = steps.find((s) => s.dataset.step === String(n));
+    if (target) {
+      target.classList.add('active');
+      // smooth scroll to the active block (helpful on mobile)
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
 
-  function setActive(target, groupSelector) {
-    const group = target.closest('.quiz-step').querySelectorAll(groupSelector);
-    group.forEach(el => el.classList.remove('active'));
-    target.classList.add('active');
+  function setBgByScent(scent) {
+    if (!mainEl) return;
+    const classes = ['bg-floral', 'bg-fruity', 'bg-woody', 'bg-oriental'];
+    mainEl.classList.remove(...classes);
+    if (!scent) return;
+    switch (scent) {
+      case 'floral':
+        mainEl.classList.add('bg-floral');
+        break;
+      case 'fruity':
+        mainEl.classList.add('bg-fruity');
+        break;
+      case 'woody':
+        mainEl.classList.add('bg-woody');
+        break;
+      case 'oriental':
+        mainEl.classList.add('bg-oriental');
+        break;
+    }
   }
 
-  // step navigation
-  quiz.addEventListener('click', function (e) {
-    const t = e.target;
-    if (!(t instanceof HTMLElement)) return;
+  // Demo product pool (could be replaced with real data)
+  const products = [
+    // Oriental
+    { id: 1, name: 'عود الكمبودي', price: 350, scent: 'oriental', times: ['night', 'occasion'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756883898/oud-cambodi_cqbvgj.avif' },
+    { id: 2, name: 'عنبر سلطاني', price: 10800, scent: 'oriental', times: ['night'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885368/Sultani-Amber-wood-0301020560_h4kmyx.jpg' },
+    { id: 3, name: 'زعفران الشرق', price: 25524, scent: 'oriental', times: ['occasion'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885362/saffron_aybdwj.avif' },
+    { id: 4, name: 'عود بخور ماليزي', price: 10371, scent: 'oriental', times: ['occasion'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885362/oud-malaysian_xsfaj2.avif' },
+    { id: 5, name: 'فانيليا شرقية', price: 17498, scent: 'oriental', times: ['day', 'night'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885363/vanilla-oriental_xctji4.avif' },
+    { id: 6, name: 'عنبر كشميري', price: 11750, scent: 'oriental', times: ['night'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885364/amber-kashmiri_zvxhhs.avif' },
+    { id: 7, name: 'عود لاوسي', price: 625, scent: 'oriental', times: ['night', 'occasion'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885362/oud-laos_qh45qm.webp' },
+    { id: 8, name: 'بخور ملكي', price: 330, scent: 'oriental', times: ['occasion'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885367/bakhoor_s2tz3r.avif' },
+    { id: 9, name: 'عود كمبودي محسن', price: 390, scent: 'oriental', times: ['night'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885367/oud-cambodi-premium_hjxord.avif' },
+    { id: 10, name: 'زعفران مذهب', price: 265, scent: 'oriental', times: ['day'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885362/saffron_aybdwj.avif' },
+    { id: 11, name: 'عنبر دافئ', price: 240, scent: 'oriental', times: ['day'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885368/Sultani-Amber-wood-0301020560_h4kmyx.jpg' },
+    { id: 12, name: 'عود ملكي', price: 410, scent: 'oriental', times: ['occasion', 'night'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885362/oud-malaysian_xsfaj2.avif' },
 
-    // feelings
-    if (t.matches('[data-feeling]')) {
-      state.feeling = t.getAttribute('data-feeling');
-      setActive(t, '[data-feeling]');
+    // Floral
+    { id: 20, name: 'ورد طائفي', price: 10600, scent: 'floral', times: ['day', 'occasion'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885363/taif-rose_uic1wm.avif' },
+    { id: 21, name: 'لافندر مراكش', price: 5800, scent: 'floral', times: ['day'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756886240/lavender_eyjvkp.avif' },
+    { id: 22, name: 'ياسمين عربي', price: 1700, scent: 'floral', times: ['day'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885365/jasmine_ad9n0k.avif' },
+    { id: 23, name: 'مسك الطهارة', price: 210, scent: 'floral', times: ['day', 'occasion'], img: 'assets/img/P/musk-tahara.jpg' },
+    { id: 24, name: 'حديقة الزهور', price: 195, scent: 'floral', times: ['day', 'night'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885365/jasmine_ad9n0k.avif' },
+    { id: 25, name: 'رحيق الورود', price: 230, scent: 'floral', times: ['occasion'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885363/taif-rose_uic1wm.avif' },
+    { id: 26, name: 'بتلات ناعمة', price: 185, scent: 'floral', times: ['night'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756886240/lavender_eyjvkp.avif' },
+
+    // Woody
+    { id: 30, name: 'مسك أبيض', price: 200, scent: 'woody', times: ['day'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885364/white-musk_b1orxj.avif' },
+    { id: 31, name: 'المسك الأسود', price: 220, scent: 'woody', times: ['night'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885368/black-musk_yprcav.avif' },
+    { id: 32, name: 'صندل عربي', price: 250, scent: 'woody', times: ['day', 'night'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885362/sandal_to2kwj.avif' },
+    { id: 33, name: 'خشب الصندل الفاخر', price: 270, scent: 'woody', times: ['occasion'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885362/sandal_to2kwj.avif' },
+    { id: 34, name: 'أرز جبلي', price: 240, scent: 'woody', times: ['day'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885368/black-musk_yprcav.avif' },
+    { id: 35, name: 'مسك الغزال', price: 310, scent: 'woody', times: ['night'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756886183/musk-ghazal_fl9xfv.avif' },
+
+    // Fruity (add broad coverage)
+    { id: 40, name: 'رذاذ التفاح', price: 160, scent: 'fruity', times: ['day'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885363/vanilla-oriental_xctji4.avif' },
+    { id: 41, name: 'توت بري', price: 170, scent: 'fruity', times: ['night'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885369/pink-musk_yifwyn.avif' },
+    { id: 42, name: 'مشمش رقيق', price: 165, scent: 'fruity', times: ['day', 'occasion'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885363/vanilla-oriental_xctji4.avif' },
+    { id: 43, name: 'حمضيات متوسطية', price: 175, scent: 'fruity', times: ['day'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885369/pink-musk_yifwyn.avif' },
+    { id: 44, name: 'مانجو شرقي', price: 185, scent: 'fruity', times: ['occasion'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885363/vanilla-oriental_xctji4.avif' },
+    { id: 45, name: 'رمان ليلي', price: 190, scent: 'fruity', times: ['night'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885369/pink-musk_yifwyn.avif' },
+
+    // Cross coverage to reach ~90%
+    { id: 50, name: 'باقات مساء', price: 205, scent: 'floral', times: ['night'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885365/jasmine_ad9n0k.avif' },
+    { id: 51, name: 'دفء الصحراء', price: 295, scent: 'oriental', times: ['day'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885364/amber-kashmiri_zvxhhs.avif' },
+    { id: 52, name: 'نسيم الغابة', price: 235, scent: 'woody', times: ['occasion'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885362/sandal_to2kwj.avif' },
+    { id: 53, name: 'سحر الشرق', price: 315, scent: 'oriental', times: ['night', 'occasion'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885362/oud-laos_qh45qm.webp' },
+    { id: 54, name: 'ندى الصباح', price: 175, scent: 'floral', times: ['day'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756886240/lavender_eyjvkp.avif' },
+    { id: 55, name: 'ليلة فواكه', price: 195, scent: 'fruity', times: ['night', 'occasion'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885369/pink-musk_yifwyn.avif' }
+  ];
+  
+
+  function pickSuggestions() {
+    // Strict matching by scent AND time
+    let pool = products.filter(p => (!state.scent || p.scent === state.scent) && (!state.time || p.times.includes(state.time)));
+
+    // feeling heuristic: prioritize based on feeling (only sorting; no fallback)
+    const feelingBoost = {
+      fresh: ['fruity', 'floral'],
+      romantic: ['floral', 'oriental'],
+      warm: ['woody', 'oriental'],
+      adventurous: ['oriental', 'woody'],
+    }[state.feeling] || [];
+
+    pool.sort((a, b) => (feelingBoost.indexOf(b.scent) - feelingBoost.indexOf(a.scent)));
+    return pool.slice(0, 3);
+  }
+
+  function renderResults(items) {
+    if (!resultsGrid) return;
+    // Empty-state handling
+    if (emptyEl) emptyEl.classList.add('hidden');
+    resultsGrid.innerHTML = '';
+
+    if (!items || items.length === 0) {
+      if (emptyEl) emptyEl.classList.remove('hidden');
+      return;
     }
-
-    // scents + background theme
-    if (t.matches('[data-scent]')) {
-      state.scent = t.getAttribute('data-scent');
-      setActive(t, '[data-scent]');
-      const theme = t.getAttribute('data-bg');
-      // remove previous theme classes
-      bg.classList.remove('flowers', 'fruits', 'woods', 'oriental');
-      if (theme) bg.classList.add(theme);
-    }
-
-    // time
-    if (t.matches('[data-time]')) {
-      state.time = t.getAttribute('data-time');
-      setActive(t, '[data-time]');
-    }
-
-    // move next/prev
-    if (t.matches('[data-next]')) {
-      const next = t.getAttribute('data-next');
-      if (next) showStep(next);
-    }
-    if (t.matches('[data-prev]')) {
-      const prev = t.getAttribute('data-prev');
-      if (prev) showStep(prev);
-    }
-
-    // finish and render suggestions
-    if (t.hasAttribute('data-finish')) {
-      renderSuggestions();
-      showStep(4);
-      // slight scroll to suggestions
-      setTimeout(() => {
-        const cont = document.getElementById('suggestions');
-        if (cont) cont.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 50);
-    }
-  });
-
-  function renderSuggestions() {
-    const container = document.getElementById('suggestions');
-    if (!container) return;
-    container.innerHTML = '';
-
-    // Simple sample data mapped from scent/time; images reuse existing hero backgrounds to avoid missing assets
-    const themeImage = (state.scent === 'زهور') ? "assets/img/hero-bg-2.jpg"
-                      : (state.scent === 'فواكه') ? "assets/img/hero-bg-1.jpg"
-                      : (state.scent === 'أخشاب') ? "assets/img/hero-bg-2.jpg"
-                      : "assets/img/hero-bg-1.jpg";
-
-    const baseName = `${state.scent || 'عطر'} ${state.feeling || ''}`.trim();
-    const timeTag = state.time ? ` — ${state.time}` : '';
-
-    const items = [
-      { name: `${baseName} 01${timeTag}`, price: '$160', img: themeImage },
-      { name: `${baseName} 02${timeTag}`, price: '$180', img: themeImage },
-      { name: `${baseName} 03${timeTag}`, price: '$200', img: themeImage },
-    ];
 
     items.forEach((p, i) => {
       const card = document.createElement('div');
-      card.className = 'suggestion-card';
-      card.style.animationDelay = `${i * 120}ms`;
-
-      const thumb = document.createElement('div');
-      thumb.className = 'suggestion-thumb';
-      thumb.style.backgroundImage = `url('${p.img}')`;
-
-      const body = document.createElement('div');
-      body.className = 'suggestion-body';
-      body.innerHTML = `
-        <div class="flex items-center justify-between gap-3">
+      card.className = 'result-card rounded-xl overflow-hidden bg-white/10 border border-white/20 backdrop-blur translate-y-6 opacity-0 transition-all duration-500';
+      card.style.transitionDelay = `${i * 120}ms`;
+      card.innerHTML = `
+        <div class="relative h-56 w-full rounded-lg overflow-hidden bg-center bg-cover" style="background: url('${p.img}') no-repeat center/contain;">
+          <span class="absolute top-2 left-2 px-2 py-1 rounded-md text-xs bg-black/50 text-white">$${p.price.toFixed(2)}</span>
+        </div>
+        <div class="mt-3 flex items-center justify-between p-2">
           <div>
-            <h3 class="text-lg font-semibold text-[#03144f]">${p.name}</h3>
-            <p class="text-sm text-gray-500">مستوحى من ${state.scent || 'ذوقك'}</p>
+            <h3 class="text-base font-bold">${p.name}</h3>
+            <div class="text-xs opacity-80">${p.scent === 'floral' ? 'زهور' : p.scent === 'fruity' ? 'فواكه' : p.scent === 'woody' ? 'أخشاب' : 'شرقي'}</div>
           </div>
-          <span class="text-[#03144f] font-bold">${p.price}</span>
-        </div>`;
+          <button class="cta px-3 py-2 rounded-md text-xs advisor-add">أضفه للسلة</button>
+        </div>
+      `;
+      resultsGrid.appendChild(card);
+      requestAnimationFrame(() => {
+        card.classList.remove('translate-y-6', 'opacity-0');
+        card.classList.add('translate-y-0', 'opacity-100');
+      });
 
-      card.appendChild(thumb);
-      card.appendChild(body);
-      container.appendChild(card);
+      // Hook add-to-cart with animation from advisor results
+      const btn = card.querySelector('.advisor-add');
+      if (btn) {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const imgDiv = card.querySelector('.relative');
+          const style = window.getComputedStyle(imgDiv);
+          const bgImage = style.backgroundImage;
+          if (!bgImage || bgImage === 'none') return;
+          const imageUrl = bgImage.slice(5, -2);
+          const cartIcon = document.querySelector('.nav-cart-icon');
+          if (!cartIcon) return;
+          const imgRect = imgDiv.getBoundingClientRect();
+          const cartRect = cartIcon.getBoundingClientRect();
+
+          const flyingImage = document.createElement('img');
+          flyingImage.src = imageUrl;
+          flyingImage.style.position = 'fixed';
+          flyingImage.style.left = `${imgRect.left}px`;
+          flyingImage.style.top = `${imgRect.top}px`;
+          flyingImage.style.width = `${imgRect.width}px`;
+          flyingImage.style.height = `${imgRect.height}px`;
+          flyingImage.style.zIndex = '1000';
+          flyingImage.style.transition = 'all 1s ease-in-out';
+          flyingImage.style.borderRadius = '20px';
+          flyingImage.style.objectFit = 'cover';
+          document.body.appendChild(flyingImage);
+
+          requestAnimationFrame(() => {
+            flyingImage.style.left = `${cartRect.left + cartRect.width / 2}px`;
+            flyingImage.style.top = `${cartRect.top + cartRect.height / 2}px`;
+            flyingImage.style.width = '0px';
+            flyingImage.style.height = '0px';
+            flyingImage.style.transform = 'rotate(360deg)';
+          });
+
+          setTimeout(() => {
+            flyingImage.remove();
+            if (window.__cart) window.__cart.addItem?.({ id: p.id, name: p.name, price: p.price, img: p.img });
+            window.__cart?.updateCounter?.();
+            cartIcon.classList.add('bounce');
+            setTimeout(() => { cartIcon.classList.remove('bounce'); }, 300);
+          }, 1000);
+        });
+      }
     });
   }
 
-  // start at step 1
-  showStep(1);
+  function currentStepNumber() {
+    const active = advisorSection.querySelector('.advisor-step.active');
+    return active ? Number(active.dataset.step) : 1;
+  }
+
+  function canProceed(stepNum) {
+    switch (stepNum) {
+      case 1: return !!state.feeling;
+      case 2: return !!state.scent;
+      case 3: return !!state.time;
+      default: return true;
+    }
+  }
+
+  function showValidationHint() {
+    // Simple UX: alert; can be replaced by visual hint
+    alert('من فضلك اختر إجابة قبل المتابعة');
+  }
+
+  function clearSelections(selector) {
+    advisorSection.querySelectorAll(selector).forEach(btn => btn.classList.remove('selected'));
+  }
+
+  // Step 1: feeling
+  advisorSection.addEventListener('click', (e) => {
+    const target = e.target;
+    if (target.matches('.feeling-btn')) {
+      clearSelections('.feeling-btn');
+      target.classList.add('selected');
+      state.feeling = target.getAttribute('data-feeling');
+      // stay until user presses التالي or allow auto-advance? Keep as is: do not auto-advance
+    }
+  });
+
+  // Step 2: scent
+  advisorSection.addEventListener('click', (e) => {
+    const target = e.target;
+    if (target.matches('.scent-btn')) {
+      clearSelections('.scent-btn');
+      target.classList.add('selected');
+      state.scent = target.getAttribute('data-scent');
+      setBgByScent(state.scent);
+      // do not auto-advance; wait for التالي
+    }
+  });
+
+  // Step 3: time
+  advisorSection.addEventListener('click', (e) => {
+    const target = e.target;
+    if (target.matches('.time-btn')) {
+      clearSelections('.time-btn');
+      target.classList.add('selected');
+      state.time = target.getAttribute('data-time');
+      // wait for عرض النتائج or التالي
+    }
+  });
+
+  // Prev/Next controls
+  advisorSection.addEventListener('click', (e) => {
+    const target = e.target;
+    if (target.matches('.advisor-prev')) {
+      const step = currentStepNumber();
+      if (step > 1) goToStep(step - 1);
+    }
+    if (target.matches('.advisor-next')) {
+      const step = currentStepNumber();
+      if (!canProceed(step)) return showValidationHint();
+      if (step < 3) {
+        goToStep(step + 1);
+      } else if (step === 3) {
+        const picks = pickSuggestions();
+        renderResults(picks);
+        goToStep(4);
+      }
+    }
+  });
+
+  // Restart
+  if (restartBtn) {
+    restartBtn.addEventListener('click', () => {
+      state.feeling = state.scent = state.time = null;
+      clearSelections('.feeling-btn');
+      clearSelections('.scent-btn');
+      clearSelections('.time-btn');
+      resultsGrid.innerHTML = '';
+      setBgByScent(null);
+      if (emptyEl) emptyEl.classList.add('hidden');
+      goToStep(1);
+    });
+
+    // Add a Go to Products button next to restart (once)
+    if (!document.getElementById('go-products-btn')) {
+      const wrapper = restartBtn.parentElement;
+      if (wrapper) {
+        const link = document.createElement('a');
+        link.id = 'go-products-btn';
+        link.href = './products.html';
+        link.className = 'btn-tile';
+        link.textContent = 'اذهب للمنتجات';
+        wrapper.appendChild(link);
+      }
+    }
+  }
 })();

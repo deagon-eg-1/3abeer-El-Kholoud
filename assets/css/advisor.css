@@ -1,35 +1,74 @@
-﻿/* Advisor page specific styles */
-:root { --advisor-accent: #03144f; --advisor-gold: #c19a6b; }
-
-.advisor-hero { position: relative; min-height: calc(100vh - 90px); }
-.advisor-bg { position: absolute; inset: 0; background: url('../img/hero-bg-1.jpg') center/cover no-repeat; transition: background-image 400ms ease, filter 300ms ease; }
-.advisor-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0.85)); backdrop-filter: blur(2px); }
-.advisor-content { position: relative; z-index: 1; }
-
-.quiz-card { animation: popIn .5s ease both; }
-@keyframes popIn { from { opacity: 0; transform: translateY(10px) scale(.98);} to { opacity: 1; transform: translateY(0) scale(1);} }
-
-.quiz-btn, .next-btn, .prev-btn, .finish-btn, .quiz-pill {
-  padding: .6rem 1rem; border-radius: 9999px; border: 1px solid rgba(3,20,79,.1);
-  background: #fff; color: var(--advisor-accent); font-weight: 600; transition: all .25s ease; box-shadow: 0 6px 18px rgba(3,20,79,.06);
+﻿.main{
+    overflow-y: auto;
 }
-.quiz-pill.active, .quiz-btn:hover, .next-btn:hover, .prev-btn:hover, .finish-btn:hover, .quiz-pill:hover {
-  background: var(--advisor-accent); color: #f7f7fa; border-color: var(--advisor-accent);
+
+.advisor-step {
+    display: none; /* hide non-active entirely */
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
 }
-.next-btn, .finish-btn { background: var(--advisor-accent); color: #f7f7fa; }
-.prev-btn { background: #fff; }
 
-.quiz-step { opacity: 1; transition: opacity .25s ease, transform .25s ease; }
-.quiz-step.hidden { display: none; opacity: 0; transform: translateY(10px); }
+.advisor-step.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
 
-/* Suggestion cards */
-.suggestion-card { background: #fff; border-radius: 18px; overflow: hidden; box-shadow: 0 10px 30px rgba(3,20,79,.12); transform: translateY(20px); opacity: 0; animation: rise .6s ease forwards; }
-.suggestion-thumb { height: 180px; background-size: cover; background-position: center; }
-.suggestion-body { padding: 14px 16px; }
-@keyframes rise { to { transform: translateY(0); opacity: 1; } }
+.feeling-btn, .scent-btn, .time-btn {
+    transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
 
-/* Background themes */
-.advisor-bg.flowers { background-image: url('../img/hero-bg-2.jpg'); filter: hue-rotate(-10deg) saturate(1.2); }
-.advisor-bg.fruits  { background-image: url('../img/hero-bg-1.jpg'); filter: hue-rotate(10deg) saturate(1.1); }
-.advisor-bg.woods   { background-image: url('../img/hero-bg-2.jpg'); filter: sepia(.15) saturate(1.1) contrast(1.05); }
-.advisor-bg.oriental{ background-image: url('../img/hero-bg-1.jpg'); filter: sepia(.25) saturate(1.25); }
+.feeling-btn:hover, .scent-btn:hover, .time-btn:hover {
+    transform: translateY(-2px) scale(1.02);
+}
+
+.feeling-btn.selected, .scent-btn.selected, .time-btn.selected {
+    background: linear-gradient(180deg, rgba(193,154,107,0.35), rgba(193,154,107,0.20));
+    border-color: rgba(193,154,107,0.55);
+    box-shadow: 0 8px 26px rgba(193,154,107,0.25);
+    color: #fff;
+}
+
+/* Tiles */
+.btn-tile {
+    background: linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.08));
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: #fff;
+    padding: 12px 16px;
+    border-radius: 14px;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+    backdrop-filter: blur(10px);
+    font-weight: 800;
+    letter-spacing: 0.2px;
+}
+
+.btn-tile:hover {
+    background: linear-gradient(180deg, rgba(255,255,255,0.20), rgba(255,255,255,0.12));
+    border-color: rgba(255, 255, 255, 0.28);
+}
+
+/* Results card subtle glow */
+.result-card {
+    box-shadow: 0 12px 34px rgba(0,0,0,0.22);
+    border: 1px solid rgba(255,255,255,0.22);
+}
+
+/* Advisor main overlay to keep readability on gradient backgrounds */
+.advisor-main {
+    background-blend-mode: overlay;
+}
+
+/* Advisor glass container */
+.advisor-card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.06));
+    border: 1px solid rgba(255,255,255,0.18);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+    border-radius: 18px;
+    padding: 24px;
+    backdrop-filter: blur(30px);
+}
+
+@media (min-width: 768px){
+  .advisor-card { padding: 32px; }
+}

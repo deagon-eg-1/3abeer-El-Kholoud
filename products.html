@@ -44,7 +44,7 @@
 
     <div class="layout flex h-screen overflow-hidden w-full flex-row-reverse">
         <!-- Sidebar -->
-        <aside class="sidebar h-screen p-6 flex flex-col justify-between items-center" aria-label="الشريط الجانبي">
+        <aside class="sidebar h-screen px-2 py-6 flex flex-col justify-between items-center" aria-label="الشريط الجانبي">
             <div class="brand">
                 <img src="assets/img/logo-dark.png" alt="logo" class="w-full mb-4" loading="lazy">
             </div>
@@ -303,96 +303,7 @@
                     </div>
                 </div>
 
-                <!-- تصنيف مزيل عرق - سلايدر من اليمين إلى اليسار -->
-                <div class="category-section mb-16">
-                    <h3 class="text-2xl font-bold mb-6 text-center text-[#03144f]">مزيل عرق</h3>
-                    <div class="products-slider-container overflow-hidden">
-                        <div class="products-slider flex gap-6 transition-transform duration-500 ease-in-out"
-                            id="deodorant-slider">
-                            <!-- منتج 1 -->
-                            <div
-                                class="product-card shadow-xl rounded-lg overflow-hidden relative flex flex-col items-center min-w-[280px]">
-                                <div class="product-image img w-full bg-gray-200 flex justify-center">
-
-                                </div>
-                                <div class="py-2 px-10 mt-2 flex justify-between items-center w-full">
-                                    <div>
-                                        <h4 class="text-xl font-semibold">مزيل عرق طبيعي</h4>
-                                        <span class="text-lg">$45.00</span>
-                                    </div>
-                                    <i
-                                        class="cart-btn fa-solid fa-cart-shopping bg-[#03144f] w-[40px] h-[30px] flex items-center justify-center rounded-lg text-[#f7f7fa] cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
-                                </div>
-                                <i
-                                    class="fa-solid fa-heart bg-[#03144f] w-[30px] h-[30px] flex items-center justify-center rounded-full text-[#f7f7fa] absolute left-3 bottom-24 cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
-                            </div>
-
-                            <!-- منتج 2 -->
-                            <div
-                                class="product-card shadow-xl rounded-lg overflow-hidden relative flex flex-col items-center min-w-[280px]">
-                                <div class="product-image img w-full bg-gray-200 flex justify-center">
-
-                                </div>
-                                <div class="py-2 px-10 mt-2 flex justify-between items-center w-full">
-                                    <div>
-                                        <h4 class="text-xl font-semibold">مزيل عرق طويل</h4>
-                                        <span class="text-lg">$55.00</span>
-                                    </div>
-                                    <i
-                                        class="cart-btn fa-solid fa-cart-shopping bg-[#03144f] w-[40px] h-[30px] flex items-center justify-center rounded-lg text-[#f7f7fa] cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
-                                </div>
-                                <i
-                                    class="fa-solid fa-heart bg-[#03144f] w-[30px] h-[30px] flex items-center justify-center rounded-full text-[#f7f7fa] absolute left-3 bottom-24 cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
-                            </div>
-
-                            <!-- منتج 3 -->
-                            <div
-                                class="product-card shadow-xl rounded-lg overflow-hidden relative flex flex-col items-center min-w-[280px]">
-                                <div class="product-image img w-full bg-gray-200 flex justify-center">
-
-                                </div>
-                                <div class="py-2 px-10 mt-2 flex justify-between items-center w-full">
-                                    <div>
-                                        <h4 class="text-xl font-semibold">مزيل عرق رياضي</h4>
-                                        <span class="text-lg">$65.00</span>
-                                    </div>
-                                    <i
-                                        class="cart-btn fa-solid fa-cart-shopping bg-[#03144f] w-[40px] h-[30px] flex items-center justify-center rounded-lg text-[#f7f7fa] cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
-                                </div>
-                                <i
-                                    class="fa-solid fa-heart bg-[#03144f] w-[30px] h-[30px] flex items-center justify-center rounded-full text-[#f7f7fa] absolute left-3 bottom-24 cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
-                            </div>
-
-                            <!-- منتج 4 -->
-                            <div
-                                class="product-card shadow-xl rounded-lg overflow-hidden relative flex flex-col items-center min-w-[280px]">
-                                <div class="product-image img w-full bg-gray-200 flex justify-center">
-
-                                </div>
-                                <div class="py-2 px-10 mt-2 flex justify-between items-center w-full">
-                                    <div>
-                                        <h4 class="text-xl font-semibold">مزيل عرق عطري</h4>
-                                        <span class="text-lg">$75.00</span>
-                                    </div>
-                                    <i
-                                        class="cart-btn fa-solid fa-cart-shopping bg-[#03144f] w-[40px] h-[30px] flex items-center justify-center rounded-lg text-[#f7f7fa] cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
-                                </div>
-                                <i
-                                    class="fa-solid fa-heart bg-[#03144f] w-[30px] h-[30px] flex items-center justify-center rounded-full text-[#f7f7fa] absolute left-3 bottom-24 cursor-pointer hover:bg-[#1a2b6b] transition-colors"></i>
-                            </div>
-                        </div>
-                        <div class="slider-progress-container mt-6">
-                            <div class="progress-bar bg-gray-200 rounded-full h-2 w-full max-w-md mx-auto">
-                                <div class="progress-fill bg-[#03144f] h-2 rounded-full transition-all duration-300 ease-in-out"
-                                    data-slider="deodorant-slider"></div>
-                            </div>
-                            <div class="progress-text text-center mt-2 text-sm text-gray-600">
-                                <span class="current-slide" data-slider="deodorant-slider">1</span> من <span
-                                    class="total-slides" data-slider="deodorant-slider">4</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
             </section>
 
 
