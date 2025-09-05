@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إتمام الدفع - عبير الخلود</title>
+
+    <!-- الخطوط -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Zain:ital,wght@0,200;0,300;0,400;0,700;0,800;0,900;1,300;1,400&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa+Ink:wght@400;700&family=Zain:ital,wght@0,200;0,300;0,400;0,700;0,800;0,900;1,300;1,400&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+        integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- tailwind css -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- main css -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        body {
+            font-family: 'Zain', sans-serif;
+            background: linear-gradient(116deg, rgba(3, 20, 79, 1) 53%, rgba(16, 40, 138, 1) 100%);
+            color: #f7f7fa;
+        }
+
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+</head>
+
+<body class="font-['Zain', sans-serif]">
+
+    <div class="layout flex h-screen overflow-hidden w-full flex-row-reverse">
+        <!-- Sidebar -->
+        <aside class="sidebar h-screen  px-3 py-7  flex flex-col justify-between items-center"
+            aria-label="الشريط الجانبي">
+            <div class="brand">
+                <img src="assets/img/logo.png" alt="logo" class="w-full mb-4" loading="lazy">
+            </div>
+            <div class="tagline">
+                <h3>
+                    فن العطور النادرة
+                </h3>
+            </div>
+            <div class="social flex flex-col gap-y-5" aria-label="روابط التواصل الاجتماعي">
+                <a href="#" title="Instagram" aria-label="Instagram">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="#" title="Twitter" aria-label="Twitter">
+                    <i class="fa-brands fa-twitter"></i>
+                </a>
+                <a href="#" title="Facebook" aria-label="Facebook">
+                    <i class="fa-brands fa-facebook-f"></i>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main content -->
+        <main class="main w-full overflow-y-auto">
+            <nav class="navbar w-full p-5 flex flex-1 justify-end md:justify-between items-center"
+                aria-label="التنقل الرئيسي">
+                <div class="nav-links hidden md:flex gap-x-8 text-lg">
+                    <a href="./index.html" class="action">الرئيسيه</a>
+                    <a href="./advisor.html">خبير العطر</a>
+                    <a href="./products.html">استكشف</a>
+                    <a href="./checkout.html">خطوتك الأخيرة</a>
+                </div>
+            </nav>
+
+            <section id="checkout-container"
+                class="container mx-auto rounded-xl shadow-2xl overflow-hidden max-w-6xl flex flex-col md:flex-row">
+
+                <!-- Order Summary (Left) -->
+                <div class="order-summary w-full md:w-1/2 p-8 text-[#03144f] flex flex-col items-center justify-center">
+                    <h2 class="text-2xl font-bold mb-4 text-center">ملخص الطلب</h2>
+
+                    <!-- Large Image for First Product -->
+                    <div id="large-product-image" class="w-64 h-64 object-cover rounded-lg shadow-md mb-4">
+                        <!-- Image will be loaded here -->
+                    </div>
+
+                    <!-- Miniature Images for Remaining Products -->
+                    <div id="miniature-product-images" class="flex flex-row flex-wrap justify-center">
+                        <!-- Images will be loaded here -->
+                    </div>
+
+                    <p class="text-lg">السعر الإجمالي: <span class="total font-semibold">$199.99</span></p>
+                </div>
+
+                <!-- Checkout Form (Right) -->
+                <div class="checkout w-full md:w-1/2 p-8">
+                    <h2 class="text-2xl font-bold mb-4 text-center text-[#03144f]">بيانات الدفع</h2>
+                    <form id="checkout-form">
+                        <div class="mb-4">
+                            <label for="name" class="block text-gray-700 text-sm font-bold mb-2">الاسم:</label>
+                            <input type="text" id="name"
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="address" class="block text-gray-700 text-sm font-bold mb-2">العنوان:</label>
+                            <input type="text" id="address"
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="phone" class="block text-gray-700 text-sm font-bold mb-2">رقم الهاتف:</label>
+                            <div class="relative">
+                                <input type="number" id="phone"
+                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline pr-10"
+                                    required>
+                                <div id="phone-status" class="absolute top-0 right-0 h-full flex items-center pr-3">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="email" class="block text-gray-700 text-sm font-bold mb-2">البريد
+                                الإلكتروني:</label>
+                            <div class="relative">
+                                <input type="email" id="email"
+                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline pr-10"
+                                    required>
+                                <div id="email-status" class="absolute top-0 right-0 h-full flex items-center pr-3">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-6">
+                            <label for="card" class="block text-gray-700 text-sm font-bold mb-2">رقم البطاقة:</label>
+                            <input type="text" id="card"
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                placeholder="#### #### #### ####" required>
+                            <div id="card-type" class="mt-2 text-sm text-gray-500"></div>
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <button
+                                class="bg-[#03144f] hover:bg-[#1a2b6b] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                type="submit">
+                                إتمام الدفع
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+
+        </main>
+
+        <!-- Floating toggle to open off-canvas menu -->
+        <button class="menu-toggle md:hidden" aria-label="فتح القائمة" aria-controls="mobile-menu"
+            aria-expanded="false">
+            <i></i>
+        </button>
+
+        <!-- Off-canvas menu from right to left -->
+        <aside id="mobile-menu" class="offcanvas" aria-hidden="true" aria-label="القائمة الجانبية" role="dialog"
+            aria-modal="true">
+            <button class="offcanvas-close" aria-label="إغلاق القائمة">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <nav class="offcanvas-nav">
+                <a href="#advisor" class="action">الرئيسيه</a>
+                <a href="./advisor.html">خبير العطر</a>
+                <a href="./products.html">استكشف</a>
+                <a href="./checkout.html">خطوتك الأخيرة</a>
+            </nav>
+        </aside>
+        <div class="offcanvas-backdrop" hidden aria-hidden="true"></div>
+
+    </div>
+
+    <!-- Thank You Message (Hidden Initially) -->
+    <div id="thank-you-message"
+        class="hidden w-[200px] md:w-fit container mx-auto p-8 bg-white rounded-xl shadow-2xl max-w-lg text-center fixed top-1/2 left-[60%] md:left-1/2 -translate-x-1/2 -translate-y-1/2">
+        <h2 class="text-3xl font-bold mb-4 text-[#03144f]">شكراً لك!</h2>
+        <p class="text-gray-700 text-lg">تم استلام طلبك بنجاح. سيتم معالجته وشحنه قريباً.</p>
+    </div>
+
+    <script>
+        
+    </script>
+    <script src="./assets/js/main.js"></script>
+</body>
+
+</html>

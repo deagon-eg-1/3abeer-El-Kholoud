@@ -28,7 +28,6 @@ document.addEventListener("DOMContentLoaded", function () {
       root.classList.add("is-loaded");
     });
   } catch (e) {}
-
 });
 
 // offcanvas menu
@@ -110,13 +109,13 @@ document.addEventListener("DOMContentLoaded", function () {
       products.length > 0 ? products[0].offsetWidth + gapValue : 0;
 
     function getMaxScroll() {
-        const container =
-            slider.closest(".products-slider-container") || slider.parentElement;
-        const visibleWidth = container.clientWidth;
-        const scrollWidth = slider.scrollWidth;
-        // Add the gap to the maxScroll calculation for better accuracy
-        const maxScroll = scrollWidth - visibleWidth + gapValue;
-        return Math.max(0, maxScroll);
+      const container =
+        slider.closest(".products-slider-container") || slider.parentElement;
+      const visibleWidth = container.clientWidth;
+      const scrollWidth = slider.scrollWidth;
+      // Add the gap to the maxScroll calculation for better accuracy
+      const maxScroll = scrollWidth - visibleWidth + gapValue;
+      return Math.max(0, maxScroll);
     }
 
     let currentX = 0;
@@ -130,7 +129,8 @@ document.addEventListener("DOMContentLoaded", function () {
       slider.style.transform = `translateX(${currentX}px)`;
 
       const max = getMaxScroll();
-      const progressPercentage = max === 0 ? 0 : (Math.abs(currentX) / max) * 100;
+      const progressPercentage =
+        max === 0 ? 0 : (Math.abs(currentX) / max) * 100;
       progressFill.style.width = `${progressPercentage}%`;
 
       if (currentSlideText && cardWidth > 0) {
@@ -182,21 +182,29 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     let touchStartX = 0;
-    
-    slider.addEventListener("touchstart", (e) => {
+
+    slider.addEventListener(
+      "touchstart",
+      (e) => {
         startX = e.touches[0].pageX - slider.offsetLeft;
         scrollLeftStart = -currentX;
-    }, { passive: true });
+      },
+      { passive: true }
+    );
 
-    slider.addEventListener("touchmove", (e) => {
+    slider.addEventListener(
+      "touchmove",
+      (e) => {
         const x = e.touches[0].pageX - slider.offsetLeft;
         const walk = (x - startX) * 1.5;
         currentX = -(scrollLeftStart - walk);
         updateSliderPosition();
-    }, { passive: true });
+      },
+      { passive: true }
+    );
 
     slider.addEventListener("touchend", () => {
-        updateSliderPosition();
+      updateSliderPosition();
     });
 
     window.addEventListener("load", updateSliderPosition);
@@ -218,67 +226,72 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Filter and Search functionality
 (function () {
-    const searchInput = document.getElementById('search-input');
-    const categoryFilter = document.getElementById('category-filter');
-    const productCards = document.querySelectorAll('.product-card');
-    const categorySections = document.querySelectorAll('.category-section');
+  const searchInput = document.getElementById("search-input");
+  const categoryFilter = document.getElementById("category-filter");
+  const productCards = document.querySelectorAll(".product-card");
+  const categorySections = document.querySelectorAll(".category-section");
 
-    function filterAndSearch() {
-        const searchTerm = searchInput.value.toLowerCase();
-        const selectedCategory = categoryFilter.value;
+  function filterAndSearch() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const selectedCategory = categoryFilter.value;
 
-        // First, handle category visibility
-        categorySections.forEach(section => {
-            const slider = section.querySelector('.products-slider');
-            if (!slider) return;
-            const categoryId = slider.id.replace('-slider', '');
-            if (selectedCategory === 'all' || selectedCategory === categoryId) {
-                section.style.display = '';
-            } else {
-                section.style.display = 'none';
-            }
-        });
+    // First, handle category visibility
+    categorySections.forEach((section) => {
+      const slider = section.querySelector(".products-slider");
+      if (!slider) return;
+      const categoryId = slider.id.replace("-slider", "");
+      if (selectedCategory === "all" || selectedCategory === categoryId) {
+        section.style.display = "";
+      } else {
+        section.style.display = "none";
+      }
+    });
 
-        // Then, filter products within visible categories
-        productCards.forEach(card => {
-            const productName = card.querySelector('h4').textContent.toLowerCase();
-            const productCategorySlider = card.closest('.products-slider');
-            if (!productCategorySlider) return;
+    // Then, filter products within visible categories
+    productCards.forEach((card) => {
+      const productName = card.querySelector("h4").textContent.toLowerCase();
+      const productCategorySlider = card.closest(".products-slider");
+      if (!productCategorySlider) return;
 
-            const productCategoryId = productCategorySlider.id.replace('-slider', '');
+      const productCategoryId = productCategorySlider.id.replace("-slider", "");
 
-            const matchesCategory = selectedCategory === 'all' || selectedCategory === productCategoryId;
-            const matchesSearch = productName.includes(searchTerm);
+      const matchesCategory =
+        selectedCategory === "all" || selectedCategory === productCategoryId;
+      const matchesSearch = productName.includes(searchTerm);
 
-            // The card should be visible only if its category is selected (or 'all') AND it matches the search term
-            if ((selectedCategory === 'all' || selectedCategory === productCategoryId) && matchesSearch) {
-                card.style.display = 'flex'; // Use flex as it's a flex container
-            } else {
-                card.style.display = 'none';
-            }
-        });
+      // The card should be visible only if its category is selected (or 'all') AND it matches the search term
+      if (
+        (selectedCategory === "all" ||
+          selectedCategory === productCategoryId) &&
+        matchesSearch
+      ) {
+        card.style.display = "flex"; // Use flex as it's a flex container
+      } else {
+        card.style.display = "none";
+      }
+    });
 
-        // After filtering, we need to recalculate the slider positions
-        window.dispatchEvent(new Event('resize'));
-    }
+    // After filtering, we need to recalculate the slider positions
+    window.dispatchEvent(new Event("resize"));
+  }
 
-    if (searchInput) {
-        searchInput.addEventListener('input', filterAndSearch);
-    }
-    if (categoryFilter) {
-        categoryFilter.addEventListener('change', filterAndSearch);
-    }
+  if (searchInput) {
+    searchInput.addEventListener("input", filterAndSearch);
+  }
+  if (categoryFilter) {
+    categoryFilter.addEventListener("change", filterAndSearch);
+  }
 })();
 
 // Cart module (storage + UI)
 (function () {
-  const CART_KEY = 'cartItems';
-  const container = document.querySelector('.cart-icon-container');
-  const counterEl = document.querySelector('.cart-counter');
+  const CART_KEY = "cartItems";
+  const container = document.querySelector(".cart-icon-container");
+  const counterEl = document.querySelector(".cart-counter");
 
   function loadCart() {
     try {
-      return JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+      return JSON.parse(localStorage.getItem(CART_KEY) || "[]");
     } catch {
       return [];
     }
@@ -295,8 +308,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const items = loadCart();
     const count = items.reduce((sum, it) => sum + (it.qty || 1), 0);
     counterEl.textContent = count;
-    if (count > 0) counterEl.classList.add('show-counter');
-    else counterEl.classList.remove('show-counter');
+    if (count > 0) counterEl.classList.add("show-counter");
+    else counterEl.classList.remove("show-counter");
   }
 
   function addItem(product) {
@@ -311,8 +324,10 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function removeItem(id) {
+    let idToNum = Number(id);
     let items = loadCart();
-    const idx = items.findIndex((it) => it.id === id);
+    const idx = items.findIndex((it) => it.id === idToNum);
+
     if (idx > -1) {
       const currentQty = items[idx].qty || 1;
       if (currentQty > 1) {
@@ -334,13 +349,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function ensureDropdown() {
     if (!container) {
-      console.error('Cart container not found');
+      console.error("Cart container not found");
       return null;
     }
-    let dd = container.querySelector('.cart-dropdown');
+    let dd = container.querySelector(".cart-dropdown");
     if (!dd) {
-      dd = document.createElement('div');
-      dd.className = 'cart-dropdown absolute left-0 mt-3 w-80 max-h-96 overflow-auto bg-white text-[#03144f] rounded-xl shadow-2xl border border-gray-200 hidden z-50';
+      dd = document.createElement("div");
+      dd.className =
+        "cart-dropdown absolute left-0 mt-3 w-80 max-h-96 overflow-auto bg-white text-[#03144f] rounded-xl shadow-2xl border border-gray-200 hidden z-50";
       dd.innerHTML = '<div class="p-4 text-sm text-gray-500">السلة فارغة</div>';
       container.appendChild(dd);
     }
@@ -350,7 +366,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function renderDropdown() {
     const dd = ensureDropdown();
     if (!dd) {
-      console.error('Could not find or create dropdown container');
+      console.error("Could not find or create dropdown container");
       return;
     }
     const items = loadCart();
@@ -367,15 +383,21 @@ document.addEventListener("DOMContentLoaded", function () {
             .map(
               (it) => `
               <div class="flex items-center gap-3">
-                <img src="${it.img}" alt="${it.name}" class="w-12 h-12 rounded object-cover border" />
+                <img src="${it.img}" alt="${
+                it.name
+              }" class="w-12 h-12 rounded object-cover border" />
                 <div class="flex-1">
                   <div class="text-sm font-semibold">${it.name}</div>
-                  <div class="text-xs text-gray-500">${currency(it.price)} × ${it.qty || 1}</div>
+                  <div class="text-xs text-gray-500">${currency(it.price)} × ${
+                it.qty || 1
+              }</div>
                 </div>
-                <button class="text-red-600 text-xs remove-item" data-id="${it.id}">حذف</button>
+                <button class="text-red-600 text-xs remove-item" data-id="${
+                  it.id
+                }">حذف</button>
               </div>`
             )
-            .join('')}
+            .join("")}
         </div>
         <div class="pt-3 flex items-center justify-between text-sm font-bold">
           <span>الإجمالي</span>
@@ -392,30 +414,30 @@ document.addEventListener("DOMContentLoaded", function () {
     `;
 
     // Event delegation for remove buttons
-    dd.addEventListener('click', (e) => {
-      if (e.target.classList.contains('remove-item')) {
+    dd.addEventListener("click", (e) => {
+      if (e.target.classList.contains("remove-item")) {
         const id = e.target.dataset.id;
         removeItem(id);
       }
     });
 
     // Clear cart button event
-    const clearBtn = dd.querySelector('.clear-cart');
-    if (clearBtn) clearBtn.addEventListener('click', clearCart);
+    const clearBtn = dd.querySelector(".clear-cart");
+    if (clearBtn) clearBtn.addEventListener("click", clearCart);
   }
 
   function toggleDropdown(open) {
     const dd = ensureDropdown();
     if (!dd) return;
-    if (open === undefined) dd.classList.toggle('hidden');
-    else dd.classList.toggle('hidden', !open);
+    if (open === undefined) dd.classList.toggle("hidden");
+    else dd.classList.toggle("hidden", !open);
   }
 
   function setupToggle() {
-    const icon = document.querySelector('.nav-cart-icon');
+    const icon = document.querySelector(".nav-cart-icon");
     const dd = ensureDropdown();
     if (!icon || !dd) return;
-    icon.addEventListener('click', (e) => {
+    icon.addEventListener("click", (e) => {
       e.stopPropagation();
       toggleDropdown();
     });
@@ -430,97 +452,106 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Add to cart animation
 function addToCartAnimation() {
-    const addToCartButtons = document.querySelectorAll('.product-card .cart-btn');
-    const cartIcon = document.querySelector('.nav-cart-icon');
-    const cartCounter = document.querySelector('.cart-counter');
-    
-    if (!addToCartButtons.length || !cartIcon || !cartCounter) {
-        return;
-    }
+  const addToCartButtons = document.querySelectorAll(".product-card .cart-btn");
+  const cartIcon = document.querySelector(".nav-cart-icon");
+  const cartCounter = document.querySelector(".cart-counter");
 
-    // Initialize counter from storage
-    if (window.__cart && window.__cart.updateCounter) window.__cart.updateCounter();
+  if (!addToCartButtons.length || !cartIcon || !cartCounter) {
+    return;
+  }
 
-    addToCartButtons.forEach(button => {
-      
-      button.addEventListener('click', (e) => {
-          console.log(button);
-          e.preventDefault();
+  // Initialize counter from storage
+  if (window.__cart && window.__cart.updateCounter)
+    window.__cart.updateCounter();
 
-            const card = button.closest('.product-card');
-            const productImageDiv = card.querySelector('.product-image');
+  addToCartButtons.forEach((button) => {
+    button.addEventListener("click", (e) => {
+      console.log(button);
+      e.preventDefault();
 
-            if (!productImageDiv) return;
+      const card = button.closest(".product-card");
+      const productImageDiv = card.querySelector(".product-image");
 
-            // Get background image URL from computed style
-            const style = window.getComputedStyle(productImageDiv);
-            const bgImage = style.backgroundImage;
+      if (!productImageDiv) return;
 
-            // Exit if no background image
-            if (!bgImage || bgImage === 'none') return;
+      // Get background image URL from computed style
+      const style = window.getComputedStyle(productImageDiv);
+      const bgImage = style.backgroundImage;
 
-            // Extract URL from 'url("...")'
-            const imageUrl = bgImage.slice(5, -2);
+      // Exit if no background image
+      if (!bgImage || bgImage === "none") return;
 
-            const productImageRect = productImageDiv.getBoundingClientRect();
-            const cartIconRect = cartIcon.getBoundingClientRect();
+      // Extract URL from 'url("...")'
+      const imageUrl = bgImage.slice(5, -2);
 
-            // Create a new img element for the animation
-            const flyingImage = document.createElement('img');
-            flyingImage.src = imageUrl;
-            flyingImage.style.position = 'fixed';
-            flyingImage.style.left = `${productImageRect.left}px`;
-            flyingImage.style.top = `${productImageRect.top}px`;
-            flyingImage.style.width = `${productImageRect.width}px`;
-            flyingImage.style.height = `${productImageRect.height}px`;
-            flyingImage.style.zIndex = '1000';
-            flyingImage.style.transition = 'all 1s ease-in-out';
-            flyingImage.style.borderRadius = '20px';
-            flyingImage.style.objectFit = 'cover';
+      const productImageRect = productImageDiv.getBoundingClientRect();
+      const cartIconRect = cartIcon.getBoundingClientRect();
 
+      // Create a new img element for the animation
+      const flyingImage = document.createElement("img");
+      flyingImage.src = imageUrl;
+      flyingImage.style.position = "fixed";
+      flyingImage.style.left = `${productImageRect.left}px`;
+      flyingImage.style.top = `${productImageRect.top}px`;
+      flyingImage.style.width = `${productImageRect.width}px`;
+      flyingImage.style.height = `${productImageRect.height}px`;
+      flyingImage.style.zIndex = "1000";
+      flyingImage.style.transition = "all 1s ease-in-out";
+      flyingImage.style.borderRadius = "20px";
+      flyingImage.style.objectFit = "cover";
 
-            document.body.appendChild(flyingImage);
+      document.body.appendChild(flyingImage);
 
-            requestAnimationFrame(() => {
-                flyingImage.style.left = `${cartIconRect.left + cartIconRect.width / 2}px`;
-                flyingImage.style.top = `${cartIconRect.top + cartIconRect.height / 2}px`;
-                flyingImage.style.width = '0px';
-                flyingImage.style.height = '0px';
-                flyingImage.style.transform = 'rotate(360deg)';
-            });
-
-            setTimeout(() => {
-                flyingImage.remove();
-                // Extract product data from card
-                const name = (card.querySelector('h4')?.textContent || '').trim();
-                const priceText = (card.querySelector('span')?.textContent || '0').replace(/[^0-9.]/g, '');
-                const price = Number(priceText || 0);
-                // Build an ID from name as products page is demo (no explicit IDs)
-                const id = name ? name.hashCode?.() || name.length + price : Date.now();
-                const product = { id, name, price, img: imageUrl };
-                if (window.__cart) window.__cart.addItem ? window.__cart.addItem(product) : null;
-                if (window.__cart && window.__cart.updateCounter) window.__cart.updateCounter();
-
-                // Bounce effect
-                cartIcon.classList.add('bounce');
-                setTimeout(() => { cartIcon.classList.remove('bounce'); }, 300);
-            }, 1000);
+      requestAnimationFrame(() => {
+        flyingImage.style.left = `${
+          cartIconRect.left + cartIconRect.width / 2
+        }px`;
+        flyingImage.style.top = `${
+          cartIconRect.top + cartIconRect.height / 2
+        }px`;
+        flyingImage.style.width = "0px";
+        flyingImage.style.height = "0px";
+        flyingImage.style.transform = "rotate(360deg)";
       });
+
+      setTimeout(() => {
+        flyingImage.remove();
+        // Extract product data from card
+        const name = (card.querySelector("h4")?.textContent || "").trim();
+        const priceText = (
+          card.querySelector("span")?.textContent || "0"
+        ).replace(/[^0-9.]/g, "");
+        const price = Number(priceText || 0);
+        // Build an ID from name as products page is demo (no explicit IDs)
+        const id = name ? name.hashCode?.() || name.length + price : Date.now();
+        const product = { id, name, price, img: imageUrl };
+        if (window.__cart)
+          window.__cart.addItem ? window.__cart.addItem(product) : null;
+        if (window.__cart && window.__cart.updateCounter)
+          window.__cart.updateCounter();
+
+        // Bounce effect
+        cartIcon.classList.add("bounce");
+        setTimeout(() => {
+          cartIcon.classList.remove("bounce");
+        }, 300);
+      }, 1000);
     });
-};
+  });
+}
 addToCartAnimation();
 
 // Perfume Advisor logic
 (function () {
   // Ensure we are on the advisor page
-  const advisorSection = document.getElementById('perfume-advisor');
+  const advisorSection = document.getElementById("perfume-advisor");
   if (!advisorSection) return;
 
-  const steps = Array.from(advisorSection.querySelectorAll('.advisor-step'));
-  const resultsGrid = document.getElementById('advisor-results');
-  const restartBtn = document.getElementById('advisor-restart');
-  const mainEl = document.querySelector('main.advisor-main') || advisorSection;
-  const emptyEl = document.getElementById('advisor-empty');
+  const steps = Array.from(advisorSection.querySelectorAll(".advisor-step"));
+  const resultsGrid = document.getElementById("advisor-results");
+  const restartBtn = document.getElementById("advisor-restart");
+  const mainEl = document.querySelector("main.advisor-main") || advisorSection;
+  const emptyEl = document.getElementById("advisor-empty");
 
   const state = {
     feeling: null,
@@ -529,32 +560,32 @@ addToCartAnimation();
   };
 
   function goToStep(n) {
-    steps.forEach((s) => s.classList.remove('active'));
+    steps.forEach((s) => s.classList.remove("active"));
     const target = steps.find((s) => s.dataset.step === String(n));
     if (target) {
-      target.classList.add('active');
+      target.classList.add("active");
       // smooth scroll to the active block (helpful on mobile)
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }
 
   function setBgByScent(scent) {
     if (!mainEl) return;
-    const classes = ['bg-floral', 'bg-fruity', 'bg-woody', 'bg-oriental'];
+    const classes = ["bg-floral", "bg-fruity", "bg-woody", "bg-oriental"];
     mainEl.classList.remove(...classes);
     if (!scent) return;
     switch (scent) {
-      case 'floral':
-        mainEl.classList.add('bg-floral');
+      case "floral":
+        mainEl.classList.add("bg-floral");
         break;
-      case 'fruity':
-        mainEl.classList.add('bg-fruity');
+      case "fruity":
+        mainEl.classList.add("bg-fruity");
         break;
-      case 'woody':
-        mainEl.classList.add('bg-woody');
+      case "woody":
+        mainEl.classList.add("bg-woody");
         break;
-      case 'oriental':
-        mainEl.classList.add('bg-oriental');
+      case "oriental":
+        mainEl.classList.add("bg-oriental");
         break;
     }
   }
@@ -562,145 +593,431 @@ addToCartAnimation();
   // Demo product pool (could be replaced with real data)
   const products = [
     // Oriental
-    { id: 1, name: 'عود الكمبودي', price: 350, scent: 'oriental', times: ['night', 'occasion'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756883898/oud-cambodi_cqbvgj.avif' },
-    { id: 2, name: 'عنبر سلطاني', price: 10800, scent: 'oriental', times: ['night'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885368/Sultani-Amber-wood-0301020560_h4kmyx.jpg' },
-    { id: 3, name: 'زعفران الشرق', price: 25524, scent: 'oriental', times: ['occasion'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885362/saffron_aybdwj.avif' },
-    { id: 4, name: 'عود بخور ماليزي', price: 10371, scent: 'oriental', times: ['occasion'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885362/oud-malaysian_xsfaj2.avif' },
-    { id: 5, name: 'فانيليا شرقية', price: 17498, scent: 'oriental', times: ['day', 'night'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885363/vanilla-oriental_xctji4.avif' },
-    { id: 6, name: 'عنبر كشميري', price: 11750, scent: 'oriental', times: ['night'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885364/amber-kashmiri_zvxhhs.avif' },
-    { id: 7, name: 'عود لاوسي', price: 625, scent: 'oriental', times: ['night', 'occasion'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885362/oud-laos_qh45qm.webp' },
-    { id: 8, name: 'بخور ملكي', price: 330, scent: 'oriental', times: ['occasion'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885367/bakhoor_s2tz3r.avif' },
-    { id: 9, name: 'عود كمبودي محسن', price: 390, scent: 'oriental', times: ['night'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885367/oud-cambodi-premium_hjxord.avif' },
-    { id: 10, name: 'زعفران مذهب', price: 265, scent: 'oriental', times: ['day'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885362/saffron_aybdwj.avif' },
-    { id: 11, name: 'عنبر دافئ', price: 240, scent: 'oriental', times: ['day'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885368/Sultani-Amber-wood-0301020560_h4kmyx.jpg' },
-    { id: 12, name: 'عود ملكي', price: 410, scent: 'oriental', times: ['occasion', 'night'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885362/oud-malaysian_xsfaj2.avif' },
+    {
+      id: "1",
+      name: "عود الكمبودي",
+      price: 350,
+      scent: "oriental",
+      times: ["night", "occasion"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756883898/oud-cambodi_cqbvgj.avif",
+    },
+    {
+      id: "2",
+      name: "عنبر سلطاني",
+      price: 10800,
+      scent: "oriental",
+      times: ["night"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756885368/Sultani-Amber-wood-0301020560_h4kmyx.jpg",
+    },
+    {
+      id: "3",
+      name: "زعفران الشرق",
+      price: 25524,
+      scent: "oriental",
+      times: ["occasion"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756885362/saffron_aybdwj.avif",
+    },
+    {
+      id: 4,
+      name: "عود بخور ماليزي",
+      price: 10371,
+      scent: "oriental",
+      times: ["occasion"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756885362/oud-malaysian_xsfaj2.avif",
+    },
+    {
+      id: 5,
+      name: "فانيليا شرقية",
+      price: 17498,
+      scent: "oriental",
+      times: ["day", "night"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756885363/vanilla-oriental_xctji4.avif",
+    },
+    {
+      id: 6,
+      name: "عنبر كشميري",
+      price: 11750,
+      scent: "oriental",
+      times: ["night"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756885364/amber-kashmiri_zvxhhs.avif",
+    },
+    {
+      id: 7,
+      name: "عود لاوسي",
+      price: 625,
+      scent: "oriental",
+      times: ["night", "occasion"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756885362/oud-laos_qh45qm.webp",
+    },
+    {
+      id: 8,
+      name: "بخور ملكي",
+      price: 330,
+      scent: "oriental",
+      times: ["occasion"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756885367/bakhoor_s2tz3r.avif",
+    },
+    {
+      id: 9,
+      name: "عود كمبودي محسن",
+      price: 390,
+      scent: "oriental",
+      times: ["night"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756885367/oud-cambodi-premium_hjxord.avif",
+    },
+    {
+      id: 10,
+      name: "زعفران مذهب",
+      price: 265,
+      scent: "oriental",
+      times: ["day"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756885362/saffron_aybdwj.avif",
+    },
+    {
+      id: 11,
+      name: "عنبر دافئ",
+      price: 240,
+      scent: "oriental",
+      times: ["day"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756885368/Sultani-Amber-wood-0301020560_h4kmyx.jpg",
+    },
+    {
+      id: 12,
+      name: "عود ملكي",
+      price: 410,
+      scent: "oriental",
+      times: ["occasion", "night"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756885362/oud-malaysian_xsfaj2.avif",
+    },
 
     // Floral
-    { id: 20, name: 'ورد طائفي', price: 10600, scent: 'floral', times: ['day', 'occasion'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885363/taif-rose_uic1wm.avif' },
-    { id: 21, name: 'لافندر مراكش', price: 5800, scent: 'floral', times: ['day'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756886240/lavender_eyjvkp.avif' },
-    { id: 22, name: 'ياسمين عربي', price: 1700, scent: 'floral', times: ['day'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885365/jasmine_ad9n0k.avif' },
-    { id: 23, name: 'مسك الطهارة', price: 210, scent: 'floral', times: ['day', 'occasion'], img: 'assets/img/P/musk-tahara.jpg' },
-    { id: 24, name: 'حديقة الزهور', price: 195, scent: 'floral', times: ['day', 'night'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885365/jasmine_ad9n0k.avif' },
-    { id: 25, name: 'رحيق الورود', price: 230, scent: 'floral', times: ['occasion'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885363/taif-rose_uic1wm.avif' },
-    { id: 26, name: 'بتلات ناعمة', price: 185, scent: 'floral', times: ['night'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756886240/lavender_eyjvkp.avif' },
+    {
+      id: 20,
+      name: "ورد طائفي",
+      price: 10600,
+      scent: "floral",
+      times: ["day", "occasion"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756885363/taif-rose_uic1wm.avif",
+    },
+    {
+      id: 21,
+      name: "لافندر مراكش",
+      price: 5800,
+      scent: "floral",
+      times: ["day"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756886240/lavender_eyjvkp.avif",
+    },
+    {
+      id: 22,
+      name: "ياسمين عربي",
+      price: 1700,
+      scent: "floral",
+      times: ["day"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756885365/jasmine_ad9n0k.avif",
+    },
+    {
+      id: 23,
+      name: "مسك الطهارة",
+      price: 210,
+      scent: "floral",
+      times: ["day", "occasion"],
+      img: "assets/img/P/musk-tahara.jpg",
+    },
+    {
+      id: 24,
+      name: "حديقة الزهور",
+      price: 195,
+      scent: "floral",
+      times: ["day", "night"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756885365/jasmine_ad9n0k.avif",
+    },
+    {
+      id: 25,
+      name: "رحيق الورود",
+      price: 230,
+      scent: "floral",
+      times: ["occasion"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756885363/taif-rose_uic1wm.avif",
+    },
+    {
+      id: 26,
+      name: "بتلات ناعمة",
+      price: 185,
+      scent: "floral",
+      times: ["night"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756886240/lavender_eyjvkp.avif",
+    },
 
     // Woody
-    { id: 30, name: 'مسك أبيض', price: 200, scent: 'woody', times: ['day'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885364/white-musk_b1orxj.avif' },
-    { id: 31, name: 'المسك الأسود', price: 220, scent: 'woody', times: ['night'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885368/black-musk_yprcav.avif' },
-    { id: 32, name: 'صندل عربي', price: 250, scent: 'woody', times: ['day', 'night'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885362/sandal_to2kwj.avif' },
-    { id: 33, name: 'خشب الصندل الفاخر', price: 270, scent: 'woody', times: ['occasion'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885362/sandal_to2kwj.avif' },
-    { id: 34, name: 'أرز جبلي', price: 240, scent: 'woody', times: ['day'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885368/black-musk_yprcav.avif' },
-    { id: 35, name: 'مسك الغزال', price: 310, scent: 'woody', times: ['night'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756886183/musk-ghazal_fl9xfv.avif' },
+    {
+      id: 30,
+      name: "مسك أبيض",
+      price: 200,
+      scent: "woody",
+      times: ["day"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756885364/white-musk_b1orxj.avif",
+    },
+    {
+      id: 31,
+      name: "المسك الأسود",
+      price: 220,
+      scent: "woody",
+      times: ["night"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756885368/black-musk_yprcav.avif",
+    },
+    {
+      id: 32,
+      name: "صندل عربي",
+      price: 250,
+      scent: "woody",
+      times: ["day", "night"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756885362/sandal_to2kwj.avif",
+    },
+    {
+      id: 33,
+      name: "خشب الصندل الفاخر",
+      price: 270,
+      scent: "woody",
+      times: ["occasion"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756885362/sandal_to2kwj.avif",
+    },
+    {
+      id: 34,
+      name: "أرز جبلي",
+      price: 240,
+      scent: "woody",
+      times: ["day"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756885368/black-musk_yprcav.avif",
+    },
+    {
+      id: 35,
+      name: "مسك الغزال",
+      price: 310,
+      scent: "woody",
+      times: ["night"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756886183/musk-ghazal_fl9xfv.avif",
+    },
 
     // Fruity (add broad coverage)
-    { id: 40, name: 'رذاذ التفاح', price: 160, scent: 'fruity', times: ['day'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885363/vanilla-oriental_xctji4.avif' },
-    { id: 41, name: 'توت بري', price: 170, scent: 'fruity', times: ['night'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885369/pink-musk_yifwyn.avif' },
-    { id: 42, name: 'مشمش رقيق', price: 165, scent: 'fruity', times: ['day', 'occasion'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885363/vanilla-oriental_xctji4.avif' },
-    { id: 43, name: 'حمضيات متوسطية', price: 175, scent: 'fruity', times: ['day'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885369/pink-musk_yifwyn.avif' },
-    { id: 44, name: 'مانجو شرقي', price: 185, scent: 'fruity', times: ['occasion'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885363/vanilla-oriental_xctji4.avif' },
-    { id: 45, name: 'رمان ليلي', price: 190, scent: 'fruity', times: ['night'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885369/pink-musk_yifwyn.avif' },
+    {
+      id: 40,
+      name: "رذاذ التفاح",
+      price: 160,
+      scent: "fruity",
+      times: ["day"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756885363/vanilla-oriental_xctji4.avif",
+    },
+    {
+      id: 41,
+      name: "توت بري",
+      price: 170,
+      scent: "fruity",
+      times: ["night"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756885369/pink-musk_yifwyn.avif",
+    },
+    {
+      id: 42,
+      name: "مشمش رقيق",
+      price: 165,
+      scent: "fruity",
+      times: ["day", "occasion"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756885363/vanilla-oriental_xctji4.avif",
+    },
+    {
+      id: 43,
+      name: "حمضيات متوسطية",
+      price: 175,
+      scent: "fruity",
+      times: ["day"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756885369/pink-musk_yifwyn.avif",
+    },
+    {
+      id: 44,
+      name: "مانجو شرقي",
+      price: 185,
+      scent: "fruity",
+      times: ["occasion"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756885363/vanilla-oriental_xctji4.avif",
+    },
+    {
+      id: 45,
+      name: "رمان ليلي",
+      price: 190,
+      scent: "fruity",
+      times: ["night"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756885369/pink-musk_yifwyn.avif",
+    },
 
     // Cross coverage to reach ~90%
-    { id: 50, name: 'باقات مساء', price: 205, scent: 'floral', times: ['night'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885365/jasmine_ad9n0k.avif' },
-    { id: 51, name: 'دفء الصحراء', price: 295, scent: 'oriental', times: ['day'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885364/amber-kashmiri_zvxhhs.avif' },
-    { id: 52, name: 'نسيم الغابة', price: 235, scent: 'woody', times: ['occasion'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885362/sandal_to2kwj.avif' },
-    { id: 53, name: 'سحر الشرق', price: 315, scent: 'oriental', times: ['night', 'occasion'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885362/oud-laos_qh45qm.webp' },
-    { id: 54, name: 'ندى الصباح', price: 175, scent: 'floral', times: ['day'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756886240/lavender_eyjvkp.avif' },
-    { id: 55, name: 'ليلة فواكه', price: 195, scent: 'fruity', times: ['night', 'occasion'], img: 'https://res.cloudinary.com/dji6rydrr/image/upload/v1756885369/pink-musk_yifwyn.avif' }
+    {
+      id: 50,
+      name: "باقات مساء",
+      price: 205,
+      scent: "floral",
+      times: ["night"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756885365/jasmine_ad9n0k.avif",
+    },
+    {
+      id: 51,
+      name: "دفء الصحراء",
+      price: 295,
+      scent: "oriental",
+      times: ["day"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756885364/amber-kashmiri_zvxhhs.avif",
+    },
+    {
+      id: 52,
+      name: "نسيم الغابة",
+      price: 235,
+      scent: "woody",
+      times: ["occasion"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756885362/sandal_to2kwj.avif",
+    },
+    {
+      id: 53,
+      name: "سحر الشرق",
+      price: 315,
+      scent: "oriental",
+      times: ["night", "occasion"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756885362/oud-laos_qh45qm.webp",
+    },
+    {
+      id: 54,
+      name: "ندى الصباح",
+      price: 175,
+      scent: "floral",
+      times: ["day"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756886240/lavender_eyjvkp.avif",
+    },
+    {
+      id: 55,
+      name: "ليلة فواكه",
+      price: 195,
+      scent: "fruity",
+      times: ["night", "occasion"],
+      img: "https://res.cloudinary.com/dji6rydrr/image/upload/v1756885369/pink-musk_yifwyn.avif",
+    },
   ];
-  
 
   function pickSuggestions() {
     // Strict matching by scent AND time
-    let pool = products.filter(p => (!state.scent || p.scent === state.scent) && (!state.time || p.times.includes(state.time)));
+    let pool = products.filter(
+      (p) =>
+        (!state.scent || p.scent === state.scent) &&
+        (!state.time || p.times.includes(state.time))
+    );
 
     // feeling heuristic: prioritize based on feeling (only sorting; no fallback)
-    const feelingBoost = {
-      fresh: ['fruity', 'floral'],
-      romantic: ['floral', 'oriental'],
-      warm: ['woody', 'oriental'],
-      adventurous: ['oriental', 'woody'],
-    }[state.feeling] || [];
+    const feelingBoost =
+      {
+        fresh: ["fruity", "floral"],
+        romantic: ["floral", "oriental"],
+        warm: ["woody", "oriental"],
+        adventurous: ["oriental", "woody"],
+      }[state.feeling] || [];
 
-    pool.sort((a, b) => (feelingBoost.indexOf(b.scent) - feelingBoost.indexOf(a.scent)));
+    pool.sort(
+      (a, b) => feelingBoost.indexOf(b.scent) - feelingBoost.indexOf(a.scent)
+    );
     return pool.slice(0, 3);
   }
 
   function renderResults(items) {
     if (!resultsGrid) return;
     // Empty-state handling
-    if (emptyEl) emptyEl.classList.add('hidden');
-    resultsGrid.innerHTML = '';
+    if (emptyEl) emptyEl.classList.add("hidden");
+    resultsGrid.innerHTML = "";
 
     if (!items || items.length === 0) {
-      if (emptyEl) emptyEl.classList.remove('hidden');
+      if (emptyEl) emptyEl.classList.remove("hidden");
       return;
     }
 
     items.forEach((p, i) => {
-      const card = document.createElement('div');
-      card.className = 'result-card rounded-xl overflow-hidden bg-white/10 border border-white/20 backdrop-blur translate-y-6 opacity-0 transition-all duration-500';
+      const card = document.createElement("div");
+      card.className =
+        "result-card rounded-xl overflow-hidden bg-white/10 border border-white/20 backdrop-blur translate-y-6 opacity-0 transition-all duration-500";
       card.style.transitionDelay = `${i * 120}ms`;
       card.innerHTML = `
-        <div class="relative h-56 w-full rounded-lg overflow-hidden bg-center bg-cover" style="background: url('${p.img}') no-repeat center/contain;">
-          <span class="absolute top-2 left-2 px-2 py-1 rounded-md text-xs bg-black/50 text-white">$${p.price.toFixed(2)}</span>
+        <div class="relative h-56 w-full rounded-lg overflow-hidden bg-center bg-cover" style="background: url('${
+          p.img
+        }') no-repeat center/contain;">
+          <span class="absolute top-2 left-2 px-2 py-1 rounded-md text-xs bg-black/50 text-white">$${p.price.toFixed(
+            2
+          )}</span>
         </div>
         <div class="mt-3 flex items-center justify-between p-2">
           <div>
             <h3 class="text-base font-bold">${p.name}</h3>
-            <div class="text-xs opacity-80">${p.scent === 'floral' ? 'زهور' : p.scent === 'fruity' ? 'فواكه' : p.scent === 'woody' ? 'أخشاب' : 'شرقي'}</div>
+            <div class="text-xs opacity-80">${
+              p.scent === "floral"
+                ? "زهور"
+                : p.scent === "fruity"
+                ? "فواكه"
+                : p.scent === "woody"
+                ? "أخشاب"
+                : "شرقي"
+            }</div>
           </div>
           <button class="cta px-3 py-2 rounded-md text-xs advisor-add">أضفه للسلة</button>
         </div>
       `;
       resultsGrid.appendChild(card);
       requestAnimationFrame(() => {
-        card.classList.remove('translate-y-6', 'opacity-0');
-        card.classList.add('translate-y-0', 'opacity-100');
+        card.classList.remove("translate-y-6", "opacity-0");
+        card.classList.add("translate-y-0", "opacity-100");
       });
 
       // Hook add-to-cart with animation from advisor results
-      const btn = card.querySelector('.advisor-add');
+      const btn = card.querySelector(".advisor-add");
       if (btn) {
-        btn.addEventListener('click', (e) => {
+        btn.addEventListener("click", (e) => {
           e.preventDefault();
-          const imgDiv = card.querySelector('.relative');
+          const imgDiv = card.querySelector(".relative");
           const style = window.getComputedStyle(imgDiv);
           const bgImage = style.backgroundImage;
-          if (!bgImage || bgImage === 'none') return;
+          if (!bgImage || bgImage === "none") return;
           const imageUrl = bgImage.slice(5, -2);
-          const cartIcon = document.querySelector('.nav-cart-icon');
+          const cartIcon = document.querySelector(".nav-cart-icon");
           if (!cartIcon) return;
           const imgRect = imgDiv.getBoundingClientRect();
           const cartRect = cartIcon.getBoundingClientRect();
 
-          const flyingImage = document.createElement('img');
+          const flyingImage = document.createElement("img");
           flyingImage.src = imageUrl;
-          flyingImage.style.position = 'fixed';
+          flyingImage.style.position = "fixed";
           flyingImage.style.left = `${imgRect.left}px`;
           flyingImage.style.top = `${imgRect.top}px`;
           flyingImage.style.width = `${imgRect.width}px`;
           flyingImage.style.height = `${imgRect.height}px`;
-          flyingImage.style.zIndex = '1000';
-          flyingImage.style.transition = 'all 1s ease-in-out';
-          flyingImage.style.borderRadius = '20px';
-          flyingImage.style.objectFit = 'cover';
+          flyingImage.style.zIndex = "1000";
+          flyingImage.style.transition = "all 1s ease-in-out";
+          flyingImage.style.borderRadius = "20px";
+          flyingImage.style.objectFit = "cover";
           document.body.appendChild(flyingImage);
 
           requestAnimationFrame(() => {
             flyingImage.style.left = `${cartRect.left + cartRect.width / 2}px`;
             flyingImage.style.top = `${cartRect.top + cartRect.height / 2}px`;
-            flyingImage.style.width = '0px';
-            flyingImage.style.height = '0px';
-            flyingImage.style.transform = 'rotate(360deg)';
+            flyingImage.style.width = "0px";
+            flyingImage.style.height = "0px";
+            flyingImage.style.transform = "rotate(360deg)";
           });
 
           setTimeout(() => {
             flyingImage.remove();
-            if (window.__cart) window.__cart.addItem?.({ id: p.id, name: p.name, price: p.price, img: p.img });
+            if (window.__cart)
+              window.__cart.addItem?.({
+                id: p.id,
+                name: p.name,
+                price: p.price,
+                img: p.img,
+              });
             window.__cart?.updateCounter?.();
-            cartIcon.classList.add('bounce');
-            setTimeout(() => { cartIcon.classList.remove('bounce'); }, 300);
+            cartIcon.classList.add("bounce");
+            setTimeout(() => {
+              cartIcon.classList.remove("bounce");
+            }, 300);
           }, 1000);
         });
       }
@@ -708,70 +1025,76 @@ addToCartAnimation();
   }
 
   function currentStepNumber() {
-    const active = advisorSection.querySelector('.advisor-step.active');
+    const active = advisorSection.querySelector(".advisor-step.active");
     return active ? Number(active.dataset.step) : 1;
   }
 
   function canProceed(stepNum) {
     switch (stepNum) {
-      case 1: return !!state.feeling;
-      case 2: return !!state.scent;
-      case 3: return !!state.time;
-      default: return true;
+      case 1:
+        return !!state.feeling;
+      case 2:
+        return !!state.scent;
+      case 3:
+        return !!state.time;
+      default:
+        return true;
     }
   }
 
   function showValidationHint() {
     // Simple UX: alert; can be replaced by visual hint
-    alert('من فضلك اختر إجابة قبل المتابعة');
+    alert("من فضلك اختر إجابة قبل المتابعة");
   }
 
   function clearSelections(selector) {
-    advisorSection.querySelectorAll(selector).forEach(btn => btn.classList.remove('selected'));
+    advisorSection
+      .querySelectorAll(selector)
+      .forEach((btn) => btn.classList.remove("selected"));
   }
 
   // Step 1: feeling
-  advisorSection.addEventListener('click', (e) => {
+  advisorSection.addEventListener("click", (e) => {
     const target = e.target;
-    if (target.matches('.feeling-btn')) {
-      clearSelections('.feeling-btn');
-      target.classList.add('selected');
-      state.feeling = target.getAttribute('data-feeling');
+    if (target.matches(".feeling-btn")) {
+      clearSelections(".feeling-btn");
+      target.classList.add("selected");
+      state.feeling = target.getAttribute("data-feeling");
       // stay until user presses التالي or allow auto-advance? Keep as is: do not auto-advance
     }
   });
 
   // Step 2: scent
-  advisorSection.addEventListener('click', (e) => {
+  advisorSection.addEventListener("click", (e) => {
     const target = e.target;
-    if (target.matches('.scent-btn')) {
-      clearSelections('.scent-btn');
-      target.classList.add('selected');
-      state.scent = target.getAttribute('data-scent');
+    if (target.matches(".scent-btn")) {
+      clearSelections(".scent-btn");
+      target.classList.add("selected");
+      state.scent = target.getAttribute("data-scent");
       setBgByScent(state.scent);
       // do not auto-advance; wait for التالي
     }
   });
 
   // Step 3: time
-  advisorSection.addEventListener('click', (e) => {
+  advisorSection.addEventListener("click", (e) => {
     const target = e.target;
-    if (target.matches('.time-btn')) {
-      clearSelections('.time-btn');
-      target.classList.add('selected');
-      state.time = target.getAttribute('data-time');
+    if (target.matches(".time-btn")) {
+      clearSelections(".time-btn");
+      target.classList.add("selected");
+      state.time = target.getAttribute("data-time");
       // wait for عرض النتائج or التالي
     }
   });
 
   // Prev/Next controls
-  advisorSection.addEventListener('click', (e) => {
+  advisorSection.addEventListener("click", (e) => {
     const target = e.target;
-    if (target.matches('.advisor-prev')) {
+    if (target.matches(".advisor-prev")) {
       const step = currentStepNumber();
       if (step > 1) goToStep(step - 1);
     }
-    if (target.matches('.advisor-next')) {
+    if (target.matches(".advisor-next")) {
       const step = currentStepNumber();
       if (!canProceed(step)) return showValidationHint();
       if (step < 3) {
@@ -786,28 +1109,146 @@ addToCartAnimation();
 
   // Restart
   if (restartBtn) {
-    restartBtn.addEventListener('click', () => {
+    restartBtn.addEventListener("click", () => {
       state.feeling = state.scent = state.time = null;
-      clearSelections('.feeling-btn');
-      clearSelections('.scent-btn');
-      clearSelections('.time-btn');
-      resultsGrid.innerHTML = '';
+      clearSelections(".feeling-btn");
+      clearSelections(".scent-btn");
+      clearSelections(".time-btn");
+      resultsGrid.innerHTML = "";
       setBgByScent(null);
-      if (emptyEl) emptyEl.classList.add('hidden');
+      if (emptyEl) emptyEl.classList.add("hidden");
       goToStep(1);
     });
 
     // Add a Go to Products button next to restart (once)
-    if (!document.getElementById('go-products-btn')) {
+    if (!document.getElementById("go-products-btn")) {
       const wrapper = restartBtn.parentElement;
       if (wrapper) {
-        const link = document.createElement('a');
-        link.id = 'go-products-btn';
-        link.href = './products.html';
-        link.className = 'btn-tile';
-        link.textContent = 'اذهب للمنتجات';
+        const link = document.createElement("a");
+        link.id = "go-products-btn";
+        link.href = "./products.html";
+        link.className = "btn-tile";
+        link.textContent = "اذهب للمنتجات";
         wrapper.appendChild(link);
       }
     }
   }
 })();
+
+// load img product local storage
+function renderOrderSummary() {
+  const CART_KEY = "cartItems";
+  function loadCart() {
+    try {
+      return JSON.parse(localStorage.getItem(CART_KEY) || "[]");
+    } catch {
+      return [];
+    }
+  }
+  const items = loadCart();
+  const largeImageContainer = document.getElementById("large-product-image");
+  const miniatureImagesContainer = document.getElementById(
+    "miniature-product-images"
+  );
+
+  if (!largeImageContainer || !miniatureImagesContainer) {
+    console.error("Order summary containers not found");
+    return;
+  }
+
+  // Clear existing content
+  largeImageContainer.innerHTML = "";
+  miniatureImagesContainer.innerHTML = "";
+
+  if (items && items.length > 0) {
+    // Display large image for the first product
+    const firstProduct = items[0];
+    const largeImage = document.createElement("img");
+    largeImage.src = firstProduct.img;
+    largeImage.alt = firstProduct.name;
+    largeImage.className = "w-64 h-64 object-cover rounded-lg shadow-md";
+    largeImageContainer.appendChild(largeImage);
+
+    // Display miniature images for the remaining products
+    if (items.length > 1) {
+      for (let i = 1; i < items.length; i++) {
+        const product = items[i];
+        const miniatureImage = document.createElement("img");
+        miniatureImage.src = product.img;
+        miniatureImage.alt = product.name;
+        miniatureImage.className =
+          "w-16 h-16 object-cover rounded-lg shadow-md m-1";
+        miniatureImagesContainer.appendChild(miniatureImage);
+      }
+    }
+  } else {
+    // Display a default message if the cart is empty
+    largeImageContainer.textContent = "السلة فارغة";
+  }
+  const total = items.reduce((s, it) => s + it.price * (it.qty || 1), 0);
+  document.querySelector(".total").textContent = `${total}$`;
+}
+
+// Call renderOrderSummary when the page loads or when the cart changes
+document.addEventListener("DOMContentLoaded", () => {
+  // ... your existing code ...
+  renderOrderSummary();
+});
+
+// Add event listeners to the form inputs
+const phoneInput = document.getElementById("phone");
+const emailInput = document.getElementById("email");
+const cardInput = document.getElementById("card");
+const phoneStatus = document.getElementById("phone-status");
+const emailStatus = document.getElementById("email-status");
+const cardType = document.getElementById("card-type");
+const checkoutForm = document.getElementById("checkout-form");
+const checkoutContainer = document.getElementById("checkout-container");
+const thankYouMessage = document.getElementById("thank-you-message");
+
+// Phone Validation
+phoneInput.addEventListener("input", () => {
+  const isValid = phoneInput.value.length === 11; // Example validation
+  phoneStatus.innerHTML = isValid
+    ? '<i class="fas fa-check-circle text-green-500"></i>'
+    : '<i class="fas fa-times-circle text-red-500"></i>';
+});
+
+// Email Validation
+emailInput.addEventListener("input", () => {
+  const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value);
+  emailStatus.innerHTML = isValid
+    ? '<i class="fas fa-check-circle text-green-500"></i>'
+    : '<i class="fas fa-times-circle text-red-500"></i>';
+});
+
+// Card Formatting and Type Detection
+cardInput.addEventListener("input", () => {
+  let formattedNumber = cardInput.value.replace(/\D/g, "").substring(0, 16);
+  formattedNumber = formattedNumber.replace(/(\d{4})(?=\d)/g, "$1 ");
+  cardInput.value = formattedNumber;
+
+  const cardNumber = cardInput.value.replace(/\s/g, "");
+  let type = "";
+
+  if (cardNumber.startsWith("4")) {
+    type = "Visa";
+  } else if (cardNumber.startsWith("5")) {
+    type = "Mastercard";
+  }
+
+  cardType.textContent = type ? `Card Type: ${type}` : "";
+});
+
+// Form Submission
+checkoutForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  // Simulate payment processing (replace with actual API call)
+  await new Promise((resolve) => setTimeout(resolve, 1500));
+
+  // Hide form and show thank you message
+  checkoutContainer.classList.add("hidden");
+  thankYouMessage.classList.remove("hidden");
+  thankYouMessage.classList.add("animate-fade"); // Add fade animation
+});

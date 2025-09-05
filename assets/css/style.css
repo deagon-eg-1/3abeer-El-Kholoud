@@ -430,3 +430,13 @@ body {
         padding-inline: 16px;
     }
 }
+/* order-summary */
+.order-summary{
+    backdrop-filter: blur(30px);
+    background-color: #c3def856;
+}
+.checkout{
+    backdrop-filter: blur(30px);
+    background-color: #e0eefa56;
+
+}
