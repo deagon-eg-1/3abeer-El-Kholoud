@@ -85,6 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 })();
 
+// slider js
 (function () {
   const sliders = document.querySelectorAll(".products-slider");
 
@@ -113,7 +114,6 @@ document.addEventListener("DOMContentLoaded", function () {
         slider.closest(".products-slider-container") || slider.parentElement;
       const visibleWidth = container.clientWidth;
       const scrollWidth = slider.scrollWidth;
-      // Add the gap to the maxScroll calculation for better accuracy
       const maxScroll = scrollWidth - visibleWidth + gapValue;
       return Math.max(0, maxScroll);
     }
@@ -121,20 +121,29 @@ document.addEventListener("DOMContentLoaded", function () {
     let currentX = 0;
 
     function updateSliderPosition() {
-      const maxScroll = getMaxScroll();
-      // RTL: Clamp currentX between -maxScroll and 0
-      if (currentX > 0) currentX = 0;
-      if (currentX < -maxScroll) currentX = -maxScroll;
+      // 🚫 إلغاء السلايدر في الموبايل
+      if (window.innerWidth <= 768) {
+        slider.style.transform = "none";
+        progressFill.style.width = "0%";
+        if (currentSlideText) currentSlideText.textContent = 1;
+        if (totalSlidesText) totalSlidesText.textContent = products.length;
+        return; // نخرج من الفنكشن هنا
+      }
 
-      slider.style.transform = `translateX(${currentX}px)`;
+      // ✅ السلايدر شغال في الشاشات الكبيرة
+      const maxScroll = getMaxScroll();
+
+      if (currentX < 0) currentX = 0;
+      if (currentX > maxScroll) currentX = maxScroll;
+
+      slider.style.transform = `translateX(${-currentX}px)`;
 
       const max = getMaxScroll();
-      const progressPercentage =
-        max === 0 ? 0 : (Math.abs(currentX) / max) * 100;
+      const progressPercentage = max === 0 ? 0 : (currentX / max) * 100;
       progressFill.style.width = `${progressPercentage}%`;
 
       if (currentSlideText && cardWidth > 0) {
-        const currentSlide = Math.floor(Math.abs(currentX) / cardWidth) + 1;
+        const currentSlide = Math.floor(currentX / cardWidth) + 1;
         const totalSlides = products.length;
         currentSlideText.textContent = Math.min(
           totalSlides,
@@ -155,9 +164,10 @@ document.addEventListener("DOMContentLoaded", function () {
     let scrollLeftStart = 0;
 
     slider.addEventListener("mousedown", (e) => {
+      if (window.innerWidth <= 768) return; // 🚫 مفيش سلايدر في الموبايل
       isMouseDown = true;
       startX = e.pageX - slider.offsetLeft;
-      scrollLeftStart = -currentX; // Invert for calculation
+      scrollLeftStart = currentX;
       slider.style.cursor = "grabbing";
       e.preventDefault();
     });
@@ -166,18 +176,18 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!isMouseDown) return;
       isMouseDown = false;
       slider.style.cursor = "grab";
-      updateSliderPosition(); // Snap to bounds
+      updateSliderPosition();
     };
 
     slider.addEventListener("mouseup", handleMouseUpAndLeave);
     slider.addEventListener("mouseleave", handleMouseUpAndLeave);
 
     slider.addEventListener("mousemove", (e) => {
-      if (!isMouseDown) return;
+      if (!isMouseDown || window.innerWidth <= 768) return;
       e.preventDefault();
       const x = e.pageX - slider.offsetLeft;
-      const walk = (x - startX) * 1.5; // Multiplier for faster scroll
-      currentX = -(scrollLeftStart - walk);
+      const walk = (x - startX) * 1.5;
+      currentX = scrollLeftStart - walk;
       updateSliderPosition();
     });
 
@@ -186,8 +196,9 @@ document.addEventListener("DOMContentLoaded", function () {
     slider.addEventListener(
       "touchstart",
       (e) => {
+        if (window.innerWidth <= 768) return; // 🚫 إلغاء اللمس في الموبايل
         startX = e.touches[0].pageX - slider.offsetLeft;
-        scrollLeftStart = -currentX;
+        scrollLeftStart = currentX;
       },
       { passive: true }
     );
@@ -195,9 +206,10 @@ document.addEventListener("DOMContentLoaded", function () {
     slider.addEventListener(
       "touchmove",
       (e) => {
+        if (window.innerWidth <= 768) return; // 🚫 إلغاء السحب في الموبايل
         const x = e.touches[0].pageX - slider.offsetLeft;
         const walk = (x - startX) * 1.5;
-        currentX = -(scrollLeftStart - walk);
+        currentX = scrollLeftStart - walk;
         updateSliderPosition();
       },
       { passive: true }
@@ -1196,59 +1208,138 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Add event listeners to the form inputs
-const phoneInput = document.getElementById("phone");
-const emailInput = document.getElementById("email");
-const cardInput = document.getElementById("card");
-const phoneStatus = document.getElementById("phone-status");
-const emailStatus = document.getElementById("email-status");
-const cardType = document.getElementById("card-type");
-const checkoutForm = document.getElementById("checkout-form");
-const checkoutContainer = document.getElementById("checkout-container");
-const thankYouMessage = document.getElementById("thank-you-message");
+if (document.querySelector(".checkout-page")) {
+  const phoneInput = document.getElementById("phone");
+  const emailInput = document.getElementById("email");
+  const cardInput = document.getElementById("card");
+  const phoneStatus = document.getElementById("phone-status");
+  const emailStatus = document.getElementById("email-status");
+  const cardType = document.getElementById("card-type");
+  const checkoutForm = document.getElementById("checkout-form");
+  const checkoutContainer = document.getElementById("checkout-container");
+  const thankYouMessage = document.getElementById("thank-you-message");
 
-// Phone Validation
-phoneInput.addEventListener("input", () => {
-  const isValid = phoneInput.value.length === 11; // Example validation
-  phoneStatus.innerHTML = isValid
-    ? '<i class="fas fa-check-circle text-green-500"></i>'
-    : '<i class="fas fa-times-circle text-red-500"></i>';
-});
+  // Phone Validation
+  phoneInput.addEventListener("input", () => {
+    const isValid = phoneInput.value.length === 11; // Example validation
+    phoneStatus.innerHTML = isValid
+      ? '<i class="fas fa-check-circle text-green-500"></i>'
+      : '<i class="fas fa-times-circle text-red-500"></i>';
+  });
 
-// Email Validation
-emailInput.addEventListener("input", () => {
-  const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value);
-  emailStatus.innerHTML = isValid
-    ? '<i class="fas fa-check-circle text-green-500"></i>'
-    : '<i class="fas fa-times-circle text-red-500"></i>';
-});
+  // Email Validation
+  emailInput.addEventListener("input", () => {
+    const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value);
+    emailStatus.innerHTML = isValid
+      ? '<i class="fas fa-check-circle text-green-500"></i>'
+      : '<i class="fas fa-times-circle text-red-500"></i>';
+  });
 
-// Card Formatting and Type Detection
-cardInput.addEventListener("input", () => {
-  let formattedNumber = cardInput.value.replace(/\D/g, "").substring(0, 16);
-  formattedNumber = formattedNumber.replace(/(\d{4})(?=\d)/g, "$1 ");
-  cardInput.value = formattedNumber;
+  // Card Formatting and Type Detection
+  cardInput.addEventListener("input", () => {
+    let formattedNumber = cardInput.value.replace(/\D/g, "").substring(0, 16);
+    formattedNumber = formattedNumber.replace(/(\d{4})(?=\d)/g, "$1 ");
+    cardInput.value = formattedNumber;
 
-  const cardNumber = cardInput.value.replace(/\s/g, "");
-  let type = "";
+    const cardNumber = cardInput.value.replace(/\s/g, "");
+    let type = "";
 
-  if (cardNumber.startsWith("4")) {
-    type = "Visa";
-  } else if (cardNumber.startsWith("5")) {
-    type = "Mastercard";
-  }
+    if (cardNumber.startsWith("4")) {
+      type = "Visa";
+    } else if (cardNumber.startsWith("5")) {
+      type = "Mastercard";
+    }
 
-  cardType.textContent = type ? `Card Type: ${type}` : "";
-});
+    cardType.textContent = type ? `Card Type: ${type}` : "";
+  });
 
-// Form Submission
-checkoutForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
+  // Form Submission
+  checkoutForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  // Simulate payment processing (replace with actual API call)
-  await new Promise((resolve) => setTimeout(resolve, 1500));
+    // Simulate payment processing (replace with actual API call)
+    await new Promise((resolve) => setTimeout(resolve, 1500));
 
-  // Hide form and show thank you message
-  checkoutContainer.classList.add("hidden");
-  thankYouMessage.classList.remove("hidden");
-  thankYouMessage.classList.add("animate-fade"); // Add fade animation
+    // Hide form and show thank you message
+    checkoutContainer.classList.add("hidden");
+    thankYouMessage.classList.remove("hidden");
+    thankYouMessage.classList.add("animate-fade"); // Add fade animation
+  });
+}
+
+const productCards = document.querySelectorAll(".fa-heart");
+console.log(productCards);
+// ===== Popup Logic =====
+document.addEventListener("DOMContentLoaded", () => {
+  productCards.forEach((card) => {
+    card.addEventListener("click", () => {
+      console.log(card);
+      // لو في بوب أب مفتوح قبل كدا، امسحه
+      const oldPopup = document.getElementById("product-popup");
+      if (oldPopup) oldPopup.remove();
+
+      // إنشاء الغلاف
+      const popup = document.createElement("div");
+      popup.id = "product-popup";
+      popup.className =
+        "fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-[9999]";
+
+      // إنشاء البوب أب
+      popup.innerHTML = `
+        <div class="bg-white rounded-2xl shadow-2xl w-11/12 max-w-4xl flex flex-col md:flex-row overflow-hidden transform scale-90 opacity-0 transition-all duration-300">
+          
+          <!-- النص -->
+          <div class="w-full md:w-1/2 p-6 flex flex-col justify-center">
+            <h2 class="text-2xl font-bold mb-4">عطر فاخر</h2>
+            <p class="text-gray-600 mb-4 leading-relaxed">
+              عرض المنتج بشكل يُشعر العميل بالفخامة والتفرد.
+            </p>
+            <p class="text-gray-800 mb-6">
+              <strong>خريطة المكونات:</strong><br>
+              Top: روائح حمضية<br>
+              Heart: ياسمين<br>
+              Base: مسك
+            </p>
+            <button class="bg-[#03144f] text-white px-5 py-3 rounded-xl hover:bg-[#1a2b6b] transition">
+              ➕ أضف للعربة
+            </button>
+          </div>
+
+          <!-- الصورة -->
+          <div class="w-full md:w-1/2">
+            <img src="../img/hero-bg-1.jpg" 
+                 class="w-full h-full object-cover" alt="Perfume">
+          </div>
+
+          <!-- زر إغلاق -->
+          <button id="popup-close" 
+            class="absolute top-4 right-4 text-gray-700 hover:text-red-600 text-3xl font-bold">
+            &times;
+          </button>
+        </div>
+      `;
+
+      document.body.appendChild(popup);
+
+      // انيميشن الظهور
+      setTimeout(() => {
+        const modalBox = popup.querySelector("div");
+        modalBox.classList.remove("scale-90", "opacity-0");
+        modalBox.classList.add("scale-100", "opacity-100");
+      }, 50);
+
+      // زر إغلاق
+      const closeBtn = popup.querySelector("#popup-close");
+      closeBtn.addEventListener("click", () => {
+        popup.remove();
+      });
+
+      // كليك برا البوب أب يقفله
+      popup.addEventListener("click", (e) => {
+        if (e.target === popup) {
+          popup.remove();
+        }
+      });
+    });
+  });
 });

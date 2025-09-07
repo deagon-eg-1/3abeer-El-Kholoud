@@ -44,8 +44,9 @@
 }
 
 .btn-tile:hover {
-    background: linear-gradient(180deg, rgba(255,255,255,0.20), rgba(255,255,255,0.12));
-    border-color: rgba(255, 255, 255, 0.28);
+    background: linear-gradient(180deg, rgba(193,154,107,0.35), rgba(193,154,107,0.20));
+    /* border-color: rgba(255, 255, 255, 0.28); */
+    border-color: rgba(193,154,107,0.55);
 }
 
 /* Results card subtle glow */
