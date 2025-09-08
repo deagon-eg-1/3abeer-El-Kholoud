@@ -385,10 +385,6 @@
         font-size: 1.5rem;
     }
 
-    .navbar {
-        padding-left: 80px !important;
-    }
-
     .products-slider-container {
         padding: 0 !important;
     }
@@ -403,9 +399,7 @@
 
     .products-slider .product-card {
         max-width: calc(50% - 1rem) !important;
-        /* كل كارت ياخد العرض كامل */
         min-width: calc(50% - 1rem) !important;
-        /* كل كارت ياخد العرض كامل */
     }
 
     .products-slider .product-card>div {
@@ -428,34 +422,17 @@
     .sidebar .brand {
         position: fixed;
         top: 5px;
-        left: 10px;
+        left: 50%;
+        transform: translateX(-50%);
         width: 50px;
     }
 
-    .sidebar .tagline {
-        position: fixed;
-        top: 20px;
-        left: 170px;
-        width: fit-content;
-        font-size: 20px;
-        transform: rotate(0) !important;
+    .social-in-product{
+        display: flex !important;
+        border-top: 1px solid #ddd;
+        justify-content: space-evenly;
+        padding: 15px 0;
     }
-
-    .sidebar .social {
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: fit-content;
-        flex-direction: row;
-        backdrop-filter: blur(20px);
-        gap: 30px !important;
-        padding: 7px;
-        border-radius: 50px;
-        background-color: #94a2e048;
-        border: 1px solid #94a2e083;
-    }
-
 }
 
 /* Smooth scrolling for slider */

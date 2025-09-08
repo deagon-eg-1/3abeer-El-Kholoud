@@ -417,7 +417,7 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
         <div class="pt-3 grid grid-cols-2 gap-2">
           <a href="./products.html" class="px-3 py-2 rounded-lg text-center text-white" style="background:#03144f">اذهب للمنتجات</a>
-          <a href="#" class="px-3 py-2 rounded-lg text-center text-white" style="background:#c19a6b">تابع الدفع</a>
+          <a href="./checkout.html" class="px-3 py-2 rounded-lg text-center text-white" style="background:#c19a6b">تابع الدفع</a>
         </div>
         <div class="pt-2">
           <button class="w-full text-xs text-gray-500 hover:text-red-600 clear-cart">تفريغ السلة</button>
@@ -1267,10 +1267,9 @@ if (document.querySelector(".checkout-page")) {
   });
 }
 
-const productCards = document.querySelectorAll(".fa-heart");
-console.log(productCards);
 // ===== Popup Logic =====
 document.addEventListener("DOMContentLoaded", () => {
+  const productCards = document.querySelectorAll(".product-card");
   productCards.forEach((card) => {
     card.addEventListener("click", () => {
       console.log(card);
@@ -1307,7 +1306,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           <!-- الصورة -->
           <div class="w-full md:w-1/2">
-            <img src="../img/hero-bg-1.jpg" 
+            <img src="./assets/img/hero-bg-1.jpg" 
                  class="w-full h-full object-cover" alt="Perfume">
           </div>
 

@@ -18,15 +18,10 @@
 }
 
 ::-webkit-scrollbar-track {
-    background-color: var(--background-sidebar);
+    display: none;
 }
 ::-webkit-scrollbar-thumb {
-
-    background-color:var(--text-color);
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #1a2b6b;
+    display: none;
 }
 
 /* start body style */
